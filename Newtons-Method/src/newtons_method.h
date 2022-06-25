@@ -7,5 +7,10 @@
 #include <limits>
 #include <iostream>
 #include "functions.h"
-
-double NewtonsMethod(double& x_0);
+namespace nm
+{
+  namespace polysolver
+  {
+    double NewtonsMethod(double &x_0);
+  }
+}

@@ -6,56 +6,61 @@
 #include "Newtons-Method/src/newtons_method.h"
 #include <gtest/gtest.h>
 #include <cmath>
-
-namespace
+namespace nm
 {
-
-  class NewtonsMethodTestBaseFixture : public ::testing::Test
+  namespace polysolver
   {
-  public:
-    // You can remove any or all of the following functions if their bodies would
-    // be empty.
-
-    NewtonsMethodTestBaseFixture()
+    namespace
     {
-      // You can do set-up work for each test here.
-    }
 
-    ~NewtonsMethodTestBaseFixture()
-    {
-      // You can do clean-up work that doesn't throw exceptions here.
-    }
+      class NewtonsMethodTestBaseFixture : public ::testing::Test
+      {
+      public:
+        // You can remove any or all of the following functions if their bodies would
+        // be empty.
 
-    // If the constructor and destructor are not enough for setting up
-    // and cleaning up each test, you can define the following methods:
+        NewtonsMethodTestBaseFixture()
+        {
+          // You can do set-up work for each test here.
+        }
 
-    // Class members declared here can be used by all tests in the test suite
-    // for Foo.
-  };
+        ~NewtonsMethodTestBaseFixture()
+        {
+          // You can do clean-up work that doesn't throw exceptions here.
+        }
 
-  class NewtonsMethodTest : public NewtonsMethodTestBaseFixture
-  {
-  };
+        // If the constructor and destructor are not enough for setting up
+        // and cleaning up each test, you can define the following methods:
 
-  TEST(NewtonsMethodTest, GivenInitialGuessCloserToFirstRoot_ExpectFirstRootFound)
-  {
-    double x_0 = 0.25;
-    const auto result = NewtonsMethod(x_0);
-    EXPECT_NEAR(result, 0.0, std::numeric_limits<double>::epsilon());
-  }
+        // Class members declared here can be used by all tests in the test suite
+        // for Foo.
+      };
 
-  TEST(NewtonsMethodTest, GivenInitialGuessCloserToSecondRoot_ExpectSecondRootFound)
-  {
-    double x_0 = 0.75;
-    const auto result = NewtonsMethod(x_0);
-    EXPECT_NEAR(result, 1.0, std::numeric_limits<double>::epsilon());
-  }
+      class NewtonsMethodTest : public NewtonsMethodTestBaseFixture
+      {
+      };
 
-  TEST(NewtonsMethodTest, GivenInitialGuessAtLocalMaxima_ExpectNaN)
-  {
-    double x_0 = 0.5;
-    const auto result = NewtonsMethod(x_0);
-    EXPECT_TRUE(std::isnan(result));
-  }
+      TEST(NewtonsMethodTest, GivenInitialGuessCloserToFirstRoot_ExpectFirstRootFound)
+      {
+        double x_0 = 0.25;
+        const auto result = NewtonsMethod(x_0);
+        EXPECT_NEAR(result, 0.0, std::numeric_limits<double>::epsilon());
+      }
 
-} // namespace
+      TEST(NewtonsMethodTest, GivenInitialGuessCloserToSecondRoot_ExpectSecondRootFound)
+      {
+        double x_0 = 0.75;
+        const auto result = NewtonsMethod(x_0);
+        EXPECT_NEAR(result, 1.0, std::numeric_limits<double>::epsilon());
+      }
+
+      TEST(NewtonsMethodTest, GivenInitialGuessAtLocalMaxima_ExpectNaN)
+      {
+        double x_0 = 0.5;
+        const auto result = NewtonsMethod(x_0);
+        EXPECT_TRUE(std::isnan(result));
+      }
+
+    } // namespace
+  }   // polysolver
+} // nm
