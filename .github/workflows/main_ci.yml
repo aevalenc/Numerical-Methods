@@ -6,13 +6,11 @@ name: CI
 on:
   # Allows you to run this workflow manually from the Actions tab
   pull_request:
-  push:
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a multiple jobs
   bazel-build:
-    
 
     if: contains(github.event.pull_request.labels.*.name, 'check')
     # The type of runner that the job will run on
