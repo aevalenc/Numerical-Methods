@@ -14,29 +14,42 @@
  */
 
 #include "backwards_substitution.h"
+#include <algorithm>
+#include <iostream>
+#include <iterator>
+#include <numeric>
 
-namespace nm {
+namespace nm
+{
 
-namespace matrix {
+namespace matrix
+{
 
 void BackwardsSubstitution(const std::vector<std::vector<double>> &A,
-                           std::vector<double> &x,
-                           const std::vector<double> &b) {
+                           std::vector<double> &x, const std::vector<double> &b)
+{
 
-  const auto n = static_cast<int>(A.size());
-  for (int i = n - 1; i > -1; i--) {
-    x[i] = b[i];
+  auto n = static_cast<int>(x.size() - 1);
+  x[n] = b[n] / A[n][n];
 
-    if (i != n - 1) {
-      for (int j = i + 1; j < n; j++) {
-        x[i] = x[i] - A[i][j] * x[j];
-      } // end for j
+  auto i_row_of_A = std::crbegin(A);
+  int j{};
+  for (auto i = n - 1; i > -1; i--)
+  {
+    // Move to row above
+    i_row_of_A++;
 
-    } // end if
+    // We only take i + 1 to the end
+    // auto j = (i - 1);
 
-    x[i] = x[i] / A[i][i];
+    // Same for x
+    const auto sum = std::inner_product(
+        i_row_of_A->cbegin(), i_row_of_A->cend(), std::cbegin(x), 0.0);
 
-  } // end for i
+    // std::cerr << sum << std::endl;
+
+    x[i] = (b[i] - sum) / A[i][i];
+  }
 }
 
 } // namespace matrix
