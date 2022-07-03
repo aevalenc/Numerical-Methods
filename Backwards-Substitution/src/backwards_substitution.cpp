@@ -36,18 +36,11 @@ void BackwardsSubstitution(const std::vector<std::vector<double>> &A,
   int j{};
   for (auto i = n - 1; i > -1; i--)
   {
-    // Move to row above
     i_row_of_A++;
-
-    // We only take i + 1 to the end
-    // auto j = (i - 1);
-
-    // Same for x
-    const auto sum = std::inner_product(
-        i_row_of_A->cbegin(), i_row_of_A->cend(), std::cbegin(x), 0.0);
-
-    // std::cerr << sum << std::endl;
-
+    j = (i - 1);
+    const auto sum =
+        std::inner_product(std::cbegin(*i_row_of_A) + j, std::cend(*i_row_of_A),
+                           std::cbegin(x) + j, 0.0);
     x[i] = (b[i] - sum) / A[i][i];
   }
 }
