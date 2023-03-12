@@ -3,12 +3,15 @@
  * Project: Backwards Substitution - main unit tests
  */
 
-#include "Backwards-Substitution/src/backwards_substitution.h"
+#include "matrix_solvers/direct_solvers/backwards_substitution.h"
 #include <gtest/gtest.h>
+
 namespace nm
 {
+
 namespace matrix
 {
+
 namespace
 {
 
@@ -61,5 +64,7 @@ TEST(BackwardsSubstitutionTest, GivenUpperTriangularMatrix_ExpectExactSolution)
 }
 
 } // namespace
+
 } // namespace matrix
+
 } // namespace nm
