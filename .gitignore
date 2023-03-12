@@ -9,3 +9,5 @@
 /.cache/
 # Clang-format style format
 /.clang-format
+# VS code settings
+/.vscode/
