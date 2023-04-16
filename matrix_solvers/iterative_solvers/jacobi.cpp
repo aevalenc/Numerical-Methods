@@ -1,6 +1,6 @@
 /*
  * Author: Alejandro Valencia
- * Update: 12 March, 2023
+ * Update: 16 April, 2023
  */
 
 #include "matrix_solvers/iterative_solvers/jacobi.h"
@@ -59,6 +59,53 @@ double jacobi(const std::vector<std::vector<double>>& A, const std::vector<doubl
                    [](const auto& x_element, const auto& x_initial_element) { return x_initial_element - x_element; });
 
     return L2Norm(residual);
+
+}  // end FUNCTION jacobi
+
+void jacobi(const std::vector<std::vector<double>>& A,
+            const std::vector<double>& b,
+            std::vector<double>& x,
+            const int max_iterations,
+            const double tolerance)
+{
+    const auto x_initial = x;
+    auto residual_vector = x;
+    double sum{0.0};
+    double iteration{0.0};
+
+    auto residual = std::numeric_limits<double>::infinity();
+
+    while (residual > tolerance)
+    {
+        ++iteration;
+
+        for (std::size_t i = 0; i < b.size(); ++i)
+        {
+            for (std::size_t j = 0; j < b.size(); ++j)
+            {
+                if (j != i)
+                {
+                    sum += (A.at(i).at(j) * x.at(j));
+                }
+            }
+
+            x.at(i) = (b.at(i) - sum) / A.at(i).at(i);
+            sum = 0.0;
+        }
+
+        std::transform(
+            std::cbegin(x),
+            std::cend(x),
+            std::cbegin(x_initial),
+            std::back_inserter(residual_vector),
+            [](const auto& x_element, const auto& x_initial_element) { return x_initial_element - x_element; });
+        residual = L2Norm(residual_vector);
+
+        if (iteration > max_iterations)
+        {
+            break;
+        }
+    }
 
 }  // end FUNCTION jacobi
 
