@@ -31,19 +31,38 @@ class JacobiMethodTestFixture : public ::testing::Test
   public:
     std::vector<double> b{};
     std::vector<std::vector<double>> A{};
+    std::vector<double> x{0.0, 0.0, 0.0};
     double tolerance_{0.001};
-    double residual{0.0};
-    double max_iterations{10};
+    double max_iterations_{1000};
 };
 
 TEST_F(JacobiMethodTestFixture, GivenValidMatrix_ExpectConvergedSolution)
 {
-    std::vector<double> x{0.0, 0.0, 0.0};
-    for (std::size_t iteration = 0; iteration < max_iterations; ++iteration)
+    double residual{0.0};
+    for (std::size_t iteration = 0; iteration < max_iterations_; ++iteration)
     {
         residual = jacobi(A, b, x);
     }
     EXPECT_NEAR(residual, 0.0, tolerance_);
+}
+
+TEST_F(JacobiMethodTestFixture, GivenValidMatrix_ExpectConvergedSolutionWithVoidFunction)
+{
+    jacobi(A, b, x, max_iterations_, tolerance_);
+    EXPECT_NEAR(x.at(0), -24.0, tolerance_);
+}
+
+TEST_F(JacobiMethodTestFixture, GivenValidMatrix_ExpectSingleIterationToMatchWithVoidImplementation)
+{
+    auto x_void = x;
+
+    for (std::size_t iteration = 0; iteration < max_iterations_; ++iteration)
+    {
+        std::ignore = jacobi(A, b, x);
+    }
+
+    jacobi(A, b, x_void, max_iterations_, tolerance_);
+    EXPECT_NEAR(x.at(0), x_void.at(0), tolerance_);
 }
 
 }  // namespace
