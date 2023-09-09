@@ -1,26 +1,45 @@
+# Issue based CI jobs
+
 name: Issue-CI
 
-on:
-  issue_comment:
+on: issue_comment
 
 jobs:
-  is-issue-a-pr:
-    name: Issue is a PR
-    if: ${{ github.event.issue.pull_request }}
+  # is-issue-a-pr:
+  #   name: Issue is a PR
+  #   if: ${{ github.event.issue.pull_request }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - run: echo "Issue is a PR"
+
+  # is-pr-labeled-with-check:
+  #   # This job only runs for pull request comments
+  #   name: PR is labeled with check
+  #   if: contains(github.event.issue.labels.*.name, 'check')
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - run: echo "PR is labeled check"
+
+  bazel-build-on-issue-check-label:
+    # This job only runs for pull request comments
+    name: Build from PR comment
+    # needs: [is-issue-a-pr, is-pr-labeled-with-check]
+    # if: ${{ github.event.issue.pull_request }} && contains(github.event.issue.labels.*.name, 'check') && contains(github.event.comment.body, '/recheck')
+    if: contains(github.event.issue.labels.*.name, 'check')
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-  is-pr-labeled-with-check:
-    # This job only runs for pull request comments
-    name: PR is labeled with check
-    if: contains(github.event.issue.labels.*.name, 'check')
-    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      - uses: bazelbuild/setup-bazelisk@v1
+      - run: bazel build --cxxopt="-std=c++17" //...
 
   bazel-build-on-issue-recheck:
     # This job only runs for pull request comments
     name: Build from PR comment
-    needs: [is-issue-a-pr, is-pr-labeled-with-check]
     if: contains(github.event.comment.body, '/recheck')
-    # if: contains(github.event.comment.body, '/support')
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
