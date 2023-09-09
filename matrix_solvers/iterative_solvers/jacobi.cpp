@@ -37,7 +37,7 @@ double jacobi(const std::vector<std::vector<double>>& A, const std::vector<doubl
     const auto x_initial = x;
     double sum{0.0};
 
-    for (std::size_t i = 0; i < b.size(); ++i)
+    for (std::int32_t i = 0; i < b.size(); ++i)
     {
         for (std::size_t j = 0; j < b.size(); ++j)
         {
