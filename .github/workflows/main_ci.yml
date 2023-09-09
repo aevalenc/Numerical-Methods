@@ -5,8 +5,8 @@ name: CI
 # Controls when the workflow will run
 on:
   # Allows you to run this workflow manually from the Actions tab
-  # pull_request:
-  [pull_request, push]
+  pull_request:
+    types: [synchronize, labeled]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -54,3 +54,11 @@ jobs:
           echo "Some files failed the linting checks!"
         # for actual deployment
         # run: exit 1
+
+  print_context:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          EVENT_CONTEXT: ${{ toJSON(github.event) }}
+        run: |
+          echo $EVENT_CONTEXT
