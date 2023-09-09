@@ -21,7 +21,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       - uses: bazelbuild/setup-bazelisk@v1
-      - run: bazel build --copt="-std=c++14" //...
+      - run: bazel build --cxxopt="-std=c++17" //...
 
   bazel-test:
     if: contains(github.event.pull_request.labels.*.name, 'check')
@@ -34,7 +34,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       - uses: bazelbuild/setup-bazelisk@v1
-      - run: bazel test --copt="-std=c++14" --cache_test_results=no --test_output=all //...
+      - run: bazel test --cxxopt="-std=c++17" --cache_test_results=no --test_output=all //...
 
   cpp-lint:
     if: contains(github.event.pull_request.labels.*.name, 'check')
