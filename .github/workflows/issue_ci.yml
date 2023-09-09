@@ -51,12 +51,15 @@ jobs:
   bazel-build-on-issue-recheck:
     # This job only runs for pull request comments
     name: Build from PR commented with recheck
-    if: contains(github.event.comment.body, '/recheck')
+    if: contains(github.event.comment.body, 'recheck')
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - uses: octokit/request-action@v2.0.0
+        with:
+          route: ${{ github.event.issue.pull_request.url }}
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       - uses: bazelbuild/setup-bazelisk@v1
