@@ -6,7 +6,8 @@ jobs:
   bazel-build-on-issue:
     # This job only runs for pull request comments
     name: Build from PR comment
-    if: ${{ github.event.issue.pull_request }} && contains(github.event.issue.labels.*.name, 'check')
+    # if: ${{ github.event.issue.pull_request }}
+    if: contains(github.event.issue.labels.*.name, 'check')
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
