@@ -57,12 +57,16 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: octokit/request-action@v2.0.0
+      - name: PR information
+        id: pr_data
+        uses: octokit/request-action@v2.0.0
         with:
           route: ${{ github.event.issue.pull_request.url }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.pr_data.outputs.branch }}
       - uses: bazelbuild/setup-bazelisk@v1
       - run: bazel build --cxxopt="-std=c++17" //...
