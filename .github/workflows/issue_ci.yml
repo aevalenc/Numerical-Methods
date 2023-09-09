@@ -5,21 +5,6 @@ name: Issue-CI
 on: issue_comment
 
 jobs:
-  # is-issue-a-pr:
-  #   name: Issue is a PR
-  #   if: ${{ github.event.issue.pull_request }}
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - run: echo "Issue is a PR"
-
-  # is-pr-labeled-with-check:
-  #   # This job only runs for pull request comments
-  #   name: PR is labeled with check
-  #   if: contains(github.event.issue.labels.*.name, 'check')
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - run: echo "PR is labeled check"
-
   bazel-build-on-issue-is-a-pr:
     # This job only runs for pull request comments
     name: Build from PR comment if issue is a PR
