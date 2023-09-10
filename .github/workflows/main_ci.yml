@@ -17,7 +17,7 @@ jobs:
 
   # This workflow contains a multiple jobs
   bazel-build:
-    if: (github.event.issue.pull_request && contains(github.event.issue.labels.*.name, 'check')) || contains(github.event.comment.body, 'recheck')
+    if: (github.event.issue.pull_request && contains(github.event.issue.labels.*.name, 'check') && contains(github.event.comment.body, 'recheck')) || contains(github.event.pull_request.labels.*.name, 'check')
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -50,6 +50,7 @@ jobs:
         uses: bazelbuild/setup-bazelisk@v2
 
       - name: Build
+        id: bazel_build
         run: bazel build --cxxopt="-std=c++17" //...
 
       - name: Set latest commit status as ${{ job.status }}
@@ -62,7 +63,7 @@ jobs:
 
       - name: Comment status of job on PR
         uses: actions/github-script@v6
-        if: always()
+        if: ${{ job.status }} == failed()
         with:
           script: |
             const name = '${{ github.workflow   }}';
@@ -97,12 +98,17 @@ jobs:
       - name: debug build
         run: bazel test --cxxopt="-std=c++17" --copt="-ggdb" -c dbg --copt="-O0" --test_output=all --nocache_test_results //...
 
-  cpp-lint:
-    if: contains(github.event.issue.labels.*.name, 'check')
+  cpp-lint:    
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: cpp-linter/cpp-linter-action@v1
+      - name: Checkout to PR branch
+        id: pr_branch_data
+        if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.issue.labels.*.name, 'check')
+        uses: actions/checkout@v3
+
+      - name: Setup linter
+        if: steps.pr_branch_data.outcome == 'success'
+        uses: cpp-linter/cpp-linter-action@v1
         id: linter
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
