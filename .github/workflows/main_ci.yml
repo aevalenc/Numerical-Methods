@@ -8,10 +8,9 @@ name: CI
 on:
   # Allows you to run this workflow manually from the Actions tab
   pull_request:
-    types: [opened, labeled]
+    types: [opened, synchronize, labeled]
   issue_comment:
     types: [created]
-  push:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -97,14 +96,20 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-      - uses: bazelbuild/setup-bazelisk@v1
-      - run: bazel test --cxxopt="-std=c++17" --cache_test_results=no --test_output=all //...
+      - name: Checkout to PR branch
+        uses: actions/checkout@v3
+
+      - name: Setup bazel
+        uses: bazelbuild/setup-bazelisk@v2
+        
+      - name: optimize fastbuild
+        run: bazel test --copt="-std=c++17" -c opt --cache_test_results=no --test_output=all //...
+
+      - name: debug build
+        run: bazel test --copt="-std=c++17" --copt="-ggdb" -c dbg --copt="-O0" --test_output=all --nocache_test_results //...
 
   cpp-lint:
-    # if: contains(github.event.pull_request.labels.*.name, 'check')
-    needs: [check_pr_labels]
+    if: contains(github.event.issue.labels.*.name, 'check')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
