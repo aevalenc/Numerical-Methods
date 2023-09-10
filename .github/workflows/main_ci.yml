@@ -92,39 +92,67 @@ jobs:
       - name: Setup bazel
         uses: bazelbuild/setup-bazelisk@v3
         
-      - name: gcc debug build
-        run: bazel build --config=gcc9 --config=c++17 --config=debug //... -- -//bazel/...
+      - name: clang debug build
+        run: bazel build --config=clang14 --config=c++17 --compilation_mode=debug --cache_test_results=no --test_output=all //... -- -//bazel/...
         
       - name: gcc test fastbuild
         run: bazel test --config=gcc9 --config=c++17 --compilation_mode=fastbuild --cache_test_results=no --test_output=all //... -- -//bazel/...
 
-      - name: clang test fastbuild
-        run: bazel test --config=clang14 --config=c++17 --compilation_mode=fastbuild --cache_test_results=no --test_output=all //... -- -//bazel/...
 
 
-  # cpp-lint:    
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout to PR branch
-  #       id: pr_branch_data
-  #       if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.issue.labels.*.name, 'check')
-  #       uses: actions/checkout@v3
+  cpp-lint:    
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout to PR branch
+        id: pr_branch_data
+        if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.issue.labels.*.name, 'check')
+        uses: actions/checkout@v3
 
-  #     - name: Setup linter
-  #       if: steps.pr_branch_data.outcome == 'success'
-  #       uses: cpp-linter/cpp-linter-action@v1
-  #       id: linter
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       with:
-  #         style: file
+      - name: Setup linter
+        if: steps.pr_branch_data.outcome == 'success'
+        uses: cpp-linter/cpp-linter-action@v1
+        id: linter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          style: file
 
-  #     - name: Fail fast?!
-  #       if: steps.linter.outputs.checks-failed > 0
-  #       run: |
-  #         echo "Some files failed the linting checks!"
-  #       # for actual deployment
-  #       # run: exit 1
+      - name: Get PR SHA
+        if: steps.pr_branch_data.outcome == 'success'
+        id: sha
+        uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: |
+            const { owner, repo, number } = context.issue;
+            const pr = await github.rest.pulls.get({
+              owner,
+              repo,
+              pull_number: number,
+            });
+            return pr.data.head.sha
+       
+      - name: Create Pending Status Check
+        if: steps.pr_branch_data.outcome == 'success'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: "${{ steps.sha.outputs.result }}", 
+              state: "pending",
+              target_url: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+              description: "Running",
+              context: "test deployment"
+            });
+
+      - name: Fail fast?!
+        if: steps.linter.outputs.checks-failed > 0
+        run: |
+          echo "Some files failed the linting checks!"
+        # for actual deployment
+        # run: exit 1
 
   print-context:
     runs-on: ubuntu-latest
