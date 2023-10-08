@@ -89,6 +89,9 @@ jobs:
       - name: Checkout to PR branch
         uses: actions/checkout@v4
 
+      - name: print gcc version
+        run: gcc --version
+
       - name: Setup bazel
         uses: bazelbuild/setup-bazelisk@v3
         
