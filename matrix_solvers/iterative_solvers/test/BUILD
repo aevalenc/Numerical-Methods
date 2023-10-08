@@ -1,6 +1,6 @@
 cc_test(
-    name = "jacobi_solver_tests",
-    srcs = ["jacobi_solver_tests.cpp"],
+    name = "iterative_solver_tests",
+    srcs = ["iterative_solver_tests.cpp"],
     deps = [
         "//matrix_solvers/iterative_solvers:gauss_seidel_method",
         "//matrix_solvers/iterative_solvers:jacobi_method",

@@ -68,7 +68,7 @@ void jacobi(const std::vector<std::vector<double>>& A,
             const int max_iterations,
             const double tolerance)
 {
-    const auto x_initial = x;
+    auto x_new = x;
     auto residual_vector = x;
     double sum{0.0};
     double iteration{0.0};
@@ -89,14 +89,14 @@ void jacobi(const std::vector<std::vector<double>>& A,
                 }
             }
 
-            x.at(i) = (b.at(i) - sum) / A.at(i).at(i);
+            x_new.at(i) = (b.at(i) - sum) / A.at(i).at(i);
             sum = 0.0;
         }
 
         std::transform(
             std::cbegin(x),
             std::cend(x),
-            std::cbegin(x_initial),
+            std::cbegin(x_new),
             std::back_inserter(residual_vector),
             [](const auto& x_element, const auto& x_initial_element) { return x_initial_element - x_element; });
         residual = L2Norm(residual_vector);
@@ -104,6 +104,10 @@ void jacobi(const std::vector<std::vector<double>>& A,
         if (iteration > max_iterations)
         {
             break;
+        }
+        else
+        {
+            x = x_new;
         }
     }
 
