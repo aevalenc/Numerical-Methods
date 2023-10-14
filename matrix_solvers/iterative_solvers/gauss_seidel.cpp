@@ -6,6 +6,7 @@
 #include "matrix_solvers/iterative_solvers/gauss_seidel.h"
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <numeric>
 
 namespace nm

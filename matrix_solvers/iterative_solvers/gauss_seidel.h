@@ -4,8 +4,6 @@
  */
 
 #include <algorithm>
-#include <cmath>
-#include <numeric>
 
 namespace nm
 {
