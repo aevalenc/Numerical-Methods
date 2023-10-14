@@ -1,11 +1,12 @@
 /*
  * Author: Alejandro Valencia
- * Update: 16 April, 2023
+ * Update: October 8, 2023
  */
 
-#include "matrix_solvers/iterative_solvers/jacobi.h"
+#include "matrix_solvers/iterative_solvers/gauss_seidel.h"
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <numeric>
 
 namespace nm
@@ -31,15 +32,15 @@ double L2Norm(const std::vector<double>& vector)
 
 }  // namespace
 
-double jacobi(const std::vector<std::vector<double>>& A, const std::vector<double>& b, std::vector<double>& x)
+double GaussSeidel(const std::vector<std::vector<double>>& A, const std::vector<double>& b, std::vector<double>& x)
 {
 
     const auto x_initial = x;
     double sum{0.0};
 
-    for (std::size_t i = 0; i < b.size(); ++i)
+    for (std::int32_t i = 0; i < static_cast<std::int32_t>(b.size()); ++i)
     {
-        for (std::size_t j = 0; j < b.size(); ++j)
+        for (std::int32_t j = 0; j < static_cast<std::int32_t>(b.size()); ++j)
         {
             if (j != i)
             {
@@ -52,23 +53,23 @@ double jacobi(const std::vector<std::vector<double>>& A, const std::vector<doubl
     }
 
     std::vector<double> residual{};
-    std::transform(std::cbegin(x),
-                   std::cend(x),
-                   std::cbegin(x_initial),
-                   std::back_inserter(residual),
-                   [](const auto& x_element, const auto& x_initial_element) { return x_initial_element - x_element; });
+    std::ignore = std::transform(
+        std::cbegin(x),
+        std::cend(x),
+        std::cbegin(x_initial),
+        std::back_inserter(residual),
+        [](const auto& x_element, const auto& x_initial_element) { return x_initial_element - x_element; });
 
     return L2Norm(residual);
+}
 
-}  // end FUNCTION jacobi
-
-void jacobi(const std::vector<std::vector<double>>& A,
-            const std::vector<double>& b,
-            std::vector<double>& x,
-            const int max_iterations,
-            const double tolerance)
+void GaussSeidel(const std::vector<std::vector<double>>& A,
+                 const std::vector<double>& b,
+                 std::vector<double>& x,
+                 const int max_iterations,
+                 const double tolerance)
 {
-    auto x_new = x;
+    const auto x_initial = x;
     auto residual_vector = x;
     double sum{0.0};
     double iteration{0.0};
@@ -79,9 +80,9 @@ void jacobi(const std::vector<std::vector<double>>& A,
     {
         ++iteration;
 
-        for (std::size_t i = 0; i < b.size(); ++i)
+        for (std::int32_t i = 0; i < static_cast<std::int32_t>(b.size()); ++i)
         {
-            for (std::size_t j = 0; j < b.size(); ++j)
+            for (std::int32_t j = 0; j < static_cast<std::int32_t>(b.size()); ++j)
             {
                 if (j != i)
                 {
@@ -89,14 +90,14 @@ void jacobi(const std::vector<std::vector<double>>& A,
                 }
             }
 
-            x_new.at(i) = (b.at(i) - sum) / A.at(i).at(i);
+            x.at(i) = (b.at(i) - sum) / A.at(i).at(i);
             sum = 0.0;
         }
 
-        std::transform(
+        std::ignore = std::transform(
             std::cbegin(x),
             std::cend(x),
-            std::cbegin(x_new),
+            std::cbegin(x_initial),
             std::back_inserter(residual_vector),
             [](const auto& x_element, const auto& x_initial_element) { return x_initial_element - x_element; });
         residual = L2Norm(residual_vector);
@@ -105,13 +106,8 @@ void jacobi(const std::vector<std::vector<double>>& A,
         {
             break;
         }
-        else
-        {
-            x = x_new;
-        }
     }
-
-}  // end FUNCTION jacobi
+}
 
 }  // namespace matrix
 
