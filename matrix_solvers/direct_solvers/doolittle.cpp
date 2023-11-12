@@ -6,56 +6,61 @@
  */
 
 #include "matrix_solvers/direct_solvers/doolittle.h"
+#include "matrix_solvers/utilities.h"
 
 namespace nm
 {
-namespace matrix_solvers
+
+namespace matrix
 {
 
-int Doolittle(std::vector<double>& A, std::vector<double>& L, std::vector<double>& U)
+std::pair<std::vector<std::vector<double>>, std::vector<std::vector<double>>> Doolittle(
+    const std::vector<std::vector<double>>& A)
 {
 
     /* Declarations */
-    int k, m, i, j;
+    int m, i, j;
     double tempu, templ, sumu, suml;
 
     /* Set Identity Matrix */
-    eye(L, n);
+    auto L = CreateIdentityMatrix(static_cast<std::int32_t>(A.size()));
+    auto U = CreateIdentityMatrix(static_cast<std::int32_t>(A.size()));
 
     /* Main Algorithm */
-    for (k = 0; k < n; k++)
+    for (std::int32_t k{0}; k < A.size(); ++k)
     {
 
         // Upper Triangular Matrix
-        for (m = k; m < n; m++)
+        for (m = k; m < A.size(); ++m)
         {
             sumu = 0.0;
-            for (j = 0; j < k; j++)
+            for (j = 0; j < k; ++j)
             {
-                tempu = L[j + n * k] * U[m + n * j];
+                tempu = L.at(k).at(j) * U.at(j).at(m);
                 sumu = sumu + tempu;
-            }  // end for j
+            }
 
-            U[m + n * k] = A[m + n * k] - sumu;
-        }  // end for m
+            U.at(k).at(m) = A.at(k).at(m) - sumu;
+        }
 
         // Lower Triangular Matrix
         //  Recall principle diagonal (i,i) are 1s
-        for (i = k + 1; i < n; i++)
+        for (i = k + 1; i < A.size(); i++)
         {
             suml = 0.0;
             for (j = 0; j < k; j++)
             {
-                templ = L[j + n * i] * U[k + n * j];
+                templ = L.at(i).at(j) * U.at(j).at(k);
                 suml = suml + templ;
-            }  // end for j
+            }
 
-            L[k + n * i] = (A[k + n * i] - suml) / U[k + n * k];
-        }  // end for i
+            L.at(i).at(k) = (A.at(i).at(j) - suml) / U.at(k).at(k);
+        }
+    }
 
-    }  // end for k
-
-    return 0;
+    return std::make_pair(L, U);
 }
-}  // namespace matrix_solvers
+
+}  // namespace matrix
+
 }  // namespace nm
