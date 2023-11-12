@@ -1,0 +1,27 @@
+# Use our custom-configured c++ toolchain.
+# Use --cpu as a differentiator.
+# Use the default Bazel C++ toolchain to build the tools used during the
+# build.
+build:clang10 --crosstool_top=//toolchain:clang_suite
+build:clang10 --cpu=k8
+build:clang10 --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+
+# Use our custom-configured c++ toolchain.
+# Use --cpu as a differentiator.
+# Use the default Bazel C++ toolchain to build the tools used during the
+# build.
+build:gcc9 --crosstool_top=//toolchain:gcc_suite
+build:gcc9 --cpu=k8
+build:gcc9 --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+
+# C++ 14 configuration
+build:c++14 --copt="-std=c++14"
+
+# C++ 17 configuration
+build:c++17 --copt="-std=c++17" --copt="-Wall"
+
+# C++ 20 configuration
+build:c++20 --copt="-std=c++20" --copt="-Wall"
+
+# debug build config
+build:debug --strip=never --copt="-O0" --copt="-ggdb" -c dbg
