@@ -96,12 +96,10 @@ jobs:
         uses: bazelbuild/setup-bazelisk@v3
         
       - name: clang debug build
-        run: bazel build --config=clang14 --config=c++17 --compilation_mode=debug --cache_test_results=no --test_output=all --verbose_failures //... -- -//bazel/...
+        run: bazel build --config=clang14 --config=c++17 --config=debug --cache_test_results=no --test_output=all --verbose_failures //... -- -//bazel/...
         
       - name: gcc test fastbuild
         run: bazel test --config=gcc9 --config=c++17 --compilation_mode=fastbuild --cache_test_results=no --test_output=all --verbose_failures //... -- -//bazel/...
-
-
 
   cpp-lint:    
     runs-on: ubuntu-latest
