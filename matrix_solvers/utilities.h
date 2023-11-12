@@ -10,8 +10,14 @@
 
 namespace nm
 {
-namespace matrix_solvers
+
+namespace matrix
 {
+
 std::vector<std::vector<double>> CreateIdentityMatrix(std::int32_t size);
-}
+void PrintMatrix(std::vector<std::vector<double>> matrix);
+void PrintVector(const std::vector<double> vector);
+
+}  // namespace matrix
+
 }  // namespace nm
