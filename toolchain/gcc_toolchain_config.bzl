@@ -86,7 +86,7 @@ def _impl(ctx):
         ctx = ctx,
         cxx_builtin_include_directories = [
             # NEW
-            # "/usr/lib/llvm-10/lib/clang/10.0.0/include",
+            "/usr/lib/gcc/x86_64-linux-gnu/9/include",
             "/usr/include",
         ],
         features = features,
