@@ -7,6 +7,7 @@
 
 #include "matrix_solvers/direct_solvers/doolittle.h"
 #include "matrix_solvers/utilities.h"
+#include <cstdint>
 
 namespace nm
 {
@@ -45,7 +46,7 @@ std::pair<std::vector<std::vector<double>>, std::vector<std::vector<double>>> Do
 
         // Lower Triangular Matrix
         //  Recall principle diagonal (i,i) are 1s
-        for (i = k + 1; i < A.size(); i++)
+        for (i = k + 1; i < A.size(); ++i)
         {
             suml = 0.0;
             for (j = 0; j < k; j++)

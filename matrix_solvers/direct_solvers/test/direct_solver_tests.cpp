@@ -5,7 +5,6 @@
 
 #include "matrix_solvers/direct_solvers/backwards_substitution.h"
 #include "matrix_solvers/direct_solvers/doolittle.h"
-#include "matrix_solvers/utilities.h"
 #include <gtest/gtest.h>
 
 namespace nm
@@ -71,6 +70,14 @@ class DooLittleTestFixture : public DirectSolverBaseTestFixture
         A_.at(0).assign(a1.begin(), a1.end());
         A_.at(1).assign(a2.begin(), a2.end());
         A_.at(2).assign(a3.begin(), a3.end());
+
+        L_expected_.push_back(std::vector<double>{1, 0, 0});
+        L_expected_.push_back(std::vector<double>{-2, 1, 0});
+        L_expected_.push_back(std::vector<double>{-2, -1, 1});
+
+        U_expected_.push_back(std::vector<double>{2, -1, -2});
+        U_expected_.push_back(std::vector<double>{0, 4, -1});
+        U_expected_.push_back(std::vector<double>{0, 0, 3});
     }
 
   public:
@@ -83,24 +90,21 @@ TEST_F(DooLittleTestFixture, GivenUpperTriangularMatrix_ExpectExactSolution)
     // Given
     SetUpDoolittle();
 
-    L_expected_.push_back(std::vector<double>{1, 0, 0});
-    L_expected_.push_back(std::vector<double>{-2, 1, 0});
-    L_expected_.push_back(std::vector<double>{-2, -1, 1});
-
-    U_expected_.push_back(std::vector<double>{2, -1, -2});
-    U_expected_.push_back(std::vector<double>{0, 4, -1});
-    U_expected_.push_back(std::vector<double>{0, 0, 3});
-
     // Call
     const auto LU_matrices = Doolittle(A_);
 
     // // Expect
     const auto L = LU_matrices.first;
     const auto U = LU_matrices.second;
-    PrintMatrix(L);
-    PrintMatrix(U);
-    // PrintVector(L.at(0));
-    // EXPECT_EQ(L.at(0), L_expected_.at(0));
+
+    for (std::ptrdiff_t i{0}; i < L.size(); ++i)
+    {
+        for (std::ptrdiff_t j{0}; j < L.size(); ++j)
+        {
+            EXPECT_NEAR(L.at(i).at(j), L_expected_.at(i).at(j), tolerance_);
+            EXPECT_NEAR(U.at(i).at(j), U_expected_.at(i).at(j), tolerance_);
+        }
+    }
 }
 
 }  // namespace
