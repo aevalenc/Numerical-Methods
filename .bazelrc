@@ -10,6 +10,14 @@ build:clang10 --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 # Use --cpu as a differentiator.
 # Use the default Bazel C++ toolchain to build the tools used during the
 # build.
+build:clang13 --crosstool_top=//toolchain:clang13_suite
+build:clang13 --cpu=k8
+build:clang13 --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+
+# Use our custom-configured c++ toolchain.
+# Use --cpu as a differentiator.
+# Use the default Bazel C++ toolchain to build the tools used during the
+# build.
 build:gcc9 --crosstool_top=//toolchain:gcc_suite
 build:gcc9 --cpu=k8
 build:gcc9 --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
