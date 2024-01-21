@@ -4,6 +4,7 @@ cc_test(
     deps = [
         "//matrix_solvers/direct_solvers:backwards_substitution",
         "//matrix_solvers/direct_solvers:doolittle",
+        "//matrix_solvers/direct_solvers:forward_substitution",
         "@com_google_googletest//:gtest_main",
     ],
 )
