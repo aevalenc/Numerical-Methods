@@ -5,6 +5,7 @@
 
 #include "matrix_solvers/direct_solvers/backwards_substitution.h"
 #include "matrix_solvers/direct_solvers/doolittle.h"
+#include "matrix_solvers/direct_solvers/forward_substitution.h"
 #include <gtest/gtest.h>
 
 namespace nm
@@ -35,7 +36,6 @@ class DirectSolverBaseTestFixture : public ::testing::Test
     std::vector<std::vector<double>> A_{};
     std::vector<double> x_{0.0, 0.0, 0.0};
     double tolerance_{0.001};
-    double max_iterations_{1000};
 };
 
 class BackwardsSubstitutionTestFixture : public DirectSolverBaseTestFixture
@@ -44,11 +44,6 @@ class BackwardsSubstitutionTestFixture : public DirectSolverBaseTestFixture
 
 TEST_F(BackwardsSubstitutionTestFixture, GivenUpperTriangularMatrix_ExpectExactSolution)
 {
-
-    std::vector<double> b{};
-    b_.push_back(4);
-    b_.push_back(-1);
-    b_.push_back(2);
 
     std::vector<double> x{0.0, 0.0, 0.0};
     BackwardsSubstitution(A_, x, b_);
@@ -104,6 +99,43 @@ TEST_F(DooLittleTestFixture, GivenUpperTriangularMatrix_ExpectExactSolution)
             EXPECT_NEAR(L.at(i).at(j), L_expected_.at(i).at(j), tolerance_);
             EXPECT_NEAR(U.at(i).at(j), U_expected_.at(i).at(j), tolerance_);
         }
+    }
+}
+
+class ForwardSubstitutionTestFixture : public DirectSolverBaseTestFixture
+{
+  public:
+    void SetUpForwardSubstitution()
+    {
+        L_.push_back(std::vector<double>{1, 0, 0});
+        L_.push_back(std::vector<double>{-2, 1, 0});
+        L_.push_back(std::vector<double>{-2, -1, 1});
+        b_.at(0) = 1;
+        b_.at(1) = 2;
+        b_.at(2) = 3;
+
+        x_expected_.push_back(1);
+        x_expected_.push_back(4);
+        x_expected_.push_back(9);
+    }
+
+  public:
+    std::vector<std::vector<double>> L_{};
+    std::vector<double> x_expected_{};
+};
+
+TEST_F(ForwardSubstitutionTestFixture, GivenLowerTriangularMatrix_ExpectExactSolution)
+{
+    // Given
+    SetUpForwardSubstitution();
+
+    // Call
+    const auto x = ForwardSubstitution(L_, b_);
+
+    // Expect
+    for (std::size_t i{0}; i < b_.size(); ++i)
+    {
+        EXPECT_NEAR(x.at(i), x_expected_.at(i), tolerance_);
     }
 }
 
