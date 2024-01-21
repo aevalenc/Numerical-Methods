@@ -16,3 +16,10 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = ["//matrix_solvers:utilities"],
 )
+
+cc_library(
+    name = "forward_substitution",
+    srcs = ["forward_substitution.cpp"],
+    hdrs = ["forward_substitution.h"],
+    visibility = ["//visibility:public"],
+)
