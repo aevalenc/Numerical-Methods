@@ -25,26 +25,26 @@ namespace nm
 namespace matrix
 {
 
-void BackwardsSubstitution(const std::vector<std::vector<double>> &A,
-                           std::vector<double> &x, const std::vector<double> &b)
+std::vector<double> BackwardsSubstitution(const std::vector<std::vector<double>>& A, const std::vector<double>& b)
 {
+    const auto n = static_cast<int>(b.size() - 1);
+    std::vector<double> x(n + 1, 0);
+    x.at(n) = b.at(n) / A.at(n).at(n);
 
-  auto n = static_cast<int>(x.size() - 1);
-  x[n] = b[n] / A[n][n];
+    auto i_row_of_A = std::crbegin(A);
+    int j{};
+    for (auto i = n - 1; i > -1; i--)
+    {
+        i_row_of_A++;
+        j = (i - 1);
+        const auto sum =
+            std::inner_product(std::cbegin(*i_row_of_A) + j, std::cend(*i_row_of_A), std::cbegin(x) + j, 0.0);
+        x.at(i) = (b.at(i) - sum) / A.at(i).at(i);
+    }
 
-  auto i_row_of_A = std::crbegin(A);
-  int j{};
-  for (auto i = n - 1; i > -1; i--)
-  {
-    i_row_of_A++;
-    j = (i - 1);
-    const auto sum =
-        std::inner_product(std::cbegin(*i_row_of_A) + j, std::cend(*i_row_of_A),
-                           std::cbegin(x) + j, 0.0);
-    x[i] = (b[i] - sum) / A[i][i];
-  }
+    return x;
 }
 
-} // namespace matrix
+}  // namespace matrix
 
-} // namespace nm
+}  // namespace nm
