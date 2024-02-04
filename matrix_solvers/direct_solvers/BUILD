@@ -23,3 +23,15 @@ cc_library(
     hdrs = ["forward_substitution.h"],
     visibility = ["//visibility:public"],
 )
+
+cc_library(
+    name = "lu_solve",
+    srcs = ["lu_solve.cpp"],
+    hdrs = ["lu_solve.h"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":backwards_substitution",
+        ":doolittle",
+        ":forward_substitution",
+    ],
+)
