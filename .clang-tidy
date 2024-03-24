@@ -1,0 +1,16 @@
+WarningsAsErrors: "*"
+HeaderFileExtensions: ["", "h", "hh", "hpp", "hxx"]
+ImplementationFileExtensions: ["c", "cc", "cpp", "cxx"]
+Checks: "cppcoreguidelines-avoid-do-while, \
+  cppcoreguidelines-init-variables, \
+  cppcoreguidelines-avoid-goto, \
+  cppcoreguidelines-interfaces-global-init, \
+  cppcoreguidelines-no-malloc, \
+  cppcoreguidelines-pro-bounds-constant-array-index, \
+  cppcoreguidelines-pro-bounds-pointer-arithmetic, \
+  cppcoreguidelines-pro-type-const-cast, \
+  cppcoreguidelines-pro-type-member-init, \
+  clang-analyzer-*"
+CheckOptions:
+  - key: IgnoredMacros
+    value: "TEST,INSTANTIATE"

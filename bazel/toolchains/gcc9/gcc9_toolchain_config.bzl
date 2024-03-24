@@ -28,7 +28,7 @@ def _impl(ctx):
         # NEW
         tool_path(
             name = "gcc",
-            path = "/usr/bin/clang-10",
+            path = "/usr/bin/gcc-9",
         ),
         tool_path(
             name = "ld",
@@ -86,7 +86,7 @@ def _impl(ctx):
         ctx = ctx,
         cxx_builtin_include_directories = [
             # NEW
-            "/usr/lib/llvm-10/lib/clang/10.0.0/include",
+            "/usr/lib/gcc/x86_64-linux-gnu/9/include",
             "/usr/include",
         ],
         features = features,
@@ -95,13 +95,13 @@ def _impl(ctx):
         target_system_name = "local",
         target_cpu = "k8",
         target_libc = "unknown",
-        compiler = "clang",
+        compiler = "gcc",
         abi_version = "unknown",
         abi_libc_version = "unknown",
         tool_paths = tool_paths,
     )
 
-cc_toolchain_config = rule(
+gcc9_toolchain_config = rule(
     implementation = _impl,
     attrs = {},
     provides = [CcToolchainConfigInfo],

@@ -52,7 +52,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
-          repository: ${{fromJson(steps.pr_data.outputs.data).head.repo.full_name}}
-          ref: ${{fromJson(steps.pr_data.outputs.data).head.ref}}
+          repository: ${{ steps.pr_data.outputs.data.head.repo.full_name }}
+          ref: ${{ steps.pr_data.outputs.data.head.ref }}
       - uses: bazelbuild/setup-bazelisk@v1
       - run: bazel build --cxxopt="-std=c++17" //...
