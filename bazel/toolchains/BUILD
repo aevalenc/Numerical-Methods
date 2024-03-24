@@ -1,4 +1,4 @@
-load(":gcc_toolchain_config.bzl", "gcc9_toolchain_config")
+load(":gcc9_toolchain_config.bzl", "gcc9_toolchain_config")
 load(":clang14_toolchain_config.bzl", "clang14_toolchain_config")
 
 package(default_visibility = ["//visibility:public"])
