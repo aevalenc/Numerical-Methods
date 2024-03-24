@@ -78,25 +78,29 @@ jobs:
   #             body: body
   #           })
 
-  # bazel-test:
-  #   if: contains(github.event.pull_request.labels.*.name, 'check')
+  bazel-test:
+    if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
 
-  #   # The type of runner that the job will run on
-  #   runs-on: ubuntu-latest
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
 
-  #   # Steps represent a sequence of tasks that will be executed as part of the job
-  #   steps:
-  #     - name: Checkout to PR branch
-  #       uses: actions/checkout@v3
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checkout to PR branch
+        uses: actions/checkout@v4
 
-  #     - name: Setup bazel
-  #       uses: bazelbuild/setup-bazelisk@v2
+      - name: Setup bazel
+        uses: bazelbuild/setup-bazelisk@v3
         
-  #     - name: optimize fastbuild
-  #       run: bazel test --cxxopt="-std=c++17" -c opt --cache_test_results=no --test_output=all //...
+      - name: gcc debug build
+        run: bazel build --config=gcc9 --config=c++17 --config=debug //...
+        
+      - name: gcc test fastbuild
+        run: bazel test --config=gcc9 --config==c++17" --compilation_mode=fastbuild --cache_test_results=no --test_output=all //...
 
-  #     - name: debug build
-  #       run: bazel test --cxxopt="-std=c++17" --copt="-ggdb" -c dbg --copt="-O0" --test_output=all --nocache_test_results //...
+      - name: clang test fastbuild
+        run: bazel test --config=clang14 --config==c++17" --compilation_mode=fastbuild --cache_test_results=no --test_output=all //...
+
 
   # cpp-lint:    
   #   runs-on: ubuntu-latest
@@ -122,10 +126,10 @@ jobs:
   #       # for actual deployment
   #       # run: exit 1
 
-  print-context-and-clang-version:
+  print-context:
     runs-on: ubuntu-latest
     steps:
       - env:
           EVENT_CONTEXT: ${{ toJSON(github.event) }}
         run: |
-          echo $EVENT_CONTEXT && clang --version
+          echo $EVENT_CONTEXT
