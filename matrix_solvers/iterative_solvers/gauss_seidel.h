@@ -3,7 +3,7 @@
  * Update: October 8, 2023
  */
 
-#include <algorithm>
+#include <vector>
 
 namespace nm
 {
