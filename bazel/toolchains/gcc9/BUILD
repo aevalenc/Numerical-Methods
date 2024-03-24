@@ -2,17 +2,12 @@ load(":gcc9_toolchain_config.bzl", "gcc9_toolchain_config")
 
 package(default_visibility = ["//visibility:public"])
 
-cc_toolchain_suite(
-    name = "gcc9_suite",
-    toolchains = {
-        "k8": ":k8_gcc9_toolchain",
-    },
-)
+filegroup(name = "empty")
 
-gcc9_toolchain_config(name = "k8_toolchain_gcc9_config")
+gcc9_toolchain_config(name = "gcc9_toolchain_config")
 
 cc_toolchain(
-    name = "k8_gcc9_toolchain",
+    name = "linux_x86_64_gcc9_toolchain",
     all_files = ":empty",
     compiler_files = ":empty",
     dwp_files = ":empty",
@@ -20,6 +15,20 @@ cc_toolchain(
     objcopy_files = ":empty",
     strip_files = ":empty",
     supports_param_files = 0,
-    toolchain_config = ":k8_toolchain_gcc9_config",
+    toolchain_config = ":gcc9_toolchain_config",
     toolchain_identifier = "k8-gcc-toolchain",
+)
+
+toolchain(
+    name = "gcc9_toolchain_for_linux_x86_64",
+    exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    toolchain = ":linux_x86_64_gcc9_toolchain",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )

@@ -1,16 +1,13 @@
 load(":clang14_toolchain_config.bzl", "clang14_toolchain_config")
 
-cc_toolchain_suite(
-    name = "clang14_suite",
-    toolchains = {
-        "k8": ":k8_clang14_toolchain",
-    },
-)
+package(default_visibility = ["//visibility:public"])
 
-clang14_toolchain_config(name = "k8_clang14_toolchain_config")
+filegroup(name = "empty")
+
+clang14_toolchain_config(name = "clang14_toolchain_config")
 
 cc_toolchain(
-    name = "k8_clang14_toolchain",
+    name = "linux_x86_64_clang14_toolchain",
     all_files = ":empty",
     compiler_files = ":empty",
     dwp_files = ":empty",
@@ -18,6 +15,20 @@ cc_toolchain(
     objcopy_files = ":empty",
     strip_files = ":empty",
     supports_param_files = 0,
-    toolchain_config = ":k8_clang14_toolchain_config",
+    toolchain_config = ":clang14_toolchain_config",
     toolchain_identifier = "k8-clang-toolchain",
+)
+
+toolchain(
+    name = "clang14_toolchain_for_linux_x86_64",
+    exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    toolchain = ":linux_x86_64_clang14_toolchain",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )
