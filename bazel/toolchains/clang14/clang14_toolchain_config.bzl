@@ -87,6 +87,7 @@ def _impl(ctx):
         cxx_builtin_include_directories = [
             # NEW
             "/usr/lib/llvm-14/lib/clang/14.0.6/include",
+            "/usr/lib/llvm-14/lib/clang/14.0.0/include",
             "/usr/include",
         ],
         features = features,
