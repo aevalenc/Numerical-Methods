@@ -4,3 +4,12 @@ cc_library(
     hdrs = ["utilities.h"],
     visibility = ["//:__subpackages__"],
 )
+
+cc_test(
+    name = "utilities_tests",
+    srcs = ["utilities_tests.cpp"],
+    deps = [
+        ":utilities",
+        "@com_google_googletest//:gtest_main",
+    ],
+)
