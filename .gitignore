@@ -7,7 +7,5 @@
 /compile_commands.json
 # Directory where clangd puts its indexing work
 /.cache/
-# Clang-format style format
-/.clang-format
 # VS code settings
 /.vscode/
