@@ -17,6 +17,8 @@ namespace matrix
 std::vector<std::vector<double>> CreateIdentityMatrix(std::int32_t size);
 void PrintMatrix(std::vector<std::vector<double>> matrix);
 void PrintVector(const std::vector<double> vector);
+void Dot(std::vector<double> A, std::vector<double> B);
+std::vector<std::vector<double>> MatMult(std::vector<std::vector<double>> A, std::vector<std::vector<double>> B);
 
 }  // namespace matrix
 
