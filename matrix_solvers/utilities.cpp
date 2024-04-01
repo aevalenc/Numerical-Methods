@@ -6,7 +6,11 @@
  */
 
 #include "matrix_solvers/utilities.h"
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
 #include <iostream>
+#include <numeric>
 
 namespace nm
 {
@@ -111,6 +115,18 @@ std::vector<double> MatMult(std::vector<std::vector<double>> A, std::vector<doub
         result.at(i) = sum;
     }
     return result;
+}
+
+double L2Norm(const std::vector<double>& vector)
+{
+    std::vector<double> vector_squared{};
+
+    std::transform(
+        std::cbegin(vector), std::cend(vector), std::back_inserter(vector_squared), [](const auto& vector_element) {
+            return vector_element * vector_element;
+        });
+
+    return std::sqrt(std::accumulate(std::cbegin(vector_squared), std::cend(vector_squared), 0.0));
 }
 
 }  // namespace matrix

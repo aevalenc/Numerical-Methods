@@ -1,6 +1,6 @@
 /*
  * Author: Alejandro Valencia
- * Update: November 11, 2023
+ * Update: April 1, 2024
  *
  * Utility functions for matrix solvers
  */
@@ -19,6 +19,7 @@ void PrintMatrix(std::vector<std::vector<double>> matrix);
 void PrintVector(const std::vector<double> vector);
 std::vector<std::vector<double>> MatMult(std::vector<std::vector<double>> A, std::vector<std::vector<double>> B);
 std::vector<double> MatMult(std::vector<std::vector<double>> A, std::vector<double> b);
+double L2Norm(const std::vector<double>& vector);
 
 }  // namespace matrix
 
