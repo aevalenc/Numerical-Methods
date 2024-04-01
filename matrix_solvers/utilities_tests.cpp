@@ -63,6 +63,24 @@ TEST_F(MatrixUtilitiesTestFixture, GivenInvalidMatrix_ExpectException)
     });
 }
 
+TEST_F(MatrixUtilitiesTestFixture, GivenInvalidMatricesForMultiplication_ExpectException)
+{
+    // Given
+    std::vector<double> b = {1, 2, 3};
+
+    // Call & Expect
+    EXPECT_ANY_THROW({
+        try
+        {
+            const auto result = MatMult(A_, b);
+        }
+        catch (const std::exception& exception)
+        {
+            throw;
+        }
+    });
+}
+
 TEST_F(MatrixUtilitiesTestFixture, GivenValidMatrices_ExpectExactSolution)
 {
     const auto m = static_cast<std::int32_t>(A_.size());
@@ -75,6 +93,21 @@ TEST_F(MatrixUtilitiesTestFixture, GivenValidMatrices_ExpectExactSolution)
         {
             EXPECT_NEAR(C.at(i).at(j), C_.at(i).at(j), tolerance_);
         }
+    }
+}
+
+TEST_F(MatrixUtilitiesTestFixture, GivenOneMatrixAndOneVector_ExpectExactSolution)
+{
+    std::vector<double> b = {1, 2, 3};
+    std::vector<double> C_expected = {8, 11, 14};
+
+    const auto n = static_cast<std::int32_t>(b.size());
+    const auto C = MatMult(B_, b);
+
+    for (std::int32_t i = 0; i < n; ++i)
+    {
+
+        EXPECT_NEAR(C.at(i), C_expected.at(i), tolerance_);
     }
 }
 

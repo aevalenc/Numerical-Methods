@@ -6,7 +6,6 @@
  */
 
 #include "matrix_solvers/utilities.h"
-#include <cassert>
 #include <iostream>
 
 namespace nm
