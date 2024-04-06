@@ -1,6 +1,6 @@
 /*
  * Author: Alejandro Valencia
- * Update: November 11, 2023
+ * Update: April 6, 2024
  *
  * Utility functions for matrix solvers
  */
@@ -11,43 +11,15 @@
 #include <cstdint>
 #include <iostream>
 #include <numeric>
+#include <tuple>
 
 namespace nm
 {
+
 namespace matrix
 {
-std::vector<std::vector<double>> CreateIdentityMatrix(std::int32_t size)
-{
 
-    std::vector<std::vector<double>> I{};
-    I.resize(size);
-    for (std::int32_t i{0}; i < size; ++i)
-    {
-        I.at(i).resize(size);
-        I.at(i).at(i) = 1.0;
-    }
-
-    return I;
-}
-
-void PrintVector(const std::vector<double> vector)
-{
-    for (const auto& element : vector)
-    {
-        std::cout << element << " ";
-    }
-    std::cout << "\n";
-}
-
-void PrintMatrix(std::vector<std::vector<double>> matrix)
-{
-    for (const auto& row : matrix)
-    {
-        PrintVector(row);
-    }
-}
-
-std::vector<std::vector<double>> MatMult(std::vector<std::vector<double>> A, std::vector<std::vector<double>> B)
+Matrix<double> MatMult(Matrix<double>& A, Matrix<double>& B)
 {
     const auto m = static_cast<std::int32_t>(A.size());
     const auto n = static_cast<std::int32_t>(B.size());
@@ -63,7 +35,7 @@ std::vector<std::vector<double>> MatMult(std::vector<std::vector<double>> A, std
         throw std::length_error("Input matrix dimension mismatch. Are your matrices compatible?");
     }
 
-    std::vector<std::vector<double>> result{};
+    Matrix<double> result{};
     result.resize(m);
     for (auto& row : result)
     {
@@ -86,7 +58,7 @@ std::vector<std::vector<double>> MatMult(std::vector<std::vector<double>> A, std
     return result;
 }
 
-std::vector<double> MatMult(std::vector<std::vector<double>> A, std::vector<double> b)
+std::vector<double> MatMult(Matrix<double>& A, std::vector<double>& b)
 {
     const auto m = static_cast<std::int32_t>(A.size());
     const auto n = static_cast<std::int32_t>(b.size());
@@ -127,6 +99,36 @@ double L2Norm(const std::vector<double>& vector)
         });
 
     return std::sqrt(std::accumulate(std::cbegin(vector_squared), std::cend(vector_squared), 0.0));
+}
+
+double Dot(const std::vector<double>& vector_1, const std::vector<double>& vector_2)
+{
+
+    if (vector_1.empty())
+    {
+        throw std::length_error("Input vector 1 is empty");
+    }
+
+    if (vector_2.empty())
+    {
+        throw std::length_error("Input vector 2 is empty");
+    }
+
+    if (vector_1.size() != vector_2.size())
+    {
+        throw std::length_error("Vectors are not of the same length");
+    }
+
+    std::vector<double> vectors_multiplied{};
+
+    std::ignore = std::transform(
+        std::cbegin(vector_1),
+        std::cend(vector_1),
+        std::cbegin(vector_2),
+        std::back_inserter(vectors_multiplied),
+        [](const auto& vector_1_element, const auto& vector_2_element) { return vector_1_element * vector_2_element; });
+
+    return std::accumulate(std::cbegin(vectors_multiplied), std::cend(vectors_multiplied), 0.0);
 }
 
 }  // namespace matrix

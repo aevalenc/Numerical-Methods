@@ -111,6 +111,104 @@ TEST_F(MatrixUtilitiesTestFixture, GivenOneMatrixAndOneVector_ExpectExactSolutio
     }
 }
 
+TEST_F(MatrixUtilitiesTestFixture, GivenValidSizeForMatrix_ExpectValidIdentityMatrix)
+{
+    // Given
+    std::int32_t size{3};
+
+    Matrix<double> expected_identity_matrix{};
+    expected_identity_matrix.push_back(std::vector<double>{1.0, 0.0, 0.0});
+    expected_identity_matrix.push_back(std::vector<double>{0.0, 1.0, 0.0});
+    expected_identity_matrix.push_back(std::vector<double>{0.0, 0.0, 1.0});
+
+    // Call
+    const auto identity_matrix = CreateIdentityMatrix<double>(size);
+
+    for (std::int32_t i = 0; i < size; ++i)
+    {
+        for (std::int32_t j = 0; j < size; ++j)
+        {
+            EXPECT_NEAR(identity_matrix.at(i).at(j), expected_identity_matrix.at(i).at(j), tolerance_);
+        }
+    }
+}
+
+TEST_F(MatrixUtilitiesTestFixture, GivenSizeOneForMatrix_ExpectValidIdentityMatrix)
+{
+    // Given
+    std::int32_t size{1};
+
+    Matrix<double> expected_identity_matrix{};
+    expected_identity_matrix.push_back(std::vector<double>{1.0});
+
+    // Call
+    const auto identity_matrix = CreateIdentityMatrix<double>(size);
+
+    for (std::int32_t i = 0; i < size; ++i)
+    {
+        for (std::int32_t j = 0; j < size; ++j)
+        {
+            EXPECT_NEAR(identity_matrix.at(i).at(j), expected_identity_matrix.at(i).at(j), tolerance_);
+        }
+    }
+}
+
+TEST_F(MatrixUtilitiesTestFixture, GivenSizeOfZeroForMatrix_ExpectExecption)
+{
+    // Given
+    std::int32_t size{0};
+
+    Matrix<double> expected_identity_matrix{};
+
+    // Call and Expect
+    EXPECT_ANY_THROW(CreateIdentityMatrix<double>(size););
+}
+
+class MatrixUtilitiesDotProductTestFixture : public MatrixUtilitiesBaseTestFixture
+{
+
+  public:
+    std::vector<double> a_{1.0, 2.0, 3.0};
+    std::vector<double> b_{4.0, 5.0, 6.0};
+    std::vector<double> c_{4.0, 10.0, 18.0};
+};
+
+TEST_F(MatrixUtilitiesDotProductTestFixture, Given2ValidVectors_ExpectCorrectDotProductValue)
+{
+    // Given
+    const double expected_value{32.0};
+
+    // Call
+    const auto result = Dot(a_, b_);
+
+    // Expect
+    EXPECT_NEAR(result, expected_value, tolerance_);
+}
+
+TEST_F(MatrixUtilitiesDotProductTestFixture, Given1EmptyVector_ExpectExecption)
+{
+    // Given
+    a_.clear();
+
+    // Call and Expect
+    EXPECT_ANY_THROW(Dot(a_, b_));
+
+    // Given
+    b_.clear();
+
+    // Call and Expect
+    EXPECT_ANY_THROW(Dot(c_, b_));
+}
+
+TEST_F(MatrixUtilitiesDotProductTestFixture, Given1VectorShorterThanTheOther_ExpectExecption)
+{
+    // Given
+    a_.resize(1);
+
+    // Call and Expect
+    EXPECT_ANY_THROW(Dot(a_, b_));
+}
+
 }  // namespace
 
 }  // namespace matrix

@@ -24,8 +24,8 @@ std::pair<std::vector<std::vector<double>>, std::vector<std::vector<double>>> Do
     double tempu, templ, sumu, suml;
 
     /* Set Identity Matrix */
-    auto L = CreateIdentityMatrix(static_cast<std::int32_t>(A.size()));
-    auto U = CreateIdentityMatrix(static_cast<std::int32_t>(A.size()));
+    auto L = CreateIdentityMatrix<double>(static_cast<std::int32_t>(A.size()));
+    auto U = CreateIdentityMatrix<double>(static_cast<std::int32_t>(A.size()));
 
     /* Main Algorithm */
     for (std::int32_t k{0}; k < A.size(); ++k)
