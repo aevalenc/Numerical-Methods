@@ -5,6 +5,9 @@
  * Utility functions for matrix solvers
  */
 
+#ifndef MATRIX_SOLVERS_UTILITIES
+#define MATRIX_SOLVERS_UTILITIES
+
 #include <cstdint>
 #include <iostream>
 #include <vector>
@@ -117,3 +120,5 @@ std::vector<double> CalculateResidual(const Matrix<double>& A,
 }  // namespace matrix
 
 }  // namespace nm
+
+#endif  // MATRIX_SOLVERS_UTILITIES
