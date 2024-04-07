@@ -15,3 +15,11 @@ cc_library(
     hdrs = ["gauss_seidel.h"],
     visibility = ["//visibility:public"],
 )
+
+cc_library(
+    name = "conjugate_gradient_method",
+    srcs = ["conjugate_gradient.cpp"],
+    hdrs = ["conjugate_gradient.h"],
+    visibility = ["//visibility:public"],
+    deps = ["//matrix_solvers:utilities"],
+)
