@@ -104,6 +104,19 @@ double L2Norm(const std::vector<double>& vector);
 /// @return dot product result
 double Dot(const std::vector<double>& vector_1, const std::vector<double>& vector_2);
 
+/// @brief Helper function to calculate the residual of the matrix equation Ax = b
+///
+/// @param A: Matrix of doubles
+/// @param b: std::vector of doubles
+/// @param x: Guess value for solution
+/// @param n: size of x
+///
+/// @return residual as std::vector of doubles
+std::vector<double> CalculateResidual(const Matrix<double>& A,
+                                      const std::vector<double>& b,
+                                      const std::vector<double>& x,
+                                      const std::int32_t n);
+
 }  // namespace matrix
 
 }  // namespace nm
