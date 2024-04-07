@@ -19,7 +19,7 @@ namespace nm
 namespace matrix
 {
 
-Matrix<double> MatMult(Matrix<double>& A, Matrix<double>& B)
+Matrix<double> MatMult(const Matrix<double>& A, const Matrix<double>& B)
 {
     const auto m = static_cast<std::int32_t>(A.size());
     const auto n = static_cast<std::int32_t>(B.size());
@@ -58,7 +58,7 @@ Matrix<double> MatMult(Matrix<double>& A, Matrix<double>& B)
     return result;
 }
 
-std::vector<double> MatMult(Matrix<double>& A, std::vector<double>& b)
+std::vector<double> MatMult(const Matrix<double>& A, const std::vector<double>& b)
 {
     const auto m = static_cast<std::int32_t>(A.size());
     const auto n = static_cast<std::int32_t>(b.size());

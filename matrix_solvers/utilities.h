@@ -76,7 +76,7 @@ void PrintMatrix(Matrix<T>& matrix)
 /// @param B: nxp Matrix of doubles
 ///
 /// @return C: a mxp Matrix of doubles
-Matrix<double> MatMult(Matrix<double>& A, Matrix<double>& B);
+Matrix<double> MatMult(const Matrix<double>& A, const Matrix<double>& B);
 
 /// @brief Matrix Multiplication between a Matrix and a vector
 ///
@@ -84,7 +84,7 @@ Matrix<double> MatMult(Matrix<double>& A, Matrix<double>& B);
 /// @param b: nx1 std::vector of doubles
 ///
 /// @return
-std::vector<double> MatMult(Matrix<double>& A, std::vector<double>& b);
+std::vector<double> MatMult(const Matrix<double>& A, const std::vector<double>& b);
 
 /// @brief Calculate the L2 norm of a vector
 ///
@@ -93,7 +93,7 @@ std::vector<double> MatMult(Matrix<double>& A, std::vector<double>& b);
 /// @return L2 norm computed value
 double L2Norm(const std::vector<double>& vector);
 
-/// @brief Performs the dot (vector) product
+/// @brief Performs the dot (scalar) product
 ///
 /// @param vector_1: std::vector of doubles
 /// @param vector_2: std::vector of doubles
