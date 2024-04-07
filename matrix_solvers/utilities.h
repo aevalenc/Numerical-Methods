@@ -86,7 +86,7 @@ Matrix<double> MatMult(const Matrix<double>& A, const Matrix<double>& B);
 /// @param A: mxn Matrix of doubles
 /// @param b: nx1 std::vector of doubles
 ///
-/// @return c: mx1 std::vector of doubles
+/// @return
 std::vector<double> MatMult(const Matrix<double>& A, const std::vector<double>& b);
 
 /// @brief Calculate the L2 norm of a vector
@@ -96,7 +96,7 @@ std::vector<double> MatMult(const Matrix<double>& A, const std::vector<double>& 
 /// @return L2 norm computed value
 double L2Norm(const std::vector<double>& vector);
 
-/// @brief Performs the dot (vector) product
+/// @brief Performs the dot (scalar) product
 ///
 /// @param vector_1: std::vector of doubles
 /// @param vector_2: std::vector of doubles
