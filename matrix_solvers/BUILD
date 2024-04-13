@@ -2,7 +2,7 @@ cc_library(
     name = "utilities",
     srcs = ["utilities.cpp"],
     hdrs = ["utilities.h"],
-    visibility = ["//:__subpackages__"],
+    visibility = ["//visibility:public"],
 )
 
 cc_test(
