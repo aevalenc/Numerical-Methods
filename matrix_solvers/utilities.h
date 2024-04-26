@@ -5,6 +5,9 @@
  * Utility functions for matrix solvers
  */
 
+#ifndef MATRIX_SOLVERS_UTILITIES
+#define MATRIX_SOLVERS_UTILITIES
+
 #include <cstdint>
 #include <iostream>
 #include <vector>
@@ -76,7 +79,7 @@ void PrintMatrix(Matrix<T>& matrix)
 /// @param B: nxp Matrix of doubles
 ///
 /// @return C: a mxp Matrix of doubles
-Matrix<double> MatMult(Matrix<double>& A, Matrix<double>& B);
+Matrix<double> MatMult(const Matrix<double>& A, const Matrix<double>& B);
 
 /// @brief Matrix Multiplication between a Matrix and a vector
 ///
@@ -84,7 +87,7 @@ Matrix<double> MatMult(Matrix<double>& A, Matrix<double>& B);
 /// @param b: nx1 std::vector of doubles
 ///
 /// @return
-std::vector<double> MatMult(Matrix<double>& A, std::vector<double>& b);
+std::vector<double> MatMult(const Matrix<double>& A, const std::vector<double>& b);
 
 /// @brief Calculate the L2 norm of a vector
 ///
@@ -93,7 +96,7 @@ std::vector<double> MatMult(Matrix<double>& A, std::vector<double>& b);
 /// @return L2 norm computed value
 double L2Norm(const std::vector<double>& vector);
 
-/// @brief Performs the dot (vector) product
+/// @brief Performs the dot (scalar) product
 ///
 /// @param vector_1: std::vector of doubles
 /// @param vector_2: std::vector of doubles
@@ -101,6 +104,21 @@ double L2Norm(const std::vector<double>& vector);
 /// @return dot product result
 double Dot(const std::vector<double>& vector_1, const std::vector<double>& vector_2);
 
+/// @brief Helper function to calculate the residual of the matrix equation Ax = b
+///
+/// @param A: Matrix of doubles
+/// @param b: std::vector of doubles
+/// @param x: Guess value for solution
+/// @param n: size of x
+///
+/// @return residual as std::vector of doubles
+std::vector<double> CalculateResidual(const Matrix<double>& A,
+                                      const std::vector<double>& b,
+                                      const std::vector<double>& x,
+                                      const std::int32_t n);
+
 }  // namespace matrix
 
 }  // namespace nm
+
+#endif  // MATRIX_SOLVERS_UTILITIES

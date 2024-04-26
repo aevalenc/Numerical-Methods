@@ -19,7 +19,7 @@ namespace nm
 namespace matrix
 {
 
-Matrix<double> MatMult(Matrix<double>& A, Matrix<double>& B)
+Matrix<double> MatMult(const Matrix<double>& A, const Matrix<double>& B)
 {
     const auto m = static_cast<std::int32_t>(A.size());
     const auto n = static_cast<std::int32_t>(B.size());
@@ -58,7 +58,7 @@ Matrix<double> MatMult(Matrix<double>& A, Matrix<double>& B)
     return result;
 }
 
-std::vector<double> MatMult(Matrix<double>& A, std::vector<double>& b)
+std::vector<double> MatMult(const Matrix<double>& A, const std::vector<double>& b)
 {
     const auto m = static_cast<std::int32_t>(A.size());
     const auto n = static_cast<std::int32_t>(b.size());
@@ -129,6 +129,21 @@ double Dot(const std::vector<double>& vector_1, const std::vector<double>& vecto
         [](const auto& vector_1_element, const auto& vector_2_element) { return vector_1_element * vector_2_element; });
 
     return std::accumulate(std::cbegin(vectors_multiplied), std::cend(vectors_multiplied), 0.0);
+}
+
+std::vector<double> CalculateResidual(const Matrix<double>& A,
+                                      const std::vector<double>& b,
+                                      const std::vector<double>& x,
+                                      const std::int32_t n)
+{
+    std::vector<double> residual{};
+    residual.resize(n);
+    const auto Ax = MatMult(A, x);
+    for (std::int32_t i = 0; i < n; ++i)
+    {
+        residual.at(i) = (b.at(i) - Ax.at(i));
+    }
+    return residual;
 }
 
 }  // namespace matrix
