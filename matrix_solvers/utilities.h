@@ -27,7 +27,7 @@ using Matrix = std::vector<std::vector<T>>;
 ///
 /// @return Matrix<T>: A matrix with the same typename used for function call
 template <typename T>
-Matrix<T> CreateIdentityMatrix(std::int32_t size)
+Matrix<T> CreateIdentityMatrix(const std::int32_t size)
 {
     if (size <= 0)
     {
@@ -62,7 +62,7 @@ void PrintVector(const std::vector<T>& vector)
 ///
 /// @param matrix: a Matrix
 template <typename T>
-void PrintMatrix(Matrix<T>& matrix)
+void PrintMatrix(const Matrix<T>& matrix)
 {
     for (const auto& row : matrix)
     {
@@ -76,15 +76,15 @@ void PrintMatrix(Matrix<T>& matrix)
 /// @param B: nxp Matrix of doubles
 ///
 /// @return C: a mxp Matrix of doubles
-Matrix<double> MatMult(Matrix<double>& A, Matrix<double>& B);
+Matrix<double> MatMult(const Matrix<double>& A, const Matrix<double>& B);
 
 /// @brief Matrix Multiplication between a Matrix and a vector
 ///
 /// @param A: mxn Matrix of doubles
 /// @param b: nx1 std::vector of doubles
 ///
-/// @return
-std::vector<double> MatMult(Matrix<double>& A, std::vector<double>& b);
+/// @return c: mx1 std::vector of doubles
+std::vector<double> MatMult(const Matrix<double>& A, const std::vector<double>& b);
 
 /// @brief Calculate the L2 norm of a vector
 ///

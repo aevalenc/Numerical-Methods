@@ -98,8 +98,8 @@ TEST_F(MatrixUtilitiesTestFixture, GivenValidMatrices_ExpectExactSolution)
 
 TEST_F(MatrixUtilitiesTestFixture, GivenOneMatrixAndOneVector_ExpectExactSolution)
 {
-    std::vector<double> b = {1, 2, 3};
-    std::vector<double> C_expected = {8, 11, 14};
+    const std::vector<double> b = {1, 2, 3};
+    const std::vector<double> C_expected = {8, 11, 14};
 
     const auto n = static_cast<std::int32_t>(b.size());
     const auto C = MatMult(B_, b);
@@ -114,7 +114,7 @@ TEST_F(MatrixUtilitiesTestFixture, GivenOneMatrixAndOneVector_ExpectExactSolutio
 TEST_F(MatrixUtilitiesTestFixture, GivenValidSizeForMatrix_ExpectValidIdentityMatrix)
 {
     // Given
-    std::int32_t size{3};
+    const std::int32_t size{3};
 
     Matrix<double> expected_identity_matrix{};
     expected_identity_matrix.push_back(std::vector<double>{1.0, 0.0, 0.0});
@@ -136,7 +136,7 @@ TEST_F(MatrixUtilitiesTestFixture, GivenValidSizeForMatrix_ExpectValidIdentityMa
 TEST_F(MatrixUtilitiesTestFixture, GivenSizeOneForMatrix_ExpectValidIdentityMatrix)
 {
     // Given
-    std::int32_t size{1};
+    const std::int32_t size{1};
 
     Matrix<double> expected_identity_matrix{};
     expected_identity_matrix.push_back(std::vector<double>{1.0});
@@ -156,9 +156,9 @@ TEST_F(MatrixUtilitiesTestFixture, GivenSizeOneForMatrix_ExpectValidIdentityMatr
 TEST_F(MatrixUtilitiesTestFixture, GivenSizeOfZeroForMatrix_ExpectExecption)
 {
     // Given
-    std::int32_t size{0};
+    const std::int32_t size{0};
 
-    Matrix<double> expected_identity_matrix{};
+    const Matrix<double> expected_identity_matrix{};
 
     // Call and Expect
     EXPECT_ANY_THROW(CreateIdentityMatrix<double>(size););
