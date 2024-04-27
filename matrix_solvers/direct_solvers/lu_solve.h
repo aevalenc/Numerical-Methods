@@ -5,6 +5,9 @@
 
 #include <vector>
 
+#ifndef MATRIX_SOLVERS_DIRECT_SOLVERS_LU_SOLVE_H
+#define MATRIX_SOLVERS_DIRECT_SOLVERS_LU_SOLVE_H
+
 namespace nm
 {
 
@@ -21,3 +24,5 @@ std::vector<double> LUSolve(const std::vector<std::vector<double>>& A, const std
 }  // namespace matrix
 
 }  // namespace nm
+
+#endif  // MATRIX_SOLVERS_DIRECT_SOLVERS_LU_SOLVE_H

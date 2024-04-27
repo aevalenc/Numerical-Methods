@@ -11,7 +11,7 @@
 namespace nm
 {
 
-namespace polysolver
+namespace root_finders
 {
 
 namespace
@@ -50,6 +50,6 @@ double NewtonsMethod(double& x_0,
     return x_n;
 }
 
-}  // namespace polysolver
+}  // namespace root_finders
 
 }  // namespace nm

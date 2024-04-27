@@ -5,6 +5,9 @@
 
 #include <vector>
 
+#ifndef MATRIX_SOLVERS_ITERATIVE_SOLVERS_JACOBI_H
+#define MATRIX_SOLVERS_ITERATIVE_SOLVERS_JACOBI_H
+
 namespace nm
 {
 
@@ -36,3 +39,5 @@ void jacobi(const std::vector<std::vector<double>>& A,
 }  // namespace matrix
 
 }  // namespace nm
+
+#endif  // MATRIX_SOLVERS_ITERATIVE_SOLVERS_JACOBI_H
