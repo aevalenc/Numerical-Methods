@@ -8,6 +8,9 @@
 #include <utility>
 #include <vector>
 
+#ifndef MATRIX_SOLVERS_DIRECT_SOLVERS_DOOLITTLE_H
+#define MATRIX_SOLVERS_DIRECT_SOLVERS_DOOLITTLE_H
+
 namespace nm
 {
 
@@ -20,3 +23,5 @@ std::pair<std::vector<std::vector<double>>, std::vector<std::vector<double>>> Do
 }  // namespace matrix
 
 }  // namespace nm
+
+#endif  // MATRIX_SOLVERS_DIRECT_SOLVERS_DOOLITTLE_H

@@ -9,6 +9,9 @@
 #include <iostream>
 #include <vector>
 
+#ifndef MATRIX_SOLVERS_UTILITIES_H
+#define MATRIX_SOLVERS_UTILITIES_H
+
 namespace nm
 {
 
@@ -104,3 +107,5 @@ double Dot(const std::vector<double>& vector_1, const std::vector<double>& vecto
 }  // namespace matrix
 
 }  // namespace nm
+
+#endif  // MATRIX_SOLVERS_UTILITIES_H

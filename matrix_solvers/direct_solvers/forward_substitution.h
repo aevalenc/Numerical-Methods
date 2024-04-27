@@ -5,6 +5,9 @@
 
 #include <vector>
 
+#ifndef MATRIX_SOLVERS_DIRECT_SOLVERS_FORWARD_SUBSTITUTION_H
+#define MATRIX_SOLVERS_DIRECT_SOLVERS_FORWARD_SUBSTITUTION_H
+
 namespace nm
 {
 
@@ -24,3 +27,5 @@ std::vector<double> ForwardSubstitution(const std::vector<std::vector<double>>& 
 }  // namespace matrix
 
 }  // namespace nm
+
+#endif  // MATRIX_SOLVERS_DIRECT_SOLVERS_FORWARD_SUBSTITUTION_H

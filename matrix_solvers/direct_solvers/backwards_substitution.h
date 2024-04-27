@@ -4,6 +4,9 @@
  */
 #include <vector>
 
+#ifndef MATRIX_SOLVERS_DIRECT_SOLVERS_BACKWARDS_SUBSTITUTION_H
+#define MATRIX_SOLVERS_DIRECT_SOLVERS_BACKWARDS_SUBSTITUTION_H
+
 namespace nm
 {
 
@@ -15,3 +18,5 @@ std::vector<double> BackwardsSubstitution(const std::vector<std::vector<double>>
 }  // namespace matrix
 
 }  // namespace nm
+
+#endif  // MATRIX_SOLVERS_DIRECT_SOLVERS_BACKWARDS_SUBSTITUTION_H

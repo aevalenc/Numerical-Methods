@@ -11,7 +11,7 @@
 namespace nm
 {
 
-namespace polysolver
+namespace root_finders
 {
 
 namespace
@@ -61,6 +61,6 @@ TEST_F(NewtonsMethodTestFixture, GivenInitialGuessAtLocalMaxima_ExpectNaN)
 
 }  // namespace
 
-}  // namespace polysolver
+}  // namespace root_finders
 
 }  // namespace nm

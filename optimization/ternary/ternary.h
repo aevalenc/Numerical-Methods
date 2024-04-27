@@ -6,8 +6,12 @@
 
 #include <functional>
 
+#ifndef OPTIMIZATION_TERNARY_TERNARY_H
+#define OPTIMIZATION_TERNARY_TERNARY_H
+
 namespace nm
 {
+
 namespace optimize
 {
 
@@ -16,5 +20,9 @@ double ternary_min_search(std::function<double(double)>& function,
                           const double max_iterations,
                           double lower_bound,
                           double upper_bound);
-}
+
+}  // namespace optimize
+
 }  // namespace nm
+
+#endif  // OPTIMIZATION_TERNARY_TERNARY_H
