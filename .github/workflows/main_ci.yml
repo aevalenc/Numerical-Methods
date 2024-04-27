@@ -127,6 +127,18 @@ jobs:
         # for actual deployment
         # run: exit 1
 
+  check-include-guards:
+    if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.issue.labels.*.name, 'check')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout to branch
+        uses: actions/checkout@v4
+
+      - name: Check include guards
+        uses: sbeyer/include-guards-check-action@v1.0.0
+        with:
+          pattern: '{path}'
+
       
 
   print-context:
