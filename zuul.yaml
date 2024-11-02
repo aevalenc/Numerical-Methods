@@ -1,8 +1,14 @@
+- job:
+    name: dummy
+    parent: base
+    run: playbooks/testjob.yaml
+
 - project:
     name: aevalenc/Numerical-Methods
     check:
       jobs:
         - noop
+        - dummy
     gate:
       jobs:
         - noop
