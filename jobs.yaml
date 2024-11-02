@@ -1,0 +1,5 @@
+---
+- job:
+      name: dummy
+      parent: base
+      run: playbooks/testjob.yaml
