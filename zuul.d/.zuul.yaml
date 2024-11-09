@@ -1,8 +1,0 @@
-- project:
-    name: aevalenc/Numerical-Methods
-    check:
-      jobs:
-        - noop
-    gate:
-      jobs:
-        - noop
