@@ -6,12 +6,12 @@
     npm_package: "npm"
     nodejs_pkg: "nodejs"
   tasks:
-    - name: Gather the package facts
-      ansible.builtin.package_facts:
-        manager: auto
+    # - name: Gather the package facts
+    #   ansible.builtin.package_facts:
+    #     manager: auto
 
     - name: Install nodejs and npm
-      when: not nodejs_pkg in ansible_facts.packages
+      # when: not nodejs_pkg in ansible_facts.packages
       # become: true
       ansible.builtin.apt:
         name:
@@ -57,7 +57,7 @@
 
     # - name: Install buildifier
     #   when: not buildifier_status.stat.exists
-      become: true
+      # become: true
     #   vars:
     #     version: "v6.1.2"
     #   ansible.builtin.get_url:
@@ -67,7 +67,7 @@
 
     # - name: Make buildifier executable
     #   when: not buildifier_status.stat.exists
-      become: true
+      # become: true
     #   ansible.builtin.file:
     #     src: "/usr/local/bin/buildifier-linux-amd64"
     #     dest: "/usr/local/bin/buildifier"
