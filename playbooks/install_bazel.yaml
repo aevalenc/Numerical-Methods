@@ -33,16 +33,20 @@
       # become: true
       community.general.npm:
         name: "@bazel/bazelisk"
-        path: "/usr/bin/bazelisk"
+        path: "/usr/local/bin/bazelisk"
 
     - name: Link Bazelisk to Bazel
       # when: not bazelisk_status.stat.exists
       # become: true
       ansible.builtin.file:
-        src: "/usr/bin/bazelisk"
-        dest: "/usr/bin/bazel"
+        src: "/usr/local/bin/bazelisk"
+        dest: "/usr/local/bin/bazel"
         mode: a+x
         state: link
+
+    - name: Debug Bazel
+      ansible.builtin.shell: |
+        ls /usr/local/bin | grep bazel
 
     - name: Run Bazelisk to extract current version of Bazel
       # when: not bazelisk_status.stat.exists
@@ -59,7 +63,7 @@
 
     # - name: Install buildifier
     #   when: not buildifier_status.stat.exists
-      # become: true
+    # become: true
     #   vars:
     #     version: "v6.1.2"
     #   ansible.builtin.get_url:
@@ -69,7 +73,7 @@
 
     # - name: Make buildifier executable
     #   when: not buildifier_status.stat.exists
-      # become: true
+    # become: true
     #   ansible.builtin.file:
     #     src: "/usr/local/bin/buildifier-linux-amd64"
     #     dest: "/usr/local/bin/buildifier"
