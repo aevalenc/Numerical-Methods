@@ -33,30 +33,30 @@
       # become: true
       community.general.npm:
         name: "@bazel/bazelisk"
-        path: "/usr/local/bin/bazelisk"
+        global: true
 
-    - name: Link Bazelisk to Bazel
-      # when: not bazelisk_status.stat.exists
-      # become: true
-      ansible.builtin.file:
-        src: "/usr/local/bin/bazelisk"
-        dest: "/usr/local/bin/bazel"
-        mode: a+x
-        state: link
-
-    - name: Debug Bazel
-      shell:
-        cmd: ls -al /usr/local/bin | grep bazel
-      args:
-        executable: bash
-
-    # - name: Run Bazelisk to extract current version of Bazel
+    # - name: Link Bazelisk to Bazel
     #   # when: not bazelisk_status.stat.exists
     #   # become: true
-    #   ansible.builtin.shell: |
-    #     bazel --version
+    #   ansible.builtin.file:
+    #     src: "/usr/local/bin/bazelisk"
+    #     dest: "/usr/local/bin/bazel"
+    #     mode: a+x
+    #     state: link
+
+    # - name: Debug Bazel
+    #   shell:
+    #     cmd: ls -al /usr/local/bin | grep bazel
     #   args:
     #     executable: bash
+
+    - name: Run Bazelisk to extract current version of Bazel
+      # when: not bazelisk_status.stat.exists
+      # become: true
+      ansible.builtin.shell: |
+        bazel --version
+      args:
+        executable: bash
 
     # - name: Check for buildifier
     #   ansible.builtin.stat:
