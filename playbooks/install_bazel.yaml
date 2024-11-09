@@ -45,16 +45,18 @@
         state: link
 
     - name: Debug Bazel
-      ansible.builtin.shell: |
-        ls /usr/local/bin | grep bazel
-
-    - name: Run Bazelisk to extract current version of Bazel
-      # when: not bazelisk_status.stat.exists
-      # become: true
-      ansible.builtin.shell: |
-        bazel --version
+      shell:
+        cmd: ls -al /usr/local/bin | grep bazel
       args:
         executable: bash
+
+    # - name: Run Bazelisk to extract current version of Bazel
+    #   # when: not bazelisk_status.stat.exists
+    #   # become: true
+    #   ansible.builtin.shell: |
+    #     bazel --version
+    #   args:
+    #     executable: bash
 
     # - name: Check for buildifier
     #   ansible.builtin.stat:
