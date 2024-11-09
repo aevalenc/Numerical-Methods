@@ -48,7 +48,7 @@
       when: not bazelisk_status.stat.exists
       # become: true
       ansible.builtin.command:
-        cmd: "bazel"
+        cmd: "bazel --version"
 
     # - name: Check for buildifier
     #   ansible.builtin.stat:
