@@ -1,0 +1,10 @@
+---
+- job:
+    name: say-hello
+    parent: base
+    run: playbooks/testjob.yaml
+
+- job:
+    name: install-bazel
+    parent: base
+    run: playbooks/install_bazel.yaml
