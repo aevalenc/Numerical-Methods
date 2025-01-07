@@ -3,6 +3,12 @@
 build:clang14 --extra_toolchains=//bazel/toolchains/clang14:clang14_toolchain_for_linux_x86_64 --incompatible_enable_cc_toolchain_resolution
 build:gcc9 --extra_toolchains=//bazel/toolchains/gcc9:gcc9_toolchain_for_linux_x86_64 --incompatible_enable_cc_toolchain_resolution
 
+# OSX configurations
+build:gcc14_osx_x86_64 --extra_toolchains=//bazel/toolchains/gcc14:gcc14_toolchain_for_osx_x86_64 --incompatible_enable_cc_toolchain_resolution
+
+build:gcc14_osx_aarch64 --extra_toolchains=//bazel/toolchains/gcc14:gcc14_toolchain_for_osx_aarch64 --incompatible_enable_cc_toolchain_resolution
+build:gcc14_osx_aarch64 --copt="-std=c++14" --copt="-Wall"
+
 # C++ 14 configuration
 build:c++14 --copt="-std=c++14"
 
