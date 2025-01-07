@@ -6,6 +6,7 @@
 
 #include "root_finders/newtons_method.h"
 #include <cmath>
+#include <cstdint>
 #include <iostream>
 
 namespace nm
