@@ -35,7 +35,7 @@ toolchain(
 )
 
 
-gcc14_osx_aarch64_toolchain_config(name = "gcc14_osx_aarch64_toolchain_config")
+gcc14_osx_aarch64_toolchain_config(name = "gcc14_osx_aarch64_toolchain_config", ar_flags="rcs")
 
 cc_toolchain(
     name = "gcc14_osx_aarch64",
