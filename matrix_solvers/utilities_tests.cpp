@@ -209,6 +209,31 @@ TEST_F(MatrixUtilitiesDotProductTestFixture, Given1VectorShorterThanTheOther_Exp
     EXPECT_ANY_THROW(Dot(a_, b_));
 }
 
+class ResidualTestFixture : public MatrixUtilitiesBaseTestFixture
+{
+
+  public:
+    std::vector<double> b_{4.0, 5.0, 6.0};
+    std::vector<double> expected_result_{4.0, 5.0, 6.0};
+};
+
+TEST_F(ResidualTestFixture, GivenValidMatrixEquation_ExpectValidResidual)
+{
+    // Given
+    const std::int32_t n{3};
+    std::vector<double> x{0.0, 0.0, 0.0};
+    A_.resize(n);
+
+    // Call and Expect
+    const auto result = CalculateResidual(A_, b_, x, n);
+
+    // Expect
+    for (std::int32_t i{0}; i < n; ++i)
+    {
+        EXPECT_NEAR(result.at(i), expected_result_.at(i), tolerance_);
+    }
+}
+
 }  // namespace
 
 }  // namespace matrix
