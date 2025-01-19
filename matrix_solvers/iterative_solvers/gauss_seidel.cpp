@@ -8,6 +8,8 @@
 #include <cmath>
 #include <cstdint>
 #include <numeric>
+#include <tuple>
+#include <limits>
 
 namespace nm
 {
