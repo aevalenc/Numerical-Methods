@@ -36,7 +36,7 @@ def _impl(ctx):
         ),
         tool_path(
             name = "ar",
-            path = "/usr/bin/ar",
+            path = "/usr/bin/llvm-ar-14",
         ),
         tool_path(
             name = "cpp",
