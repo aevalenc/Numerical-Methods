@@ -1,0 +1,66 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Heimdall
+
+# Controls when the workflow will run
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  pull_request:
+    types: [opened, synchronize, labeled]
+  issue_comment:
+    types: [created]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  # This workflow contains a multiple jobs
+  cpp-lint:    
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout to PR branch
+        id: pr_branch_data
+        if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.issue.labels.*.name, 'check')
+        uses: actions/checkout@v4
+
+      - name: Setup linter
+        if: steps.pr_branch_data.outcome == 'success'
+        uses: cpp-linter/cpp-linter-action@v2
+        id: linter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          style: 'file'  # Use .clang-format config file
+          tidy-checks: '' # Use .clang-tidy config file
+          # only 'update' a single comment in a pull request's thread.
+          # thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+          thread-comments: true
+          file-annotations: true
+
+      - name: Fail fast?!
+        if: steps.linter.outputs.checks-failed > 0
+        run: |
+          echo "Some files failed the linting checks!"
+        # for actual deployment
+        # run: exit 1
+
+  check-include-guards:
+    if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.issue.labels.*.name, 'check')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout to branch
+        uses: actions/checkout@v4
+
+      - name: Check include guards
+        uses: sbeyer/include-guards-check-action@v1.0.0
+        with:
+          pattern: '{path}'
+
+  print-context:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          EVENT_CONTEXT: ${{ toJSON(github.event) }}
+        run: |
+          echo $EVENT_CONTEXT
