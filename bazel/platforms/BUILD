@@ -1,3 +1,5 @@
+package(default_visibility = ["//visibility:public"])
+
 platform(
     name = "macos_x86",
     constraint_values = [
