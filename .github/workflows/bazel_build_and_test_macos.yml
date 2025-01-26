@@ -30,8 +30,8 @@ jobs:
       - name: Setup bazel
         uses: bazelbuild/setup-bazelisk@v3
 
-      - name: echo clang version
-        run: clang --version
+      - name: echo gcc version
+        run: gcc --version
 
       - name: debug build
         run: bazel build --config=gcc14_osx_x86_64 --toolchain_resolution_debug=".*" --config=debug --verbose_failures --subcommands //root_finders/...

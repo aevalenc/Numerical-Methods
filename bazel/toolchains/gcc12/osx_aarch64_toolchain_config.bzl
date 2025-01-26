@@ -24,12 +24,15 @@ all_link_actions = [
     ACTION_NAMES.cpp_link_nodeps_dynamic_library,
 ]
 
+BREW_GCC_PATH = "/opt/homebrew/opt/gcc@12"
+BREW_CELLAR_GCC_PATH = "/opt/homebrew/Cellar/gcc@12"
+
 def _impl(ctx):
     tool_paths = [
         # NEW
         tool_path(
             name = "gcc",
-            path = "/opt/homebrew/bin/aarch64-apple-darwin24-gcc-14",
+            path = BREW_GCC_PATH + "/bin/aarch64-apple-darwin23-gcc-12",
         ),
         tool_path(
             name = "ld",
@@ -37,8 +40,7 @@ def _impl(ctx):
         ),
         tool_path(
             name = "ar",
-            # path = "/usr/bin/libtool",
-            path = "/opt/homebrew/bin/aarch64-apple-darwin24-gcc-ar-14",
+            path = BREW_GCC_PATH + "/bin/aarch64-apple-darwin23-gcc-ar-12",
         ),
         tool_path(
             name = "cpp",
@@ -126,9 +128,9 @@ def _impl(ctx):
     return cc_common.create_cc_toolchain_config_info(
         ctx = ctx,
         cxx_builtin_include_directories = [
-            "/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14",
-            "/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14",
-            "/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include",
+            BREW_GCC_PATH,
+            BREW_CELLAR_GCC_PATH,
+            "/Library/Developer/CommandLineTools/SDKs/MacOSX14.sdk",
         ],
         features = [ar_flags_feature, default_feature],
         toolchain_identifier = "local",
@@ -142,7 +144,7 @@ def _impl(ctx):
         tool_paths = tool_paths,
     )
 
-gcc14_osx_aarch64_toolchain_config = rule(
+gcc12_osx_aarch64_toolchain_config = rule(
     implementation = _impl,
     attrs = {
         "ar_flags": attr.string(default = "rcsD"),

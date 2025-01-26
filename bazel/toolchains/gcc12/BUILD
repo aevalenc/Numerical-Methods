@@ -1,5 +1,5 @@
+load(":osx_aarch64_toolchain_config.bzl", "gcc12_osx_aarch64_toolchain_config")
 load(":osx_x86_64_toolchain_config.bzl", "gcc14_osx_x86_64_toolchain_config")
-load(":osx_aarch64_toolchain_config.bzl", "gcc14_osx_aarch64_toolchain_config")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -34,11 +34,13 @@ toolchain(
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )
 
-
-gcc14_osx_aarch64_toolchain_config(name = "gcc14_osx_aarch64_toolchain_config", ar_flags="rcs")
+gcc12_osx_aarch64_toolchain_config(
+    name = "gcc12_osx_aarch64_toolchain_config",
+    ar_flags = "rcs",
+)
 
 cc_toolchain(
-    name = "gcc14_osx_aarch64",
+    name = "gcc12_osx_aarch64",
     all_files = ":empty",
     compiler_files = ":empty",
     dwp_files = ":empty",
@@ -46,12 +48,12 @@ cc_toolchain(
     objcopy_files = ":empty",
     strip_files = ":empty",
     supports_param_files = 0,
-    toolchain_config = ":gcc14_osx_aarch64_toolchain_config",
+    toolchain_config = ":gcc12_osx_aarch64_toolchain_config",
     toolchain_identifier = "k8-gcc-toolchain",
 )
 
 toolchain(
-    name = "gcc14_toolchain_for_osx_aarch64",
+    name = "gcc12_toolchain_for_osx_aarch64",
     exec_compatible_with = [
         "@platforms//cpu:aarch64",
         "@platforms//os:osx",
@@ -60,6 +62,6 @@ toolchain(
         "@platforms//cpu:aarch64",
         "@platforms//os:osx",
     ],
-    toolchain = ":gcc14_osx_aarch64",
+    toolchain = ":gcc12_osx_aarch64",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )
