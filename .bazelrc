@@ -10,18 +10,10 @@ build:osx_clang15_aarch64 --copt="-std=c++17" --copt="-Wall"
 
 # gcc configurations
 build:gcc14_osx_x86_64 --extra_toolchains=//bazel/toolchains/gcc14:gcc14_toolchain_for_osx_x86_64 --incompatible_enable_cc_toolchain_resolution
+build:gcc14_osx_x86_64 --copt="-std=c++17" --copt="-Wall"
 
 build:gcc14_osx_aarch64 --extra_toolchains=//bazel/toolchains/gcc14:gcc14_toolchain_for_osx_aarch64 --incompatible_enable_cc_toolchain_resolution
 build:gcc14_osx_aarch64 --copt="-std=c++17" --copt="-Wall"
-
-# C++ 14 configuration
-build:c++14 --copt="-std=c++14"
-
-# C++ 17 configuration
-build:c++17 --copt="-std=c++17" --copt="-Wall"
-
-# C++ 20 configuration
-build:c++20 --copt="-std=c++20" --copt="-Wall"
 
 # debug build config
 build:debug --strip=never --copt="-O0" --copt="-ggdb" -c dbg
