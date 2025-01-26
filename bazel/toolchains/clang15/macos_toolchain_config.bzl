@@ -23,12 +23,14 @@ all_link_actions = [
     ACTION_NAMES.cpp_link_nodeps_dynamic_library,
 ]
 
+BREW_LLVM_PATH = "/opt/homebrew/opt/llvm@15"
+
 def _impl(ctx):
     tool_paths = [
         # NEW
         tool_path(
             name = "gcc",
-            path = "/usr/bin/clang-16",
+            path = BREW_LLVM_PATH + "/bin/clang-15",
         ),
         tool_path(
             name = "ld",
@@ -36,7 +38,7 @@ def _impl(ctx):
         ),
         tool_path(
             name = "ar",
-            path = "/usr/bin/llvm-ar-16",
+            path = BREW_LLVM_PATH + "/bin/llvm-ar",
         ),
         tool_path(
             name = "cpp",
@@ -74,6 +76,7 @@ def _impl(ctx):
                             flags = [
                                 "-lstdc++",
                                 "-lm",
+                                "-L" + BREW_LLVM_PATH + "/lib",
                             ],
                         ),
                     ]),
@@ -86,7 +89,7 @@ def _impl(ctx):
         ctx = ctx,
         cxx_builtin_include_directories = [
             # NEW
-            "/usr/lib/llvm-16/lib/clang/16.0.0/include",
+            BREW_LLVM_PATH + "/include",
             "/usr/include",
         ],
         features = features,
@@ -101,7 +104,7 @@ def _impl(ctx):
         tool_paths = tool_paths,
     )
 
-clang16_toolchain_config = rule(
+clang15_toolchain_config = rule(
     implementation = _impl,
     attrs = {},
     provides = [CcToolchainConfigInfo],

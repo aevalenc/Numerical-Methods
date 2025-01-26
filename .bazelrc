@@ -3,6 +3,9 @@
 build:clang14 --extra_toolchains=//bazel/toolchains/clang14:clang14_toolchain_for_linux_x86_64 --incompatible_enable_cc_toolchain_resolution
 build:gcc9 --extra_toolchains=//bazel/toolchains/gcc9:gcc9_toolchain_for_linux_x86_64 --incompatible_enable_cc_toolchain_resolution
 
+# Mac OS toolchain configurations
+build:osx_clang15_aarch64 --extra_toolchains=//bazel/toolchains/clang15:clang15_toolchain_for_osx_aarch64 --incompatible_enable_cc_toolchain_resolution
+
 # C++ 14 configuration
 build:c++14 --copt="-std=c++14"
 
