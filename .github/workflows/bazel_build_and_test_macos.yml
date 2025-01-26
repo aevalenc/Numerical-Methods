@@ -33,9 +33,6 @@ jobs:
       - name: echo clang version
         run: clang --version
 
-      - name: echo clang lib location
-        run: ls -l /usr/lib/clang
-
       - name: debug build
         run: bazel build --config=c++17 --config=debug --verbose_failures --subcommands //...
 
@@ -55,15 +52,12 @@ jobs:
 
       - name: Setup bazel
         uses: bazelbuild/setup-bazelisk@v3
-
-      - name: echo clang version
-        run: clang --version
-
-      - name: echo clang lib location
-        run: ls -l /usr/lib/clang
         
-      - name: debug build
-        run: bazel build --config=c++17 --config=debug --verbose_failures --subcommands //...
+      - name: debug build root_finders
+        run: bazel build --config=osx_clang15_aarch64 --config=debug --verbose_failures --subcommands //root_finders/...
 
       - name: fastbuild
-        run: bazel build --config=c++17 --verbose_failures --subcommands //...
+        run: bazel build --config=osx_clang15_aarch64 --verbose_failures --subcommands //root_finders/...
+
+      - name: test
+        run: bazel test --config=osx_clang15_aarch64 --compilation_mode=fastbuild --cache_test_results=no --test_output=all --verbose_failures --subcommands //root_finders/...
