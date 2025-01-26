@@ -3,6 +3,9 @@
 #
 # cc_common is something intrinstic to bazel
 
+# NEW
+load("@bazel_tools//tools/build_defs/cc:action_names.bzl", "ACTION_NAMES")
+
 # toolchain/cc_toolchain_config.bzl:
 # NEW
 load(
@@ -13,9 +16,6 @@ load(
     "tool_path",
     "variable_with_value",
 )
-
-# NEW
-load("@bazel_tools//tools/build_defs/cc:action_names.bzl", "ACTION_NAMES")
 
 all_link_actions = [
     # NEW
@@ -106,29 +106,29 @@ def _impl(ctx):
     )
 
     default_feature = feature(
-            name = "default_linker_flags",
-            enabled = True,
-            flag_sets = [
-                flag_set(
-                    actions = all_link_actions,
-                    flag_groups = ([
-                        flag_group(
-                            flags = [
-                                "-lstdc++",
-                                "-lm",
-                            ],
-                        ),
-                    ]),
-                ),
-            ],
-        )
+        name = "default_linker_flags",
+        enabled = True,
+        flag_sets = [
+            flag_set(
+                actions = all_link_actions,
+                flag_groups = ([
+                    flag_group(
+                        flags = [
+                            "-lstdc++",
+                            "-lm",
+                        ],
+                    ),
+                ]),
+            ),
+        ],
+    )
 
     return cc_common.create_cc_toolchain_config_info(
         ctx = ctx,
         cxx_builtin_include_directories = [
             "/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14",
             "/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14",
-            "/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include"
+            "/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include",
         ],
         features = [ar_flags_feature, default_feature],
         toolchain_identifier = "local",

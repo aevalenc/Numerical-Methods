@@ -4,7 +4,10 @@ package(default_visibility = ["//visibility:public"])
 
 filegroup(name = "empty")
 
-clang15_toolchain_config(name = "clang15_toolchain_config")
+clang15_toolchain_config(
+    name = "clang15_toolchain_config",
+    ar_flags = "rcs",
+)
 
 cc_toolchain(
     name = "osx_aarch64_clang15_toolchain",
