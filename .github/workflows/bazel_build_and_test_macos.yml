@@ -30,14 +30,24 @@ jobs:
       - name: Setup bazel
         uses: bazelbuild/setup-bazelisk@v3
 
-      - name: echo gcc version
-        run: gcc --version
+      - name: Install GCC 12
+        run: |
+          brew update
+          brew install gcc@12
+          (brew --prefix gcc@12)
+          echo 'export PATH="/usr/local/opt/gcc@12/bin:$PATH"' >> ~/.zshrc
+          echo 'export LDFLAGS="-L/usr/local/opt/gcc@12/lib"' >> ~/.zshrc
+          echo 'export CPPFLAGS="-I/usr/local/opt/gcc@12/include"' >> ~/.zshrc
+          source ~/.zshrc
+
+      - name: Echo GCC version
+        run: gcc-12 --version
 
       - name: debug build
-        run: bazel build --config=gcc14_osx_x86_64 --toolchain_resolution_debug=".*" --config=debug --verbose_failures --subcommands //root_finders/...
+        run: bazel build --config=gcc12_osx_x86_64 --toolchain_resolution_debug=".*" --config=debug --verbose_failures --subcommands //root_finders/...
 
       - name: fastbuild
-        run: bazel test --config=gcc14_osx_x86_64 --toolchain_resolution_debug=".*" --compilation_mode=fastbuild --cache_test_results=no --test_output=all --verbose_failures --subcommands //root_finders/...
+        run: bazel test --config=gcc12_osx_x86_64 --toolchain_resolution_debug=".*" --compilation_mode=fastbuild --cache_test_results=no --test_output=all --verbose_failures --subcommands //root_finders/...
 
   bazel-build-and-test-clang-macos-arm64:
     if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')

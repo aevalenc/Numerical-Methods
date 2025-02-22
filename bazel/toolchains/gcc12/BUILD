@@ -26,7 +26,7 @@ cc_toolchain(
 toolchain(
     name = "gcc12_toolchain_for_osx_x86_64",
     exec_compatible_with = [
-        "@platforms//cpu:aarch64",
+        "@platforms//cpu:x86_64",
         "@platforms//os:osx",
     ],
     target_compatible_with = [
