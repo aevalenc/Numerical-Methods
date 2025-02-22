@@ -3,6 +3,9 @@
 #
 # cc_common is something intrinstic to bazel
 
+# NEW
+load("@bazel_tools//tools/build_defs/cc:action_names.bzl", "ACTION_NAMES")
+
 # toolchain/cc_toolchain_config.bzl:
 # NEW
 load(
@@ -12,9 +15,6 @@ load(
     "flag_set",
     "tool_path",
 )
-
-# NEW
-load("@bazel_tools//tools/build_defs/cc:action_names.bzl", "ACTION_NAMES")
 
 all_link_actions = [
     # NEW
@@ -86,7 +86,7 @@ def _impl(ctx):
         ctx = ctx,
         cxx_builtin_include_directories = [
             # NEW
-            "/usr/lib/llvm-18/lib/clang/18.0.0/include",
+            "/usr/lib/llvm-18/lib/clang",
             "/usr/include",
         ],
         features = features,
@@ -101,7 +101,7 @@ def _impl(ctx):
         tool_paths = tool_paths,
     )
 
-clang16_toolchain_config = rule(
+clang18_toolchain_config = rule(
     implementation = _impl,
     attrs = {},
     provides = [CcToolchainConfigInfo],
