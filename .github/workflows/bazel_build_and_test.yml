@@ -68,7 +68,7 @@ jobs:
       - name: fastbuild
         run: bazel build --config=clang14 --verbose_failures --subcommands //...
 
-  bazel-build-and-test-clang18-linux:
+  bazel-build-and-test-linux:
     if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
 
     # The type of runner that the job will run on
@@ -87,24 +87,24 @@ jobs:
           sudo apt-get install -y wget gnupg
           wget https://apt.llvm.org/llvm-snapshot.gpg.key
           sudo apt-key add llvm-snapshot.gpg.key
-          sudo add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-18 main"
+          sudo add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main"
 
-      - name: Install Clang 18
+      - name: Install Clang 16
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang-18
+          sudo apt-get install -y clang-16
 
-      - name: Echo clang versions
-        run: ls /usr/bin/clang*
-
-      - name: Echo default clang version
-        run: clang --version
-
-      - name: Echo clang lib version
-        run: clang --print-libgcc-file-name
+      - name: echo gcc versions
+        run: ls /usr/bin/gcc*
         
-      # - name: debug build
-      #   run: bazel build --config=clang16 --config=c++17 --config=debug --verbose_failures --subcommands //...
+      # - name: clang-16 debug build
+      #   run: bazel build --config=clang16 --config=debug --verbose_failures --subcommands //...
 
-      # - name: fastbuild
-      #   run: bazel build --config=clang16 --config=c++17 --verbose_failures --subcommands //...
+      # - name: clang-16 fastbuild
+      #   run: bazel build --config=clang16 --verbose_failures --subcommands //...
+
+      # - name: gcc-12 debug build
+      #   run: bazel build --config=gcc12 --config=debug --verbose_failures --subcommands //...
+
+      # - name: gcc-12 fastbuild
+      #   run: bazel build --config=gcc12 --verbose_failures --subcommands //...
