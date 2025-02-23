@@ -6,8 +6,8 @@
 #include "matrix_solvers/iterative_solvers/jacobi.h"
 #include <algorithm>
 #include <cmath>
-#include <numeric>
 #include <limits>
+#include <numeric>
 
 namespace nm
 {

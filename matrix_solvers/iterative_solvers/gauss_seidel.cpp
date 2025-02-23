@@ -7,9 +7,9 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <limits>
 #include <numeric>
 #include <tuple>
-#include <limits>
 
 namespace nm
 {
