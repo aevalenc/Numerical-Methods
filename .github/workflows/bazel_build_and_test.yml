@@ -1,0 +1,61 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Heimdall
+
+# Controls when the workflow will run
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  pull_request:
+    types: [opened, synchronize, labeled]
+  issue_comment:
+    types: [created]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  bazel-build-and-test-linux:
+    if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-22.04
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checkout to PR branch
+        uses: actions/checkout@v4
+
+      - name: Setup bazel
+        uses: bazelbuild/setup-bazelisk@v3
+        
+      - name: gcc-12 debug build
+        run: bazel build --config=gcc12 --config=debug --verbose_failures --subcommands //...
+
+      - name: gcc-12 fastbuild
+        run: bazel build --config=gcc12 --verbose_failures --subcommands //...
+
+      - name: gcc-12 fastbuild test
+        run: bazel test --config=gcc12 --verbose_failures //...
+
+      - name: Add LLVM repository
+        run: |
+          sudo apt-get install -y wget gnupg
+          wget https://apt.llvm.org/llvm-snapshot.gpg.key
+          sudo apt-key add llvm-snapshot.gpg.key
+          sudo add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-18 main"
+
+      - name: Install Clang 18
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-18
+
+      - name: clang-18 debug build
+        run: bazel build --config=clang18 --config=debug --verbose_failures --subcommands //...
+
+      - name: clang-18 fastbuild
+        run: bazel build --config=clang18 --verbose_failures --subcommands //...
+
+      - name: clang-18 fastbuild test
+        run: bazel test --config=clang18 --verbose_failures //...
+

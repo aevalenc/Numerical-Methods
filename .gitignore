@@ -9,3 +9,5 @@
 /.cache/
 # VS code settings
 /.vscode/
+# Mac stuff
+.DS_Store

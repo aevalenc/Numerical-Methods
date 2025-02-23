@@ -1,16 +1,23 @@
 # Use our custom-configured c++ toolchains.
 # Use a build config as a differentiator.
-build:clang14 --extra_toolchains=//bazel/toolchains/clang14:clang14_toolchain_for_linux_x86_64 --incompatible_enable_cc_toolchain_resolution
-build:gcc9 --extra_toolchains=//bazel/toolchains/gcc9:gcc9_toolchain_for_linux_x86_64 --incompatible_enable_cc_toolchain_resolution
 
-# C++ 14 configuration
-build:c++14 --copt="-std=c++14"
+# Linux toolchain configurations
+build:clang18 --extra_toolchains=//bazel/toolchains/clang18:clang18_toolchain_for_linux_x86_64 --incompatible_enable_cc_toolchain_resolution
+build:clang18 --copt="-std=c++17" --copt="-Wall"
 
-# C++ 17 configuration
-build:c++17 --copt="-std=c++17" --copt="-Wall"
+build:gcc12 --extra_toolchains=//bazel/toolchains/gcc12:gcc12_toolchain_for_linux_x86_64 --incompatible_enable_cc_toolchain_resolution
+build:gcc12 --copt="-std=c++17" --copt="-Wall"
 
-# C++ 20 configuration
-build:c++20 --copt="-std=c++20" --copt="-Wall"
+# Mac OS toolchain configurations
+# clang 15 configurations
+build:clang18_macos_aarch64 --extra_toolchains=//bazel/toolchains/clang18:clang18_toolchain_for_macos_aarch64 --incompatible_enable_cc_toolchain_resolution
+build:clang18_macos_aarch64 --copt="-std=c++17" --copt="-Wall"
+
+build:gcc12_osx_x86_64 --extra_toolchains=//bazel/toolchains/gcc12:gcc12_toolchain_for_osx_x86_64 --incompatible_enable_cc_toolchain_resolution
+build:gcc12_osx_x86_64 --copt="-std=c++17" --copt="-Wall"
+
+build:gcc12_osx_aarch64 --extra_toolchains=//bazel/toolchains/gcc12:gcc12_toolchain_for_osx_aarch64 --incompatible_enable_cc_toolchain_resolution
+build:gcc12_osx_aarch64 --copt="-std=c++17" --copt="-Wall"
 
 # debug build config
 build:debug --strip=never --copt="-O0" --copt="-ggdb" -c dbg
