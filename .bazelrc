@@ -1,8 +1,5 @@
 # Use our custom-configured c++ toolchains.
 # Use a build config as a differentiator.
-build:clang14 --extra_toolchains=//bazel/toolchains/clang14:clang14_toolchain_for_linux_x86_64 --incompatible_enable_cc_toolchain_resolution
-build:clang14 --copt="-std=c++17" --copt="-Wall"
-
 build:clang18 --extra_toolchains=//bazel/toolchains/clang18:clang18_toolchain_for_linux_x86_64 --incompatible_enable_cc_toolchain_resolution
 build:clang18 --copt="-std=c++17" --copt="-Wall"
 
