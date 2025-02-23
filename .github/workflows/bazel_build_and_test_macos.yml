@@ -49,29 +49,6 @@ jobs:
       - name: fastbuild
         run: bazel test --config=gcc12_osx_x86_64 --toolchain_resolution_debug=".*" --compilation_mode=fastbuild --cache_test_results=no --test_output=all --verbose_failures --subcommands //root_finders/...
 
-  bazel-build-and-test-clang-15-macos-arm64:
-    if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
-
-    # The type of runner that the job will run on
-    runs-on: macos-14
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      - name: Checkout to PR branch
-        uses: actions/checkout@v4
-
-      - name: Setup bazel
-        uses: bazelbuild/setup-bazelisk@v3
-        
-      - name: debug build root_finders
-        run: bazel build --config=osx_clang15_aarch64 --toolchain_resolution_debug=".*" --config=debug --verbose_failures --subcommands //root_finders/...
-
-      - name: fastbuild
-        run: bazel build --config=osx_clang15_aarch64 --toolchain_resolution_debug=".*" --verbose_failures --subcommands //root_finders/...
-
-      - name: test
-        run: bazel test --config=osx_clang15_aarch64 --toolchain_resolution_debug=".*" --compilation_mode=fastbuild --cache_test_results=no --test_output=all --verbose_failures --subcommands //root_finders/...
-
   bazel-build-and-test-clang-18-macos-arm64:
     if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
 
@@ -97,10 +74,10 @@ jobs:
           source ~/.zshrc
         
       - name: debug build root_finders
-        run: bazel build --config=clang18_macos_aarch64 --toolchain_resolution_debug=".*" --config=debug --verbose_failures --subcommands //root_finders/...
+        run: bazel build --config=clang18_macos_aarch64 --toolchain_resolution_debug=".*" --config=debug --verbose_failures --subcommands //...
 
       - name: fastbuild
-        run: bazel build --config=clang18_macos_aarch64 --toolchain_resolution_debug=".*" --verbose_failures --subcommands //root_finders/...
+        run: bazel build --config=clang18_macos_aarch64 --toolchain_resolution_debug=".*" --verbose_failures --subcommands //...
 
       - name: test
-        run: bazel test --config=clang18_macos_aarch64 --toolchain_resolution_debug=".*" --compilation_mode=fastbuild --cache_test_results=no --test_output=all --verbose_failures --subcommands //root_finders/...
+        run: bazel test --config=clang18_macos_aarch64 --toolchain_resolution_debug=".*" --compilation_mode=fastbuild --cache_test_results=no --test_output=all --verbose_failures --subcommands //...
