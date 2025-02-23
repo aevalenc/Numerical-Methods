@@ -60,30 +60,28 @@ jobs:
 
       - name: Setup bazel
         uses: bazelbuild/setup-bazelisk@v3
+        
+      - name: gcc-12 debug build
+        run: bazel build --config=gcc12 --config=debug --verbose_failures --subcommands //...
+
+      - name: gcc-12 fastbuild
+        run: bazel build --config=gcc12 --verbose_failures --subcommands //...
 
       - name: Add LLVM repository
         run: |
           sudo apt-get install -y wget gnupg
           wget https://apt.llvm.org/llvm-snapshot.gpg.key
           sudo apt-key add llvm-snapshot.gpg.key
-          sudo add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main"
+          sudo add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-18 main"
 
-      - name: Install Clang 16
+      - name: Install Clang 18
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang-16
+          sudo apt-get install -y clang-18
 
-      - name: echo gcc versions
-        run: ls /usr/bin/gcc*
-        
-      # - name: clang-16 debug build
-      #   run: bazel build --config=clang16 --config=debug --verbose_failures --subcommands //...
+      - name: clang-18 debug build
+        run: bazel build --config=clang18 --config=debug --verbose_failures --subcommands //...
 
-      # - name: clang-16 fastbuild
-      #   run: bazel build --config=clang16 --verbose_failures --subcommands //...
+      - name: clang-18 fastbuild
+        run: bazel build --config=clang18 --verbose_failures --subcommands //...
 
-      # - name: gcc-12 debug build
-      #   run: bazel build --config=gcc12 --config=debug --verbose_failures --subcommands //...
-
-      # - name: gcc-12 fastbuild
-      #   run: bazel build --config=gcc12 --verbose_failures --subcommands //...

@@ -1,4 +1,4 @@
-load(":linux_toolchain_config.bzl", "clang18_toolchain_config")
+load(":linux_x86_64_toolchain_config.bzl", "clang18_toolchain_config")
 
 package(default_visibility = ["//visibility:public"])
 
