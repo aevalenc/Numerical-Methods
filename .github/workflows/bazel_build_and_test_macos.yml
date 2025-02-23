@@ -16,7 +16,7 @@ on:
 jobs:
 
   # This workflow contains a multiple jobs
-  bazel-build-and-test-clang-macos-x86_64:
+  bazel-build-and-test-gcc-12-macos-x86_64:
     if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
 
     # The type of runner that the job will run on
@@ -49,7 +49,7 @@ jobs:
       - name: fastbuild
         run: bazel test --config=gcc12_osx_x86_64 --toolchain_resolution_debug=".*" --compilation_mode=fastbuild --cache_test_results=no --test_output=all --verbose_failures --subcommands //root_finders/...
 
-  bazel-build-and-test-clang-macos-arm64:
+  bazel-build-and-test-clang-15-macos-arm64:
     if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
 
     # The type of runner that the job will run on
@@ -71,3 +71,36 @@ jobs:
 
       - name: test
         run: bazel test --config=osx_clang15_aarch64 --toolchain_resolution_debug=".*" --compilation_mode=fastbuild --cache_test_results=no --test_output=all --verbose_failures --subcommands //root_finders/...
+
+  bazel-build-and-test-clang-18-macos-arm64:
+    if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
+
+    # The type of runner that the job will run on
+    runs-on: macos-14
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checkout to PR branch
+        uses: actions/checkout@v4
+
+      - name: Setup bazel
+        uses: bazelbuild/setup-bazelisk@v3
+
+      - name: Install clang 18
+        run: |
+          brew update
+          brew install llvm@18
+          (brew --prefix llvm@18)
+          echo 'export PATH="/opt/homebrew/opt/llvm@18/bin:$PATH"' >> ~/.zshrc
+          echo 'export LDFLAGS="-L/opt/homebrew/opt/llvm@18/lib"' >> ~/.zshrc
+          echo 'export CPPFLAGS="-I/opt/homebrew/opt/llvm@18/include"' >> ~/.zshrc
+          source ~/.zshrc
+        
+      - name: debug build root_finders
+        run: bazel build --config=clang18_macos_aarch64 --toolchain_resolution_debug=".*" --config=debug --verbose_failures --subcommands //root_finders/...
+
+      - name: fastbuild
+        run: bazel build --config=clang18_macos_aarch64 --toolchain_resolution_debug=".*" --verbose_failures --subcommands //root_finders/...
+
+      - name: test
+        run: bazel test --config=clang18_macos_aarch64 --toolchain_resolution_debug=".*" --compilation_mode=fastbuild --cache_test_results=no --test_output=all --verbose_failures --subcommands //root_finders/...
