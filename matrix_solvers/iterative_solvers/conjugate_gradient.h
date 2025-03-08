@@ -7,6 +7,9 @@
 #include <cstdint>
 #include <vector>
 
+#ifndef MATRIX_SOLVERS_ITERATIVE_SOLVERS_CONJUGATE_GRADIENT_H
+#define MATRIX_SOLVERS_ITERATIVE_SOLVERS_CONJUGATE_GRADIENT_H
+
 namespace nm
 {
 
@@ -39,9 +42,11 @@ std::pair<std::vector<double>, std::vector<double>> ConjugateGradient(const Matr
 void ConjugateGradient(const Matrix<double>& A,
                        const std::vector<double>& b,
                        std::vector<double>& x,
-                       const std::int32_t max_iterations,
-                       const double tolerance);
+                       const double tolerance = 1e-3,
+                       const std::int32_t max_iterations = 1000);
 
 }  // namespace matrix
 
 }  // namespace nm
+
+#endif  // MATRIX_SOLVERS_ITERATIVE_SOLVERS_CONJUGATE_GRADIENT_H
