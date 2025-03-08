@@ -127,25 +127,56 @@ class ConjugateGradientTestFixture : public IterativeSolversBaseTestFixture
     std::vector<double> x_expected_{0.0909, 0.6364};
 };
 
-TEST_F(ConjugateGradientTestFixture, GivenValidMatrix_ExpectConvergedSolution)
+TEST_F(ConjugateGradientTestFixture, GivenValidMatrix_ExpectConvergedSolutionWithinDefaultValues)
 {
     // Given
     const auto n = static_cast<std::int32_t>(b_.size());
-    auto residual = CalculateResidual(A_, b_, x, n);
-    auto p(residual);
+    std::vector<double> x{0.0, 0.0};
 
-    std::pair<std::vector<double>, std::vector<double>> result{};
-    for (std::size_t iteration = 0; iteration < max_iterations_; ++iteration)
+    // Call
+    ConjugateGradient(A_, b_, x);
+
+    // Expect
+    for (std::int32_t i{0}; i < n; ++i)
     {
-        if (L2Norm(residual) < tolerance_)
-        {
-            break;
-        }
-        result = ConjugateGradient(A_, b_, x, residual, p);
-        residual = result.first;
-        p = result.second;
+        EXPECT_NEAR(x.at(i), x_expected_.at(i), tolerance_);
     }
+}
 
+TEST_F(ConjugateGradientTestFixture, GivenValidMatrix_ExpectConvergedSolutionWithinSetValues)
+{
+    // Given
+    const auto n = static_cast<std::int32_t>(b_.size());
+    std::vector<double> x{0.0, 0.0};
+
+    // When
+    const double tolerance{0.0001};
+    const std::int32_t max_iterations{100};
+
+    // Call
+    ConjugateGradient(A_, b_, x, tolerance, max_iterations);
+
+    // Expect
+    for (std::int32_t i{0}; i < n; ++i)
+    {
+        EXPECT_NEAR(x.at(i), x_expected_.at(i), tolerance_);
+    }
+}
+
+TEST_F(ConjugateGradientTestFixture, GivenValidMatrix_ExpectUnConvergedSolutionWithLowMaxIterations)
+{
+    // Given
+    const auto n = static_cast<std::int32_t>(b_.size());
+    std::vector<double> x{0.0, 0.0};
+
+    // When
+    const std::int32_t max_iterations{5};
+
+    // Call
+    ConjugateGradient(A_, b_, x, tolerance_, max_iterations);
+
+    // Expect
+    x_expected_ = {0.104, 0.625};
     for (std::int32_t i{0}; i < n; ++i)
     {
         EXPECT_NEAR(x.at(i), x_expected_.at(i), tolerance_);
