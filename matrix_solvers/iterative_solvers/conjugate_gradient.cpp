@@ -4,16 +4,48 @@
  */
 
 #include "matrix_solvers/iterative_solvers/conjugate_gradient.h"
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <numeric>
+// #include <algorithm>
+// #include <cmath>
+// #include <cstdint>
+// #include <numeric>
 
 namespace nm
 {
 
 namespace matrix
 {
+
+namespace
+{
+
+bool IsSolutionConverged(double residual,
+                         const double tolerance,
+                         const std::int32_t iteration,
+                         std::int32_t max_iterations)
+{
+    if (residual <= tolerance)
+    {
+        // clang-format off
+        #ifdef PRINT_DEBUG
+            std::cerr << "Conjugate gradient solver converged in " << iteration << " iterations\n";
+        #endif
+        //clang-format on
+        return true;
+    }
+
+    if (iteration == max_iterations)
+    {
+        // clang-format off
+        #ifdef PRINT_DEBUG
+            std::cerr << "Conjugate gradient solver reached max iterations with a l2norm residual: " << residual  << "\n";
+        #endif
+        //clang-format on
+    }
+    
+    return false;
+}
+
+}  // namespace
 
 void ConjugateGradient(const Matrix<double>& A,
                        const std::vector<double>& b,
@@ -26,9 +58,14 @@ void ConjugateGradient(const Matrix<double>& A,
     auto residual_vector = CalculateResidual(A, b, x, n);
     auto residual = L2Norm(residual_vector);
 
-    for (std::int32_t iteration{1}; iteration < max_iterations; ++iteration)
+    for (std::int32_t iteration{0}; iteration < max_iterations; ++iteration)
     {
         ++iteration;
+        if (IsSolutionConverged(residual, tolerance, iteration, max_iterations))
+        {
+            return;
+        }
+
         auto p = residual_vector;
 
         const auto residual_dotted = Dot(residual_vector, residual_vector);
@@ -50,13 +87,8 @@ void ConjugateGradient(const Matrix<double>& A,
         }
 
         residual = L2Norm(residual_vector);
-
-        if (residual < tolerance)
-        {
-            std::cerr << "Conjugate gradient solver converged in " << iteration << "iterations\n";
-            break;
-        }
     }
+        
 }
 
 }  // namespace matrix
