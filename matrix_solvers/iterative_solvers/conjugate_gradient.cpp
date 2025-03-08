@@ -4,10 +4,6 @@
  */
 
 #include "matrix_solvers/iterative_solvers/conjugate_gradient.h"
-// #include <algorithm>
-// #include <cmath>
-// #include <cstdint>
-// #include <numeric>
 
 namespace nm
 {
