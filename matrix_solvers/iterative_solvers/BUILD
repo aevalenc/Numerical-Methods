@@ -20,6 +20,10 @@ cc_library(
     name = "conjugate_gradient_method",
     srcs = ["conjugate_gradient.cpp"],
     hdrs = ["conjugate_gradient.h"],
+    defines = select({
+        "//:print_debug_info": ["PRINT_DEBUG"],
+        "//conditions:default": [],
+    }),
     visibility = ["//visibility:public"],
     deps = ["//matrix_solvers:utilities"],
 )
