@@ -1,0 +1,15 @@
+"""
+Build file for the forward mode auto differentiation tests.
+"""
+
+load("@rules_cc//cc:defs.bzl", "cc_test")
+
+cc_test(
+    name = "forward_mode_auto_differentiation_tests",
+    srcs = ["forward_mode_auto_differentiation_tests.cpp"],
+    deps = [
+        "//calculus/data_types",
+        "//calculus/forward_mode_auto_differentiation",
+        "@com_google_googletest//:gtest_main",
+    ],
+)
