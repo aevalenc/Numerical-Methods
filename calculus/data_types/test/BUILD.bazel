@@ -1,0 +1,15 @@
+"""
+Build file for the data types used by the calculus library package.
+"""
+
+load("@rules_cc//cc:defs.bzl", "cc_test")
+
+cc_test(
+    name = "data_types_tests",
+    srcs = ["data_types_tests.cpp"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//calculus/data_types",
+        "@com_google_googletest//:gtest_main",
+    ],
+)
