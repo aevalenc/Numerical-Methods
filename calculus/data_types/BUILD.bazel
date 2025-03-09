@@ -1,0 +1,11 @@
+"""
+Build file for the data types used by the calculus library package.
+"""
+
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "data_types",
+    hdrs = ["data_types.h"],
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,9 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "forward_mode_auto_differentiation",
+    srcs = ["forward_mode_auto_differentiation.cpp"],
+    hdrs = ["forward_mode_auto_differentiation.h"],
+    visibility = ["//visibility:public"],
+    deps = ["//calculus/data_types"],
+)
