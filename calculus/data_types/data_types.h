@@ -3,8 +3,8 @@
  * Update: March, 9 2025
  */
 
-#ifndef CALCULUS_DATA_TYPES_H
-#define CALCULUS_DATA_TYPES_H
+#ifndef CALCULUS_DATA_TYPES_DATA_TYPES_H
+#define CALCULUS_DATA_TYPES_DATA_TYPES_H
 
 namespace nm
 {
@@ -33,4 +33,4 @@ class DualNumber
 }  // namespace calculus
 }  // namespace nm
 
-#endif  // CALCULUS_DATA_TYPES_H
+#endif  // CALCULUS_DATA_TYPES_DATA_TYPES_H
