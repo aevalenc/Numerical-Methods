@@ -4,7 +4,7 @@
  */
 
 #include "calculus/data_types/data_types.h"
-#include "calculus/forward_mode_auto_differentiation/forward_mode_auto_differentiation.h"
+#include "calculus/differentiation/forward_mode_auto_differentiation/forward_mode_auto_differentiation.h"
 #include <functional>
 #include <gtest/gtest.h>
 #include <string>

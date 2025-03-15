@@ -9,7 +9,7 @@ cc_test(
     srcs = ["forward_mode_auto_differentiation_tests.cpp"],
     deps = [
         "//calculus/data_types",
-        "//calculus/forward_mode_auto_differentiation",
+        "//calculus/differentiation/forward_mode_auto_differentiation",
         "@com_google_googletest//:gtest_main",
     ],
 )

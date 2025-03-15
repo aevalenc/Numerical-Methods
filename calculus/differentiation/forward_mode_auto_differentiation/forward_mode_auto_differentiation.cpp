@@ -3,7 +3,7 @@
  * Update: March, 9 2025
  */
 
-#include "calculus/forward_mode_auto_differentiation/forward_mode_auto_differentiation.h"
+#include "calculus/differentiation/forward_mode_auto_differentiation/forward_mode_auto_differentiation.h"
 #include "calculus/data_types/data_types.h"
 
 namespace nm
