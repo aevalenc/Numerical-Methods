@@ -1,0 +1,10 @@
+- project:
+    name: aevalenc/Numerical-Methods
+    check:
+      jobs:
+        - noop
+        - say-hello
+        - install-bazel
+    gate:
+      jobs:
+        - noop
