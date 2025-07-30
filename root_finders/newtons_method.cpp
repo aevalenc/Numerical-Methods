@@ -4,10 +4,11 @@
  * Update : September 10, 2023
  */
 
-#include "newtons_method.h"
+#include "root_finders/newtons_method.h"
 #include <cmath>
 #include <cstdint>
 #include <iostream>
+#include <limits>
 
 namespace nm
 {

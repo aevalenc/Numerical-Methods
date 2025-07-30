@@ -5,7 +5,7 @@
  */
 
 // #include "root_finders/newtons_method.h"
-#include "newtons_method.h"
+#include "root_finders/newtons_method.h"
 #include <cmath>
 #include <gtest/gtest.h>
 
