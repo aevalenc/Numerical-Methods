@@ -26,4 +26,4 @@ target_link_libraries(
 )
 
 include(GoogleTest)
-gtest_discover_tests(RootFindersTests)
+gtest_discover_tests(RootFindersTests LABELS fast)

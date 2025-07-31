@@ -1,6 +1,6 @@
 cc_test(
-    name = "direct_solver_tests",
-    srcs = ["direct_solver_tests.cpp"],
+    name = "direct_solvers_tests",
+    srcs = ["direct_solvers_tests.cpp"],
     deps = [
         "//matrix_solvers/direct_solvers:backwards_substitution",
         "//matrix_solvers/direct_solvers:doolittle",
