@@ -1,0 +1,32 @@
+# CMake build directory
+build/
+.cmake/
+.build/
+lib/
+bin/
+*.a
+*.o
+*.so
+cmake-build-*/
+
+# CMake generated files
+CMakeFiles/
+**/CMakeCache.txt
+cmake_install.cmake
+Makefile
+_deps/
+*.cmake
+
+# Additional CMake project files
+install_manifest.txt
+Testing/
+CTestTestfile.cmake
+DartConfiguration.tcl
+*.dir/
+*.ninja
+*.ninja_deps
+*.ninja_log
+CMakeScripts/
+CPackConfig.cmake
+CPackSourceConfig.cmake
+CTestCustom.cmake
