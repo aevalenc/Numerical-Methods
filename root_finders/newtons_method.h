@@ -6,7 +6,6 @@
 
 #include <cstdint>
 #include <functional>
-#include <limits>
 
 #ifndef ROOT_FINDERS_NEWTONS_METHOD_H
 #define ROOT_FINDERS_NEWTONS_METHOD_H
