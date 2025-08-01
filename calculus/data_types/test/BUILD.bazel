@@ -10,6 +10,6 @@ cc_test(
     visibility = ["//visibility:public"],
     deps = [
         "//calculus/data_types",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )

@@ -6,6 +6,6 @@ cc_test(
         "//matrix_solvers/iterative_solvers:conjugate_gradient_method",
         "//matrix_solvers/iterative_solvers:gauss_seidel_method",
         "//matrix_solvers/iterative_solvers:jacobi_method",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )
