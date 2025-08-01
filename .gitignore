@@ -4,6 +4,7 @@
 
 # Bazel output symlinks: Same reasoning as /external. You need the * because people can change the name of the directory your repository is cloned into, changing the bazel-<workspace_name> symlink.
 /bazel-*
+MODULE.bazel.lock
 
 # Compiled output -> don't check in
 /compile_commands.json
@@ -26,6 +27,7 @@ bin/
 *.a
 *.o
 *.so
+cmake-build-*/
 
 # CMake generated files
 CMakeFiles/
@@ -48,3 +50,113 @@ _deps/
 /CPackConfig.cmake
 /CPackSourceConfig.cmake
 /CTestCustom.cmake
+
+# Compiled object files
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dll
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+a.out
+
+# Debug files
+*.dSYM/
+*.stackdump
+
+# Other IDE/project files
+*.user
+*.suo
+*.userprefs
+
+# CUDA specific
+*.cu.o
+
+# Backup files
+*~
+*.swp
+*.bak
+*.tmp
+
+# Python stuff
+# Byte-compiled / optimized / DLL files
+*/__pycache__/*
+*.py[cod]
+*$py.class
+
+# Cython debug symbols
+cython_debug/
+
+# Virtual environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# Pytest
+.cache/
+
+# Coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+*.log
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
