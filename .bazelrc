@@ -27,3 +27,4 @@ build:debug --strip=never --copt="-O0" --copt="-ggdb" -c dbg
 
 # OpenMPI toolchain configurations
 build:mpi_gcc9 --extra_toolchains=//bazel/toolchains/openmpi:openmpi_toolchain_for_linux_x86_64 --incompatible_enable_cc_toolchain_resolution
+build:mpi_macos_aarch64_clang17 --extra_toolchains=//bazel/toolchains/openmpi:openmpi_toolchain_for_macos_aarch64 --incompatible_enable_cc_toolchain_resolution

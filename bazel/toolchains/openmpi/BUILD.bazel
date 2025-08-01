@@ -1,4 +1,5 @@
 load(":linux_x86_64_toolchain_config.bzl", "linux_x86_64_toolchain_config")
+load(":macos_aarch64_toolchain_config.bzl", "macos_aarch64_mpi_toolchain_config")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -30,5 +31,34 @@ toolchain(
         "@platforms//os:linux",
     ],
     toolchain = ":linux_x86_64",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+)
+
+macos_aarch64_mpi_toolchain_config(name = "macos_aarch64_mpi_toolchain_config")
+
+cc_toolchain(
+    name = "macos_aarch64",
+    all_files = ":empty",
+    compiler_files = ":empty",
+    dwp_files = ":empty",
+    linker_files = ":empty",
+    objcopy_files = ":empty",
+    strip_files = ":empty",
+    supports_param_files = 0,
+    toolchain_config = ":macos_aarch64_mpi_toolchain_config",
+    toolchain_identifier = "k8-clang-toolchain",
+)
+
+toolchain(
+    name = "openmpi_toolchain_for_macos_aarch64",
+    exec_compatible_with = [
+        "@platforms//cpu:aarch64",
+        "@platforms//os:macos",
+    ],
+    target_compatible_with = [
+        "@platforms//cpu:aarch64",
+        "@platforms//os:macos",
+    ],
+    toolchain = ":macos_aarch64",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 )
