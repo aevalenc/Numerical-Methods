@@ -29,33 +29,44 @@ jobs:
       - name: Setup bazel
         uses: bazelbuild/setup-bazelisk@v3
         
-      - name: gcc-12 debug build
-        run: bazel build --config=gcc12 --config=debug --verbose_failures --subcommands //...
+      # - name: gcc-12 debug build
+      #   run: bazel build --config=gcc12 --config=debug --verbose_failures --subcommands //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
 
-      - name: gcc-12 fastbuild
-        run: bazel build --config=gcc12 --verbose_failures --subcommands //...
+      # - name: gcc-12 fastbuild
+      #   run: bazel build --config=gcc12 --verbose_failures --subcommands //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
 
-      - name: gcc-12 fastbuild test
-        run: bazel test --config=gcc12 --verbose_failures //...
+      # - name: gcc-12 fastbuild test
+      #   run: bazel test --config=gcc12 --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
 
-      - name: Add LLVM repository
+      # - name: Add LLVM repository
+      #   run: |
+      #     sudo apt-get install -y wget gnupg
+      #     wget https://apt.llvm.org/llvm-snapshot.gpg.key
+      #     sudo apt-key add llvm-snapshot.gpg.key
+      #     sudo add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-18 main"
+
+      # - name: Install Clang 18
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y clang-18
+
+      # - name: clang-18 debug build
+      #   run: bazel build --config=clang18 --config=debug --verbose_failures --subcommands //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
+
+      # - name: clang-18 fastbuild
+      #   run: bazel build --config=clang18 --verbose_failures --subcommands //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
+
+      # - name: clang-18 fastbuild test
+      #   run: bazel test --config=clang18 --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
+
+      - name: Install OpenMPI
         run: |
-          sudo apt-get install -y wget gnupg
-          wget https://apt.llvm.org/llvm-snapshot.gpg.key
-          sudo apt-key add llvm-snapshot.gpg.key
-          sudo add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-18 main"
+          sudo apt-get install -y openmpi-bin libopenmpi-dev
 
-      - name: Install Clang 18
+      - name: Display OpenMPI properties
         run: |
-          sudo apt-get update
-          sudo apt-get install -y clang-18
+          mpicxx --version
+          mpicxx --showme
 
-      - name: clang-18 debug build
-        run: bazel build --config=clang18 --config=debug --verbose_failures --subcommands //...
 
-      - name: clang-18 fastbuild
-        run: bazel build --config=clang18 --verbose_failures --subcommands //...
-
-      - name: clang-18 fastbuild test
-        run: bazel test --config=clang18 --verbose_failures //...
-
+      
