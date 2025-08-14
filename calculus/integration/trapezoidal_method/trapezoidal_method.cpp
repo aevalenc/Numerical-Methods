@@ -21,7 +21,7 @@ double TrapezoidalIntegration(const std::function<double(double)>& function,
     const auto subinterval_length = (b - a) / n;
 
     double sum{function(a)};
-    for (std::int32_t i{1}; i < n - 1; ++i)
+    for (std::int32_t i{1}; i < n; ++i)
     {
         sum += 2 * function(a + i * subinterval_length);
     }
