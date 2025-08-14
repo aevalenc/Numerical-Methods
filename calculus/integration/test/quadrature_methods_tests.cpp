@@ -13,12 +13,13 @@ namespace nm
 {
 namespace calculus
 {
+
 struct QuadratureTestParameter
 {
     double a{};
     double b{};
     double n{};
-    double expected_value{};
+    double expected_value;
 };
 
 namespace
@@ -30,7 +31,7 @@ class QuadratureTestFixture : public ::testing::Test
   public:
     void SetDefaultExponentialFunction()
     {
-        default_function_ = [](double x) { return std::exp(x); };
+        default_function_ = [](double x) -> double { return std::exp(x); };
     }
 
   public:
@@ -60,6 +61,18 @@ INSTANTIATE_TEST_SUITE_P(TrapezoidalMethodTests,
                          QuadratureTestFixtureParameterized,
                          ::testing::Values(QuadratureTestParameter{0, 1, 1, 1.859},
                                            QuadratureTestParameter{0, 1, 10001, 1.718}));
+
+TEST_F(QuadratureTestFixture, GivenGaussianExponential_ExpectCorrectValue)
+{
+    // Given
+    default_function_ = [](const double x) -> double { return std::exp(-x * x); };
+
+    // Call
+    const auto result = TrapezoidalIntegration(default_function_, 0, 1, 4);
+
+    // Expect
+    EXPECT_NEAR(result, 0.742984, tolerance_);
+}
 
 }  // namespace
 }  // namespace calculus
