@@ -1,0 +1,8 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "trapezoidal_method",
+    srcs = ["trapezoidal_method/trapezoidal_method.cpp"],
+    hdrs = ["trapezoidal_method/trapezoidal_method.h"],
+    visibility = ["//visibility:public"],
+)
