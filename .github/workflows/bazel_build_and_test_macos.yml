@@ -17,7 +17,7 @@ jobs:
 
   # This workflow contains a multiple jobs
   bazel-build-and-test-gcc12-macos-x86_64:
-    if: contains(github.event.pull_request.labels.*.name, 'disable') || contains(github.event.comment.body, 'recheck')
+    if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
 
     # The type of runner that the job will run on
     runs-on: macos-13
@@ -82,48 +82,21 @@ jobs:
       - name: test
         run: bazel test --config=clang18_macos_aarch64 --compilation_mode=fastbuild --test_output=all --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
 
-  # bazel-build-and-test-mpi-clang17-macos-aarch64:
-  #   if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
-  #   runs-on: macos-14
-  
-  #   steps:
-
-      - name: Download and install OpenMPI
-        run: |
-          cd $HOME
-          curl -LO https://download.open-mpi.org/release/open-mpi/v5.0/openmpi-${OPENMPI_VERSION}.tar.gz
-          tar -xzvf openmpi-${OPENMPI_VERSION}.tar.gz
-          cd openmpi-${OPENMPI_VERSION}
-          mkdir build
-          mkdir install
-          cd build
-          ../configure --prefix=$HOME/install --with-hwloc=internal --with-libevent=internal CC=/opt/homebrew/opt/llvm@18/bin/clang CXX=/opt/homebrew/opt/llvm@18/bin/clang++ 2>&1 | tee config.out
-          make -j4 all 2>&1 | tee make.out
-          make install 2>&1 | tee install.out
-          ls -al
-
-      - name: Set artifact path
-        id: set-artifact-path
-        run: echo "ARTIFACT_PATH=$HOME/openmpi-${OPENMPI_VERSION}/build/config.out" >> $GITHUB_OUTPUT
-        
-      - name: Display MPI details
-        run: |
-          ~/install/bin/mpicxx --version
-          ~/install/bin/mpicxx --showme
-            
-      - name: Archive logs
-        uses: actions/upload-artifact@v4
-        with:
-          name: openmpi-install-logs
-          path: |
-            "${{ steps.set-artifact-path.outputs.ARTIFACT_PATH }}"
-
+      # - name: Download and install OpenMPI
+      #   run: |
+      #     cd $HOME
+      #     curl -LO https://download.open-mpi.org/release/open-mpi/v5.0/openmpi-${OPENMPI_VERSION}.tar.gz
+      #     tar -xzvf openmpi-${OPENMPI_VERSION}.tar.gz
+      #     cd openmpi-${OPENMPI_VERSION}
+      #     mkdir build
+      #     mkdir install
+      #     cd build
+      #     ../configure --prefix=$HOME/install --with-hwloc=internal --with-libevent=internal CC=/opt/homebrew/opt/llvm@18/bin/clang CXX=/opt/homebrew/opt/llvm@18/bin/clang++
+      #     make -j4 all
+      #     make install
 
       # - name: debug build
       #   run: bazel build --config=mpi_clang17_macos_x86_64 --config=debug --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
 
       # - name: fastbuild
       #   run: bazel build --config=mpi_clang17_macos_x86_64 --compilation_mode=fastbuild --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
-
-      # - name: test
-      #   run: bazel test --config=mpi_clang17_macos_x86_64 --compilation_mode=fastbuild --test_output=all --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...

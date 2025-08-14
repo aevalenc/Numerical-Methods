@@ -16,7 +16,7 @@ on:
 jobs:
 
   bazel-build-and-test-linux:
-    if: contains(github.event.pull_request.labels.*.name, 'disable') || contains(github.event.comment.body, 'recheck')
+    if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
 
     # The type of runner that the job will run on
     runs-on: ubuntu-22.04
