@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: Checkout to PR branch
         id: pr_branch_data
-        if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.issue.labels.*.name, 'check')
+        if: contains(github.event.pull_request.labels.*.name, 'disable') || contains(github.event.issue.labels.*.name, 'disable')
         uses: actions/checkout@v4
 
       - name: Setup linter
@@ -46,7 +46,7 @@ jobs:
         # run: exit 1
 
   check-include-guards:
-    if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.issue.labels.*.name, 'check')
+    if: contains(github.event.pull_request.labels.*.name, 'disable') || contains(github.event.issue.labels.*.name, 'disable')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to branch

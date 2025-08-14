@@ -17,7 +17,7 @@ jobs:
 
   # This workflow contains a multiple jobs
   bazel-build-and-test-gcc12-macos-x86_64:
-    if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
+    if: contains(github.event.pull_request.labels.*.name, 'disable') || contains(github.event.comment.body, 'recheck')
 
     # The type of runner that the job will run on
     runs-on: macos-13
@@ -83,7 +83,7 @@ jobs:
         run: bazel test --config=clang18_macos_aarch64 --compilation_mode=fastbuild --test_output=all --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
 
   bazel-build-and-test-mpi-clang17-macos-aarch64:
-    if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
+    if: contains(github.event.pull_request.labels.*.name, 'disable') || contains(github.event.comment.body, 'recheck')
     runs-on: macos-14
     env:
       OPENMPI_VERSION: "5.0.8"
