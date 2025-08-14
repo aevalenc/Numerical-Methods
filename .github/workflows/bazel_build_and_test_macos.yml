@@ -81,3 +81,28 @@ jobs:
 
       - name: test
         run: bazel test --config=clang18_macos_aarch64 --compilation_mode=fastbuild --test_output=all --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
+
+  bazel-build-and-test-mpi-clang17-macos-x86_64:
+    if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
+
+    runs-on: macos-14
+    steps:
+
+      - name: Install OpenMPI
+        run: |
+          brew update
+          brew install open-mpi
+
+      - name: Display MPI details
+        run: |
+          mpicxx --version
+          mpicxx --showme
+
+      # - name: debug build
+      #   run: bazel build --config=mpi_clang17_macos_x86_64 --config=debug --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
+
+      # - name: fastbuild
+      #   run: bazel build --config=mpi_clang17_macos_x86_64 --compilation_mode=fastbuild --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
+
+      # - name: test
+      #   run: bazel test --config=mpi_clang17_macos_x86_64 --compilation_mode=fastbuild --test_output=all --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
