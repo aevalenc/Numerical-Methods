@@ -91,23 +91,26 @@ jobs:
 
       - name: Download and install OpenMPI
         run: |
-          cd ~
+          cd $HOME
           curl -LO https://download.open-mpi.org/release/open-mpi/v5.0/openmpi-${OPENMPI_VERSION}.tar.gz
           tar -xzvf openmpi-${OPENMPI_VERSION}.tar.gz
           cd openmpi-${OPENMPI_VERSION}
           mkdir build
           mkdir install
           cd build
-          ../configure --prefix='~/install' --with-hwloc=internal --with-libevent=internal 2>&1 | tee config.out
+          ../configure --prefix=$HOME/install --with-hwloc=internal --with-libevent=internal 2>&1 | tee config.out
           make -j4 all 2>&1 | tee make.out
           make install 2>&1 | tee install.out
 
+      - name: Set artifact path
+        id: set-artifact-path
+        run: echo "ARTIFACT_PATH=$HOME/openmpi-${OPENMPI_VERSION}/build/config.out" >> $GITHUB_OUTPUT
+      
       - name: Archive logs
         uses: actions/upload-artifact@v4
         with:
           name: openmpi-install-logs
-          path: |
-            ~/openmpi-${OPENMPI_VERSION}/build/config.out
+          path: ${{ steps.set-artifact-path.outputs.ARTIFACT_PATH }}
 
       - name: Display MPI details
         run: |
