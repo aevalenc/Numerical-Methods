@@ -84,20 +84,19 @@ jobs:
 
   bazel-build-and-test-mpi-clang17-macos-aarch64:
     if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
-
     runs-on: macos-14
+    env:
+      OPENMPI_VERSION: "5.0.8"
     steps:
 
       - name: Download and install OpenMPI
-        env:
-          OPENMPI_VERSION: "5.0.8"
         run: |
           curl -LO https://download.open-mpi.org/release/open-mpi/v5.0/openmpi-${OPENMPI_VERSION}.tar.gz
           tar -xzvf openmpi-${OPENMPI_VERSION}.tar.gz
           cd openmpi-${OPENMPI_VERSION}
           mkdir build
           cd build
-          ../configure 2>&1 | tee config.out
+          ../configure --with-hwloc=internal --with-libevent=internal 2>&1 | tee config.out
           make -j4 all 2>&1 | tee make.out
           make install 2>&1 | tee install.out
 
@@ -107,8 +106,6 @@ jobs:
           name: openmpi-install-logs
           path: |
             openmpi-${OPENMPI_VERSION}/build/config.out
-            openmpi-${OPENMPI_VERSION}/build/make.out
-            openmpi-${OPENMPI_VERSION}/build/install.out
 
       - name: Display MPI details
         run: |
