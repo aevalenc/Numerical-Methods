@@ -82,16 +82,33 @@ jobs:
       - name: test
         run: bazel test --config=clang18_macos_aarch64 --compilation_mode=fastbuild --test_output=all --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
 
-  bazel-build-and-test-mpi-clang17-macos-x86_64:
+  bazel-build-and-test-mpi-clang17-macos-aarch64:
     if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
 
     runs-on: macos-14
     steps:
 
-      - name: Install OpenMPI
+      - name: Download and install OpenMPI
+        env:
+          OPENMPI_VERSION: "5.0.8"
         run: |
-          brew update
-          brew install open-mpi
+          curl -LO https://download.open-mpi.org/release/open-mpi/v5.0/openmpi-${OPENMPI_VERSION}.tar.gz
+          tar -xzvf openmpi-${OPENMPI_VERSION}.tar.gz
+          cd openmpi-${OPENMPI_VERSION}
+          mkdir build
+          cd build
+          ../configure 2>&1 | tee config.out
+          make -j4 all 2>&1 | tee make.out
+          make install 2>&1 | tee install.out
+
+      - name: Archive logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: openmpi-install-logs
+          path: |
+            openmpi-${OPENMPI_VERSION}/build/config.out
+            openmpi-${OPENMPI_VERSION}/build/make.out
+            openmpi-${OPENMPI_VERSION}/build/install.out
 
       - name: Display MPI details
         run: |
