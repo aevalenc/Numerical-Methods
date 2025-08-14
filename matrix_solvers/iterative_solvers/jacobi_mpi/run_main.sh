@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 NUMBER_OF_PROCESSES=4
 if [ -n "$1" ]; then

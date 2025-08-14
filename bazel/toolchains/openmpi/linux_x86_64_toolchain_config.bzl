@@ -33,10 +33,10 @@ def _impl(ctx):
     tool_paths = [
         tool_path(name = "gcc", path = "/usr/bin/mpicxx"),
         tool_path(name = "ld", path = "/usr/bin/ld"),
-        tool_path(name = "ar", path = "/usr/bin/gcc-ar-9"),
+        tool_path(name = "ar", path = "/usr/bin/gcc-ar-11"),
         tool_path(name = "cpp", path = "/bin/false"),
         tool_path(name = "gcov", path = "/bin/false"),
-        tool_path(name = "nm", path = "/usr/bin/gcc-nm-9"),
+        tool_path(name = "nm", path = "/usr/bin/gcc-nm-11"),
         tool_path(name = "objdump", path = "/bin/false"),
         tool_path(name = "strip", path = "/bin/false"),
     ]
@@ -58,6 +58,7 @@ def _impl(ctx):
                                 "-pthread",
                                 "-L/usr/lib/x86_64-linux-gnu/openmpi/lib",
                                 "-lmpi",
+                                "-lmpi_cxx",
                             ],
                         ),
                     ]),
@@ -82,7 +83,7 @@ def _impl(ctx):
         ctx = ctx,
         cxx_builtin_include_directories = [
             # NEW
-            "/usr/lib/gcc/x86_64-linux-gnu/9/include",
+            "/usr/lib/gcc/x86_64-linux-gnu/11/include",
             "/usr/include",
             "/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi",
             "/usr/lib/x86_64-linux-gnu/openmpi/include",
