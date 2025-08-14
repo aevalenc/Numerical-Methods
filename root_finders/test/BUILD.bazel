@@ -1,8 +1,19 @@
+load("@rules_cc//cc:defs.bzl", "cc_test")
+
 cc_test(
     name = "newtons_method_tests",
     srcs = ["newtons_method_tests.cpp"],
     deps = [
         "//root_finders:newtons_method",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "bisection_method_tests",
+    srcs = ["bisection_method_tests.cpp"],
+    deps = [
+        "//root_finders:bisection_method",
         "@googletest//:gtest_main",
     ],
 )

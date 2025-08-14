@@ -1,6 +1,15 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
 cc_library(
     name = "newtons_method",
     srcs = ["newtons_method.cpp"],
     hdrs = ["newtons_method.h"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "bisection_method",
+    srcs = ["bisection_method/bisection_method.cpp"],
+    hdrs = ["bisection_method/bisection_method.h"],
     visibility = ["//visibility:public"],
 )
