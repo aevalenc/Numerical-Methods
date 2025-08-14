@@ -50,7 +50,7 @@ jobs:
         run: bazel test --config=gcc12_macos_x86_64 --compilation_mode=fastbuild --test_output=all --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
 
   bazel-build-and-test-clang18-macos-arm64:
-    if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
+    if: contains(github.event.pull_request.labels.*.name, 'disable') || contains(github.event.comment.body, 'recheck')
 
     # The type of runner that the job will run on
     runs-on: macos-14
@@ -83,7 +83,7 @@ jobs:
         run: bazel test --config=clang18_macos_aarch64 --compilation_mode=fastbuild --test_output=all --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
 
   bazel-build-and-test-mpi-clang17-macos-aarch64:
-    if: contains(github.event.pull_request.labels.*.name, 'disable') || contains(github.event.comment.body, 'recheck')
+    if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
     runs-on: macos-14
     env:
       OPENMPI_VERSION: "5.0.8"
@@ -91,12 +91,14 @@ jobs:
 
       - name: Download and install OpenMPI
         run: |
+          cd ~
           curl -LO https://download.open-mpi.org/release/open-mpi/v5.0/openmpi-${OPENMPI_VERSION}.tar.gz
           tar -xzvf openmpi-${OPENMPI_VERSION}.tar.gz
           cd openmpi-${OPENMPI_VERSION}
           mkdir build
+          mkdir install
           cd build
-          ../configure --with-hwloc=internal --with-libevent=internal 2>&1 | tee config.out
+          ../configure --prefix='~/install' --with-hwloc=internal --with-libevent=internal 2>&1 | tee config.out
           make -j4 all 2>&1 | tee make.out
           make install 2>&1 | tee install.out
 
@@ -105,12 +107,12 @@ jobs:
         with:
           name: openmpi-install-logs
           path: |
-            openmpi-${OPENMPI_VERSION}/build/config.out
+            ~/openmpi-${OPENMPI_VERSION}/build/config.out
 
       - name: Display MPI details
         run: |
-          mpicxx --version
-          mpicxx --showme
+          ~/install/bin/mpicxx --version
+          ~/install/bin/mpicxx --showme
 
       # - name: debug build
       #   run: bazel build --config=mpi_clang17_macos_x86_64 --config=debug --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
