@@ -50,10 +50,10 @@ jobs:
         run: bazel test --config=gcc12_macos_x86_64 --compilation_mode=fastbuild --test_output=all --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
 
   bazel-build-and-test-clang18-macos-arm64:
-    if: contains(github.event.pull_request.labels.*.name, 'disable') || contains(github.event.comment.body, 'recheck')
-
-    # The type of runner that the job will run on
+    if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
     runs-on: macos-14
+    env:
+      OPENMPI_VERSION: "5.0.8"
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -82,12 +82,11 @@ jobs:
       - name: test
         run: bazel test --config=clang18_macos_aarch64 --compilation_mode=fastbuild --test_output=all --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
 
-  bazel-build-and-test-mpi-clang17-macos-aarch64:
-    if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
-    runs-on: macos-14
-    env:
-      OPENMPI_VERSION: "5.0.8"
-    steps:
+  # bazel-build-and-test-mpi-clang17-macos-aarch64:
+  #   if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
+  #   runs-on: macos-14
+  
+  #   steps:
 
       - name: Download and install OpenMPI
         run: |
@@ -98,9 +97,10 @@ jobs:
           mkdir build
           mkdir install
           cd build
-          ../configure --prefix=$HOME/install --with-hwloc=internal --with-libevent=internal 2>&1 | tee config.out
+          ../configure --prefix=$HOME/install --with-hwloc=internal --with-libevent=internal CC=/opt/homebrew/opt/llvm@18/bin/clang CXX=/opt/homebrew/opt/llvm@18/bin/clang++ 2>&1 | tee config.out
           make -j4 all 2>&1 | tee make.out
           make install 2>&1 | tee install.out
+          ls -al
 
       - name: Set artifact path
         id: set-artifact-path
