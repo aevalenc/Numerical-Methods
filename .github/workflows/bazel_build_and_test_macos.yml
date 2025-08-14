@@ -44,16 +44,16 @@ jobs:
         run: gcc-12 --version
 
       - name: debug build
-        run: bazel build --config=gcc12_macos_x86_64 --config=debug --verbose_failures //...
+        run: bazel build --config=gcc12_macos_x86_64 --config=debug --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
 
       - name: fastbuild
-        run: bazel test --config=gcc12_macos_x86_64 --compilation_mode=fastbuild --test_output=all --verbose_failures //...
+        run: bazel test --config=gcc12_macos_x86_64 --compilation_mode=fastbuild --test_output=all --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
 
   bazel-build-and-test-clang18-macos-arm64:
     if: contains(github.event.pull_request.labels.*.name, 'check') || contains(github.event.comment.body, 'recheck')
-
-    # The type of runner that the job will run on
     runs-on: macos-14
+    env:
+      OPENMPI_VERSION: "5.0.8"
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -74,10 +74,29 @@ jobs:
           source ~/.zshrc
         
       - name: debug build
-        run: bazel build --config=clang18_macos_aarch64 --config=debug --verbose_failures //...
+        run: bazel build --config=clang18_macos_aarch64 --config=debug --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
 
       - name: fastbuild
-        run: bazel build --config=clang18_macos_aarch64 --compilation_mode=fastbuild --verbose_failures //...
+        run: bazel build --config=clang18_macos_aarch64 --compilation_mode=fastbuild --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
 
       - name: test
-        run: bazel test --config=clang18_macos_aarch64 --compilation_mode=fastbuild --test_output=all --verbose_failures //...
+        run: bazel test --config=clang18_macos_aarch64 --compilation_mode=fastbuild --test_output=all --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
+
+      # - name: Download and install OpenMPI
+      #   run: |
+      #     cd $HOME
+      #     curl -LO https://download.open-mpi.org/release/open-mpi/v5.0/openmpi-${OPENMPI_VERSION}.tar.gz
+      #     tar -xzvf openmpi-${OPENMPI_VERSION}.tar.gz
+      #     cd openmpi-${OPENMPI_VERSION}
+      #     mkdir build
+      #     mkdir install
+      #     cd build
+      #     ../configure --prefix=$HOME/install --with-hwloc=internal --with-libevent=internal CC=/opt/homebrew/opt/llvm@18/bin/clang CXX=/opt/homebrew/opt/llvm@18/bin/clang++
+      #     make -j4 all
+      #     make install
+
+      # - name: debug build
+      #   run: bazel build --config=mpi_clang17_macos_x86_64 --config=debug --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
+
+      # - name: fastbuild
+      #   run: bazel build --config=mpi_clang17_macos_x86_64 --compilation_mode=fastbuild --verbose_failures //... -- -//matrix_solvers/iterative_solvers/jacobi_mpi/...
