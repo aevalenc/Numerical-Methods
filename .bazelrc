@@ -26,7 +26,9 @@ build:gcc12_macos_aarch64 --extra_toolchains=//bazel/toolchains/gcc12:gcc12_tool
 build:gcc12_macos_aarch64 --copt="-std=c++17" --copt="-Wall"
 
 # debug build config
-build:debug --strip=never --copt="-O0" --copt="-ggdb" -c dbg
+build:debug --strip=never --copt="-O0" --copt="-g" --copt="-ggdb" -c dbg
+build:macos_debug --strip=never --copt="-O0" --copt="-g" -c dbg
+build:macos_debug --features=oso_prefix_is_pwd --spawn_strategy=local --sandbox_debug
 
 # OpenMPI toolchain configurations
 build:mpi_gcc11 --extra_toolchains=//bazel/toolchains/openmpi:openmpi_toolchain_for_linux_x86_64 --incompatible_enable_cc_toolchain_resolution

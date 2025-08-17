@@ -10,6 +10,17 @@ target_include_directories(RootFindersLib PUBLIC
     ${CMAKE_SOURCE_DIR}
 )
 
+add_library(
+  bisection_method
+  bisection_method/bisection_method.cpp
+)
+
+target_include_directories(
+  bisection_method 
+  PUBLIC
+  ${CMAKE_SOURCE_DIR}
+)
+
 add_executable(
   RootFindersTests
   ./test/newtons_method_tests.cpp

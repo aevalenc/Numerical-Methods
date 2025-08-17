@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 enable_testing()
 
-# add_subdirectory(calculus)
+add_subdirectory(calculus/integration)
 add_subdirectory(matrix_solvers)
 add_subdirectory(optimization)
 add_subdirectory(root_finders)
