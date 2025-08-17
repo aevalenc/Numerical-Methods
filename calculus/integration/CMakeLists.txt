@@ -9,6 +9,14 @@ target_include_directories(trapezoidal_method PUBLIC
     ${CMAKE_SOURCE_DIR}
 )
 
+add_library(simpsons_method
+    simpsons_method/simpsons_method.cpp
+)
+
+target_include_directories(simpsons_method PUBLIC
+    ${CMAKE_SOURCE_DIR}
+)
+
 add_executable(
     quadrature_methods_tests
     test/quadrature_methods_tests.cpp
@@ -24,6 +32,7 @@ target_link_libraries(
     quadrature_methods_tests
     PUBLIC
     trapezoidal_method
+    simpsons_method
     GTest::gtest_main
 )
 
