@@ -4,6 +4,7 @@ cc_test(
     name = "quadrature_methods_tests",
     srcs = ["quadrature_methods_tests.cpp"],
     deps = [
+        "//calculus/integration:simpsons_method",
         "//calculus/integration:trapezoidal_method",
         "@googletest//:gtest_main",
     ],

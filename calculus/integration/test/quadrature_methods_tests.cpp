@@ -6,8 +6,10 @@
  *
  */
 
+#include "calculus/integration/simpsons_method/simpsons_method.h"
 #include "calculus/integration/trapezoidal_method/trapezoidal_method.h"
 #include "gtest/gtest.h"
+#include <cmath>
 
 namespace nm
 {
@@ -39,8 +41,9 @@ class QuadratureTestFixture : public ::testing::Test
     double tolerance_{1e-3};
 };
 
-class QuadratureTestFixtureParameterized : public QuadratureTestFixture,
-                                           public ::testing::WithParamInterface<QuadratureTestParameter>
+class QuadratureTestFixtureParameterized
+    : public QuadratureTestFixture,
+      public ::testing::WithParamInterface<QuadratureTestParameter>
 {
 };
 
@@ -69,9 +72,38 @@ TEST_F(QuadratureTestFixture, GivenGaussianExponential_ExpectCorrectValue)
 
     // Call
     const auto result = TrapezoidalIntegration(default_function_, 0, 1, 4);
+    const auto simpson = SimpsonsIntegration(default_function_, 0, 1, 4);
 
     // Expect
     EXPECT_NEAR(result, 0.742984, tolerance_);
+    EXPECT_NEAR(simpson, 0.7468, tolerance_);
+}
+
+TEST_F(QuadratureTestFixture, GivenRationalFunction_ExpectCorrectValue)
+{
+    // Given
+    default_function_ = [](const double x) -> double { return 6 / (x * x + 1); };
+
+    // Call
+    const auto trapezoid = TrapezoidalIntegration(default_function_, -1, 2, 6);
+    const auto simpson = SimpsonsIntegration(default_function_, -1, 2, 6);
+
+    // Expect
+    EXPECT_NEAR(trapezoid, 11.27307, tolerance_);
+    EXPECT_NEAR(simpson, 11.33076, tolerance_);
+}
+
+TEST_F(QuadratureTestFixture, GivenOddNumberOfIntervals_ExpectSimpsonThrow)
+{
+    // Given
+    default_function_ = [](const double x) -> double { return 6 / (x * x + 1); };
+
+    // Call
+    const auto trapezoid = TrapezoidalIntegration(default_function_, -1, 2, 7);
+
+    // Expect
+    EXPECT_NEAR(trapezoid, 11.2947, tolerance_);
+    EXPECT_ANY_THROW({ SimpsonsIntegration(default_function_, -1, 2, 7); });
 }
 
 }  // namespace
