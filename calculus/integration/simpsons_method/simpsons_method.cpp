@@ -21,8 +21,7 @@ double SimpsonsIntegration(const std::function<double(double)>& function,
 {
     if (number_of_intervals % 2 != 0)
     {
-        throw std::invalid_argument(
-            "The number of intervals for Simpson's integration must be even!");
+        throw std::invalid_argument("The number of intervals for Simpson's integration must be even!");
     }
 
     const auto subinterval_length = (b - a) / number_of_intervals;
@@ -32,8 +31,8 @@ double SimpsonsIntegration(const std::function<double(double)>& function,
     {
         if (i < (number_of_intervals / 2))
         {
-            sum += (2 * function(a + (2 * i) * subinterval_length) +
-                    4 * function(a + (2 * i - 1) * subinterval_length));
+            sum +=
+                (2 * function(a + (2 * i) * subinterval_length) + 4 * function(a + (2 * i - 1) * subinterval_length));
         }
         else
         {

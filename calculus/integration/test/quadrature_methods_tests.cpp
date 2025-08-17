@@ -41,9 +41,8 @@ class QuadratureTestFixture : public ::testing::Test
     double tolerance_{1e-3};
 };
 
-class QuadratureTestFixtureParameterized
-    : public QuadratureTestFixture,
-      public ::testing::WithParamInterface<QuadratureTestParameter>
+class QuadratureTestFixtureParameterized : public QuadratureTestFixture,
+                                           public ::testing::WithParamInterface<QuadratureTestParameter>
 {
 };
 
