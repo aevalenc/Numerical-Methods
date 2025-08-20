@@ -49,6 +49,13 @@ geometry::Grid SpatialVariable::GetGrid() const
 
 void SpatialVariable::SetDirichletBoundaryCondition(const double value, const std::int32_t boundary_index)
 {
+    if (boundary_index > discretized_variable_.size())
+    {
+        std::cout << "Tried to access an index beyond the discretized variable max size of "
+                  << discretized_variable_.size() << "\n";
+        return;
+    }
+
     discretized_variable_.at(boundary_index) = value;
     if (!f_.empty())
     {
