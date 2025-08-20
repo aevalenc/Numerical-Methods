@@ -72,23 +72,3 @@ void Solver::CallStepOnce()
 {
     uu.StepOnce();
 }
-
-void Solver::UpdateQSeries()
-{
-    if (current_time_ == end_time_)
-    {
-        emit finished();
-        return;
-    }
-
-    uu.StepOnce();
-    QVector<QPointF> points{};
-    const auto number_of_points = uu.GetTimeVariable().size();
-    points.resize(number_of_points);
-    for (std::int32_t i = 0; i < static_cast<std::int32_t>(number_of_points); ++i)
-    {
-        points.append(QPointF(x_.at(i), uu.GetTimeVariable().at(i)));
-    }
-    uu_series.replace(points);
-    current_time_ += delta_t_;
-}
