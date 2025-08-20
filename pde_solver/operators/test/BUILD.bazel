@@ -1,0 +1,27 @@
+"""
+BUILD file for C++ operators tests.
+"""
+
+cc_test(
+    name = "laplace_operator_tests",
+    srcs = ["laplace_operator_tests.cpp"],
+    deps = [
+        "//examples/line_chart/src/data_types:grid",
+        "//examples/line_chart/src/data_types:spatial_variable",
+        "//examples/line_chart/src/operators:laplace",
+        "//examples/line_chart/src/utilities:grid_generator",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "gradient_operator_tests",
+    srcs = ["gradient_operator_tests.cpp"],
+    deps = [
+        "//examples/line_chart/src/data_types:grid",
+        "//examples/line_chart/src/data_types:spatial_variable",
+        "//examples/line_chart/src/operators:gradient",
+        "//examples/line_chart/src/utilities:grid_generator",
+        "@googletest//:gtest_main",
+    ],
+)

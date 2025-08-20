@@ -1,0 +1,11 @@
+load("@rules_cc//cc:defs.bzl", "cc_test")
+
+cc_test(
+    name = "grid_tests",
+    srcs = ["grid_tests.cpp"],
+    deps = [
+        "//examples/line_chart/src/data_types:grid",
+        "//examples/line_chart/src/utilities:grid_generator",
+        "@googletest//:gtest_main",
+    ],
+)
