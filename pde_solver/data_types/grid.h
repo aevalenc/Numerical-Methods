@@ -6,8 +6,8 @@
  *
  */
 
-#ifndef EXAMPLES_LINE_CHART_SRC_DATA_TYPES_GRID_H
-#define EXAMPLES_LINE_CHART_SRC_DATA_TYPES_GRID_H
+#ifndef PDE_SOLVER_DATA_TYPES_GRID_H
+#define PDE_SOLVER_DATA_TYPES_GRID_H
 
 #include <cstdint>
 #include <optional>
@@ -121,4 +121,4 @@ class Grid
 
 }  // namespace cfd
 
-#endif  // EXAMPLES_LINE_CHART_SRC_DATA_TYPES_GRID_H
+#endif  // PDE_SOLVER_DATA_TYPES_GRID_H

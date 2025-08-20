@@ -6,13 +6,13 @@
  *
  */
 
-#include "examples/line_chart/src/main_solver.h"
-#include "examples/line_chart/src/data_types/discretization_methods.h"
-#include "examples/line_chart/src/data_types/finite_difference_schemas.h"
-#include "examples/line_chart/src/data_types/spatial_variable.h"
-#include "examples/line_chart/src/data_types/time_variable.h"
-#include "examples/line_chart/src/operators/gradient.h"
-#include "examples/line_chart/src/utilities/grid_generator.h"
+#include "pde_solver/main_solver.h"
+#include "pde_solver/data_types/discretization_methods.h"
+#include "pde_solver/data_types/finite_difference_schemas.h"
+#include "pde_solver/data_types/spatial_variable.h"
+#include "pde_solver/data_types/time_variable.h"
+#include "pde_solver/operators/gradient.h"
+#include "pde_solver/utilities/grid_generator.h"
 #include <cstdint>
 
 namespace

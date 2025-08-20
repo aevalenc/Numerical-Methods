@@ -4,10 +4,10 @@
 /// Update: 16 October, 2022
 ///
 
-#ifndef EXAMPLES_LINE_CHART_SRC_UTILITIES_GRID_GENERATOR_H
-#define EXAMPLES_LINE_CHART_SRC_UTILITIES_GRID_GENERATOR_H
+#ifndef PDE_SOLVER_UTILITIES_GRID_GENERATOR_H
+#define PDE_SOLVER_UTILITIES_GRID_GENERATOR_H
 
-#include "examples/line_chart/src/data_types/grid.h"
+#include "pde_solver/data_types/grid.h"
 
 namespace cfd
 {
@@ -29,4 +29,4 @@ class GridGenerator
 
 }  // namespace cfd
 
-#endif  // EXAMPLES_LINE_CHART_SRC_UTILITIES_GRID_GENERATOR_H
+#endif  // PDE_SOLVER_UTILITIES_GRID_GENERATOR_H

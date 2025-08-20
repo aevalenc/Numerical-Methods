@@ -6,10 +6,10 @@ cc_test(
     name = "laplace_operator_tests",
     srcs = ["laplace_operator_tests.cpp"],
     deps = [
-        "//examples/line_chart/src/data_types:grid",
-        "//examples/line_chart/src/data_types:spatial_variable",
-        "//examples/line_chart/src/operators:laplace",
-        "//examples/line_chart/src/utilities:grid_generator",
+        "//pde_solver/data_types:grid",
+        "//pde_solver/data_types:spatial_variable",
+        "//pde_solver/operators:laplace",
+        "//pde_solver/utilities:grid_generator",
         "@googletest//:gtest_main",
     ],
 )
@@ -18,10 +18,10 @@ cc_test(
     name = "gradient_operator_tests",
     srcs = ["gradient_operator_tests.cpp"],
     deps = [
-        "//examples/line_chart/src/data_types:grid",
-        "//examples/line_chart/src/data_types:spatial_variable",
-        "//examples/line_chart/src/operators:gradient",
-        "//examples/line_chart/src/utilities:grid_generator",
+        "//pde_solver/data_types:grid",
+        "//pde_solver/data_types:spatial_variable",
+        "//pde_solver/operators:gradient",
+        "//pde_solver/utilities:grid_generator",
         "@googletest//:gtest_main",
     ],
 )

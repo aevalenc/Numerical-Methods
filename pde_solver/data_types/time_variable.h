@@ -6,10 +6,10 @@
  *
  */
 
-#ifndef EXAMPLES_LINE_CHART_SRC_DATA_TYPES_TIME_VARIABLE_H
-#define EXAMPLES_LINE_CHART_SRC_DATA_TYPES_TIME_VARIABLE_H
+#ifndef PDE_SOLVER_DATA_TYPES_TIME_VARIABLE_H
+#define PDE_SOLVER_DATA_TYPES_TIME_VARIABLE_H
 
-#include "examples/line_chart/src/data_types/spatial_variable.h"
+#include "pde_solver/data_types/spatial_variable.h"
 #include <vector>
 
 namespace cfd
@@ -93,4 +93,4 @@ class TimeVariable
 
 }  // namespace cfd
 
-#endif  // EXAMPLES_LINE_CHART_SRC_DATA_TYPES_TIME_VARIABLE_H
+#endif  // PDE_SOLVER_DATA_TYPES_TIME_VARIABLE_H

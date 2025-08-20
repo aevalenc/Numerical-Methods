@@ -4,11 +4,11 @@
  * Update: April 13, 2024
  */
 
-#ifndef EXAMPLES_LINE_CHART_SRC_OPERATORS_GRADIENT_H
-#define EXAMPLES_LINE_CHART_SRC_OPERATORS_GRADIENT_H
+#ifndef PDE_SOLVER_OPERATORS_GRADIENT_H
+#define PDE_SOLVER_OPERATORS_GRADIENT_H
 
-#include "examples/line_chart/src/data_types/spatial_variable.h"
 #include "matrix_solvers/utilities.h"
+#include "pde_solver/data_types/spatial_variable.h"
 #include <cstdint>
 
 namespace cfd
@@ -82,4 +82,4 @@ class GradientOperator
 
 }  // namespace cfd
 
-#endif  // EXAMPLES_LINE_CHART_SRC_OPERATORS_GRADIENT_H
+#endif  // PDE_SOLVER_OPERATORS_GRADIENT_H

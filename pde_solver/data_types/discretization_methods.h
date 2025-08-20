@@ -4,8 +4,8 @@
  * Update: May 1, 2025
  */
 
-#ifndef EXAMPLES_LINE_CHART_SRC_DISCRETIZATION_METHODS_H
-#define EXAMPLES_LINE_CHART_SRC_DISCRETIZATION_METHODS_H
+#ifndef PDE_SOLVER_DISCRETIZATION_METHODS_H
+#define PDE_SOLVER_DISCRETIZATION_METHODS_H
 
 #include <cstdint>
 #include <string>
@@ -55,4 +55,4 @@ inline std::string SpatialDiscretizationMethodToString(const SpatialDiscretizati
 
 }  // namespace cfd
 
-#endif  // EXAMPLES_LINE_CHART_SRC_DISCRETIZATION_METHODS_H
+#endif  // PDE_SOLVER_DISCRETIZATION_METHODS_H

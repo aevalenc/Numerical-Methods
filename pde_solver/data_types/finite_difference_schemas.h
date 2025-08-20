@@ -4,8 +4,8 @@
  * Update: May 1, 2025
  */
 
-#ifndef EXAMPLES_LINE_CHART_SRC_FINITE_DIFFERENCE_SCHEMAS_H
-#define EXAMPLES_LINE_CHART_SRC_FINITE_DIFFERENCE_SCHEMAS_H
+#ifndef PDE_SOLVER_FINITE_DIFFERENCE_SCHEMAS_H
+#define PDE_SOLVER_FINITE_DIFFERENCE_SCHEMAS_H
 
 #include <cstdint>
 #include <string>
@@ -55,4 +55,4 @@ inline std::string FiniteDifferenceSchemaToString(const FiniteDifferenceSchema m
 
 }  // namespace cfd
 
-#endif  // EXAMPLES_LINE_CHART_SRC_FINITE_DIFFERENCE_SCHEMAS_H
+#endif  // PDE_SOLVER_FINITE_DIFFERENCE_SCHEMAS_H

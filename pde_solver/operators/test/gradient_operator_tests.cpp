@@ -7,10 +7,10 @@
  * @author Alejandro Valencia
  */
 
-#include "examples/line_chart/src/data_types/grid.h"
-#include "examples/line_chart/src/data_types/spatial_variable.h"
-#include "examples/line_chart/src/operators/gradient.h"
-#include "examples/line_chart/src/utilities/grid_generator.h"
+#include "pde_solver/data_types/grid.h"
+#include "pde_solver/data_types/spatial_variable.h"
+#include "pde_solver/operators/gradient.h"
+#include "pde_solver/utilities/grid_generator.h"
 #include <gtest/gtest.h>
 
 namespace cfd

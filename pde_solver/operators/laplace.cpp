@@ -4,7 +4,7 @@
  * Update: April 13, 2024
  */
 
-#include "examples/line_chart/src/operators/laplace.h"
+#include "pde_solver/operators/laplace.h"
 #include <algorithm>
 #include <vector>
 

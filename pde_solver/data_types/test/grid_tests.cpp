@@ -9,7 +9,7 @@
  * @author Alejandro Valencia
  */
 
-#include "examples/line_chart/src/data_types/grid.h"
+#include "pde_solver/data_types/grid.h"
 #include <gtest/gtest.h>
 
 namespace cfd

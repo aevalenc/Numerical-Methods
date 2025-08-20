@@ -4,8 +4,8 @@
 /// Update: 20 November, 2021
 ///
 
-#include "examples/line_chart/src/data_types/grid.h"
-#include "examples/line_chart/src/utilities/grid_generator.h"
+#include "pde_solver/data_types/grid.h"
+#include "pde_solver/utilities/grid_generator.h"
 #include <gtest/gtest.h>
 
 namespace cfd

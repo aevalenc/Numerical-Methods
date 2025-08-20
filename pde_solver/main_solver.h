@@ -6,7 +6,7 @@
  *
  */
 
-#include "examples/line_chart/src/data_types/time_variable.h"
+#include "pde_solver/data_types/time_variable.h"
 #include <QtCharts/QLineSeries>
 #include <QtCore/QObject>
 

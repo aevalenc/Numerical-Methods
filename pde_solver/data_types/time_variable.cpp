@@ -7,8 +7,8 @@
  * TimeVariable
  */
 
-#include "examples/line_chart/src/data_types/time_variable.h"
-#include "examples/line_chart/src/data_types/spatial_variable.h"
+#include "pde_solver/data_types/time_variable.h"
+#include "pde_solver/data_types/spatial_variable.h"
 #include <cassert>
 #include <cstdint>
 #include <iterator>

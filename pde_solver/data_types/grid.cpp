@@ -4,7 +4,7 @@
 /// Update: 16 October, 2022
 ///
 
-#include "examples/line_chart/src/data_types/grid.h"
+#include "pde_solver/data_types/grid.h"
 
 namespace cfd
 {

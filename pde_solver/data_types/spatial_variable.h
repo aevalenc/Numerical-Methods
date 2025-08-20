@@ -6,13 +6,13 @@
  *
  */
 
-#ifndef EXAMPLES_LINE_CHART_SRC_DATA_TYPES_SPATIAL_VARIABLE_H
-#define EXAMPLES_LINE_CHART_SRC_DATA_TYPES_SPATIAL_VARIABLE_H
+#ifndef PDE_SOLVER_DATA_TYPES_SPATIAL_VARIABLE_H
+#define PDE_SOLVER_DATA_TYPES_SPATIAL_VARIABLE_H
 
-#include "examples/line_chart/src/data_types/discretization_methods.h"
-#include "examples/line_chart/src/data_types/finite_difference_schemas.h"
-#include "examples/line_chart/src/data_types/grid.h"
 #include "matrix_solvers/utilities.h"
+#include "pde_solver/data_types/discretization_methods.h"
+#include "pde_solver/data_types/finite_difference_schemas.h"
+#include "pde_solver/data_types/grid.h"
 #include <vector>
 
 namespace cfd
@@ -154,4 +154,4 @@ class SpatialVariable
 
 }  // namespace cfd
 
-#endif  // EXAMPLES_LINE_CHART_SRC_DATA_TYPES_SPATIAL_VARIABLE_H
+#endif  // PDE_SOLVER_DATA_TYPES_SPATIAL_VARIABLE_H

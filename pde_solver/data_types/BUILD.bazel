@@ -27,8 +27,8 @@ cc_library(
     deps = [
         ":discretization_lib",
         ":grid",
-        "@numerical_methods//matrix_solvers:utilities",
-        "@numerical_methods//matrix_solvers/iterative_solvers:jacobi_method",
+        "//matrix_solvers:utilities",
+        "//matrix_solvers/iterative_solvers:jacobi_method",
     ],
 )
 

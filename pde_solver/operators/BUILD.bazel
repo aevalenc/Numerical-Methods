@@ -11,8 +11,8 @@ cc_library(
     srcs = ["laplace.cpp"],
     hdrs = ["laplace.h"],
     deps = [
-        "//examples/line_chart/src/data_types:spatial_variable",
-        "@numerical_methods//matrix_solvers:utilities",
+        "//matrix_solvers:utilities",
+        "//pde_solver/data_types:spatial_variable",
     ],
 )
 
@@ -21,7 +21,7 @@ cc_library(
     srcs = ["gradient.cpp"],
     hdrs = ["gradient.h"],
     deps = [
-        "//examples/line_chart/src/data_types:spatial_variable",
-        "@numerical_methods//matrix_solvers:utilities",
+        "//matrix_solvers:utilities",
+        "//pde_solver/data_types:spatial_variable",
     ],
 )

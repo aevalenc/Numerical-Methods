@@ -8,7 +8,7 @@
  * @author Alejandro Valencia
  */
 
-#include "examples/line_chart/src/data_types/spatial_variable.h"
+#include "pde_solver/data_types/spatial_variable.h"
 #include <gtest/gtest.h>
 
 namespace cfd

@@ -4,7 +4,7 @@
  * Update: May 1, 2025
  */
 
-#include "examples/line_chart/src/operators/gradient.h"
+#include "pde_solver/operators/gradient.h"
 
 namespace cfd
 {

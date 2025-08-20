@@ -7,9 +7,9 @@
  * SpatialVariable
  */
 
-#include "examples/line_chart/src/data_types/spatial_variable.h"
-#include "examples/line_chart/src/data_types/finite_difference_schemas.h"
+#include "pde_solver/data_types/spatial_variable.h"
 #include "matrix_solvers/iterative_solvers/jacobi.h"
+#include "pde_solver/data_types/finite_difference_schemas.h"
 #include <algorithm>
 #include <cassert>
 #include <iostream>
