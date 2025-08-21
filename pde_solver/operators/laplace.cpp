@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <vector>
 
-namespace cfd
+namespace pde
 {
 
 namespace operators
@@ -94,4 +94,4 @@ void LaplaceOperator::GenerateMatrixForSpatialVariable(SpatialVariable& u)
 }
 
 }  // namespace operators
-}  // namespace cfd
+}  // namespace pde

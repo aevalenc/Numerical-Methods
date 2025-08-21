@@ -14,7 +14,7 @@ class Solver
   public:
     void SetupLinearAdvection();
     void CallStepOnce();
-    cfd::TimeVariable uu{};
+    pde::TimeVariable uu{};
     std::vector<double> x_;
 
     double delta_t_{0.1};

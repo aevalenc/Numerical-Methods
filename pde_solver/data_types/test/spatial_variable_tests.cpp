@@ -11,7 +11,7 @@
 #include "pde_solver/data_types/spatial_variable.h"
 #include <gtest/gtest.h>
 
-namespace cfd
+namespace pde
 {
 
 namespace
@@ -52,4 +52,4 @@ TEST_F(BaseClassFixture, GivenFiniteElementDiscretization_WhenCopiedAssigned_Exp
 
 }  // namespace
 
-}  // namespace cfd
+}  // namespace pde

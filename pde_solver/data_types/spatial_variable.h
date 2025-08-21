@@ -15,7 +15,7 @@
 #include "pde_solver/data_types/grid.h"
 #include <vector>
 
-namespace cfd
+namespace pde
 {
 
 // Should be in Numerical Methods
@@ -123,7 +123,7 @@ class SpatialVariable
 
     const std::vector<double>& GetDiscretizedVariable() const { return discretized_variable_; };
 
-    void SetGrid(const cfd::geometry::Grid& grid);
+    void SetGrid(const pde::geometry::Grid& grid);
     geometry::Grid GetGrid() const;
 
     void SetDirichletBoundaryCondition(const double value, const std::string_view& boundary_name);
@@ -152,6 +152,6 @@ class SpatialVariable
     geometry::Grid spatial_grid_{};
 };
 
-}  // namespace cfd
+}  // namespace pde
 
 #endif  // PDE_SOLVER_DATA_TYPES_SPATIAL_VARIABLE_H

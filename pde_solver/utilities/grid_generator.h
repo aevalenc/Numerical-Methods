@@ -9,7 +9,7 @@
 
 #include "pde_solver/data_types/grid.h"
 
-namespace cfd
+namespace pde
 {
 
 namespace geometry
@@ -27,6 +27,6 @@ class GridGenerator
 
 }  // namespace geometry
 
-}  // namespace cfd
+}  // namespace pde
 
 #endif  // PDE_SOLVER_UTILITIES_GRID_GENERATOR_H

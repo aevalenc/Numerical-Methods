@@ -11,7 +11,7 @@
 #include "pde_solver/data_types/spatial_variable.h"
 #include <cstdint>
 
-namespace cfd
+namespace pde
 {
 
 namespace operators
@@ -80,6 +80,6 @@ class GradientOperator
 
 }  // namespace operators
 
-}  // namespace cfd
+}  // namespace pde
 
 #endif  // PDE_SOLVER_OPERATORS_GRADIENT_H

@@ -6,7 +6,7 @@
 
 #include "pde_solver/operators/gradient.h"
 
-namespace cfd
+namespace pde
 {
 
 namespace operators
@@ -61,4 +61,4 @@ void GradientOperator::GenerateMatrixForSpatialVariable(SpatialVariable& u)
 
 }  // namespace operators
 
-}  // namespace cfd
+}  // namespace pde

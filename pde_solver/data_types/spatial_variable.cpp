@@ -15,7 +15,7 @@
 #include <iostream>
 #include <tuple>
 
-namespace cfd
+namespace pde
 {
 
 SpatialDiscretizationMethod SpatialVariable::GetSpatialDiscretizationMethod() const
@@ -33,7 +33,7 @@ void SpatialVariable::SetDiscretizationSchema(FiniteDifferenceSchema discretizat
     discretization_schema_ = discretization_schema;
 }
 
-void SpatialVariable::SetGrid(const cfd::geometry::Grid& grid)
+void SpatialVariable::SetGrid(const pde::geometry::Grid& grid)
 {
     spatial_grid_ = grid;
     discretized_variable_.resize(spatial_grid_.GetNumberOfNodes());
@@ -118,4 +118,4 @@ void SpatialVariable::Solve(const std::int32_t max_iterations, const double tole
     std::ignore = std::copy(std::cbegin(u_subset), std::cend(u_subset), first_unknown_iterator);
 }
 
-}  // namespace cfd
+}  // namespace pde

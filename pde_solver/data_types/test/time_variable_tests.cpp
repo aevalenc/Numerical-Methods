@@ -18,7 +18,7 @@
 #include <cstdint>
 #include <gtest/gtest.h>
 
-namespace cfd
+namespace pde
 {
 
 namespace
@@ -57,7 +57,7 @@ TEST_F(BaseClassFixture, GivenSquareWaveInitialization_ExpectValidSingleStep)
 
     // Apply given gradient
     const double wave_speed = 1.0;
-    cfd::operators::GradientOperator nabla(wave_speed);
+    pde::operators::GradientOperator nabla(wave_speed);
     nabla.GenerateMatrixForSpatialVariable(u_);
 
     // Given time variable
@@ -84,4 +84,4 @@ TEST_F(BaseClassFixture, GivenSquareWaveInitialization_ExpectValidSingleStep)
 
 }  // namespace
 
-}  // namespace cfd
+}  // namespace pde

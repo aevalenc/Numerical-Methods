@@ -37,27 +37,27 @@ Solver::Solver(const double delta_t, const double end_time) : delta_t_(delta_t),
 void Solver::SetupLinearAdvection()
 {
     // Generate Grid
-    cfd::geometry::GridGenerator grid_generator{};
+    pde::geometry::GridGenerator grid_generator{};
     const auto grid = grid_generator.Create1DLinearGrid(11, 0.0, 1.0);
     x_ = Linspace(0.0, 1.0, 11);
 
     // Create Spatial Variable
-    cfd::SpatialVariable u{};
-    u.SetSpatialDiscretizationMethod(cfd::SpatialDiscretizationMethod::kFiniteDifferenceMethod);
-    u.SetDiscretizationSchema(cfd::FiniteDifferenceSchema::kBackwardsDifference);
+    pde::SpatialVariable u{};
+    u.SetSpatialDiscretizationMethod(pde::SpatialDiscretizationMethod::kFiniteDifferenceMethod);
+    u.SetDiscretizationSchema(pde::FiniteDifferenceSchema::kBackwardsDifference);
     u.SetGrid(grid);
 
     // Apply Operators
     const double wave_speed = 2.0;
-    cfd::operators::GradientOperator nabla(wave_speed);
+    pde::operators::GradientOperator nabla(wave_speed);
     nabla.GenerateMatrixForSpatialVariable(u);
 
     // Set Time Variable
-    cfd::TimeVariable tmp{u};
+    pde::TimeVariable tmp{u};
     uu = tmp;
     uu.SetStartTime(0.0);
     uu.SetEndTime(end_time_);
-    uu.SetTimeDiscretizationMethod(cfd::TimeDiscretizationMethod::kEulerStep);
+    uu.SetTimeDiscretizationMethod(pde::TimeDiscretizationMethod::kEulerStep);
     uu.SetInitialCondition(std::vector<double>{0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0});
 
     // Apply Boundary Conditions

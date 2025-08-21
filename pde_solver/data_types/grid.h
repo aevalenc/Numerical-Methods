@@ -14,7 +14,7 @@
 #include <ostream>
 #include <vector>
 
-namespace cfd
+namespace pde
 {
 
 namespace geometry
@@ -119,6 +119,6 @@ class Grid
 
 }  // namespace geometry
 
-}  // namespace cfd
+}  // namespace pde
 
 #endif  // PDE_SOLVER_DATA_TYPES_GRID_H

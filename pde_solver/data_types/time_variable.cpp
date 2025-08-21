@@ -13,7 +13,7 @@
 #include <cstdint>
 #include <iterator>
 
-namespace cfd
+namespace pde
 {
 namespace
 {
@@ -107,4 +107,4 @@ void TimeVariable::StepOnce()
     }
 }
 
-}  // namespace cfd
+}  // namespace pde

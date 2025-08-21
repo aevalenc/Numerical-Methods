@@ -12,7 +12,7 @@
 #include "pde_solver/data_types/spatial_variable.h"
 #include <vector>
 
-namespace cfd
+namespace pde
 {
 
 enum class TimeDiscretizationMethod
@@ -91,6 +91,6 @@ class TimeVariable
     double delta_t_{};
 };
 
-}  // namespace cfd
+}  // namespace pde
 
 #endif  // PDE_SOLVER_DATA_TYPES_TIME_VARIABLE_H

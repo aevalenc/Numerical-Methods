@@ -10,7 +10,7 @@
 #include <cstdint>
 #include <string>
 
-namespace cfd
+namespace pde
 {
 
 enum class SpatialDiscretizationMethod : std::int32_t
@@ -53,6 +53,6 @@ inline std::string SpatialDiscretizationMethodToString(const SpatialDiscretizati
     }
 }
 
-}  // namespace cfd
+}  // namespace pde
 
 #endif  // PDE_SOLVER_DISCRETIZATION_METHODS_H

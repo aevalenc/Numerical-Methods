@@ -12,7 +12,7 @@
 #include "pde_solver/data_types/grid.h"
 #include <gtest/gtest.h>
 
-namespace cfd
+namespace pde
 {
 
 namespace geometry
@@ -52,4 +52,4 @@ TEST_F(BaseClassFixture, GivenValidGrid_ExpectCorrectDisplay)
 }  // namespace
 }  // namespace geometry
 
-}  // namespace cfd
+}  // namespace pde

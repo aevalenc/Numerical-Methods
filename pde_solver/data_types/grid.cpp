@@ -6,7 +6,7 @@
 
 #include "pde_solver/data_types/grid.h"
 
-namespace cfd
+namespace pde
 {
 
 namespace geometry
@@ -49,4 +49,4 @@ void Element::SetBoundaryBoolean(const bool is_on_boundary)
 
 }  // namespace geometry
 
-}  // namespace cfd
+}  // namespace pde

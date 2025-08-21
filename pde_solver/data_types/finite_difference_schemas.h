@@ -10,7 +10,7 @@
 #include <cstdint>
 #include <string>
 
-namespace cfd
+namespace pde
 {
 
 enum class FiniteDifferenceSchema : std::int32_t
@@ -53,6 +53,6 @@ inline std::string FiniteDifferenceSchemaToString(const FiniteDifferenceSchema m
     }
 }
 
-}  // namespace cfd
+}  // namespace pde
 
 #endif  // PDE_SOLVER_FINITE_DIFFERENCE_SCHEMAS_H

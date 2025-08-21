@@ -7,7 +7,7 @@
 #include "pde_solver/utilities/grid_generator.h"
 #include "pde_solver/data_types/grid.h"
 
-namespace cfd
+namespace pde
 {
 
 namespace geometry
@@ -42,4 +42,4 @@ Grid GridGenerator::Create1DLinearGrid(const std::uint64_t& size, const double& 
 
 }  // namespace geometry
 
-}  // namespace cfd
+}  // namespace pde

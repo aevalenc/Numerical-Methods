@@ -13,7 +13,7 @@
 #include "pde_solver/utilities/grid_generator.h"
 #include <gtest/gtest.h>
 
-namespace cfd
+namespace pde
 {
 
 namespace
@@ -62,4 +62,4 @@ TEST_F(BaseClassFixture, GivenValidSetup_ExpectCorrectMatrixGeneration)
 
 }  // namespace
 
-}  // namespace cfd
+}  // namespace pde

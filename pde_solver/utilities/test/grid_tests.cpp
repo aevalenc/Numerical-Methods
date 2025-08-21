@@ -8,7 +8,7 @@
 #include "pde_solver/utilities/grid_generator.h"
 #include <gtest/gtest.h>
 
-namespace cfd
+namespace pde
 {
 
 namespace geometry
@@ -43,4 +43,4 @@ TEST(OneDimensionLinearGridTests, GivenValidStartAndEnd_ExpectValidGrid)
 
 }  // namespace geometry
 
-}  // namespace cfd
+}  // namespace pde
