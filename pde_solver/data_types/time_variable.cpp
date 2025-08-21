@@ -47,6 +47,13 @@ TimeVariable::TimeVariable(const SpatialVariable& u)
     u_previous_ = ux_.GetDiscretizedVariable();
 }
 
+void TimeVariable::InitializeWithSpatialVariable(const SpatialVariable& u)
+{
+    ux_ = u;
+    u_current_ = u.GetDiscretizedVariable();
+    u_previous_ = u.GetDiscretizedVariable();
+}
+
 TimeDiscretizationMethod TimeVariable::GetTimeDiscretizationMethod() const
 {
     return time_discretization_method_;
@@ -76,7 +83,7 @@ void TimeVariable::Step(const std::vector<double>& wave_speeds)
     }
 }
 
-void TimeVariable::Step()
+void TimeVariable::Run()
 {
     assert(start_time_ != end_time_);
     assert(delta_t_ != 0.0);
@@ -90,6 +97,7 @@ void TimeVariable::Step()
             const auto grad_u = nm::matrix::MatMult(ux_.GetStiffnessMatrix(), u_previous_);
             const auto grad_u_delta_t = ScalarMultiply(delta_t_, grad_u);
             u_current_ = AddVectors(u_previous_, grad_u_delta_t);
+            u_previous_ = u_current_;
         }
     }
 }

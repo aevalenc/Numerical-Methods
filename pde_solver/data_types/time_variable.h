@@ -74,9 +74,10 @@ class TimeVariable
     void SetInitialCondition(const std::vector<double>& u_initial) { u_previous_ = u_initial; };
     void SetDirichletBoundaryCondition();
     void Step(const std::vector<double>& wave_speeds);
-    void Step();
+    void Run();
     void StepOnce();
     void GenerateMassMatrix();
+    void InitializeWithSpatialVariable(const SpatialVariable& u);
     SpatialVariable ux_{};
 
     std::vector<double>& GetTimeVariable() { return u_current_; }
