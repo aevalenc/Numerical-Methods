@@ -1,0 +1,15 @@
+load("@rules_cc//cc:defs.bzl", "cc_test")
+
+cc_test(
+    name = "linear_advection_tests",
+    srcs = ["linear_advection_tests.cpp"],
+    deps = [
+        "//pde_solver/data_types:discretization_lib",
+        "//pde_solver/data_types:spatial_variable",
+        "//pde_solver/data_types:time_variable",
+        "//pde_solver/operators:gradient",
+        "//pde_solver/operators:laplace",
+        "//pde_solver/utilities:grid_generator",
+        "@googletest//:gtest_main",
+    ],
+)
