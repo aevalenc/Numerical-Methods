@@ -34,7 +34,7 @@ TEST(OneDimensionLinearGridTests, GivenValidStartAndEnd_ExpectValidGrid)
     ASSERT_TRUE(first_node_x_value.has_value());
 
     // Expect
-    EXPECT_EQ(result.GetSize(), 11);
+    EXPECT_EQ(result.GetNumberOfNodes(), 11);
     EXPECT_EQ(result.GetDimension(), 1);
     EXPECT_NEAR(*first_node_x_value, 0.0, tolerance);
 }
