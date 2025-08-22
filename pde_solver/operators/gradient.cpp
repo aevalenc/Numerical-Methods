@@ -26,7 +26,7 @@ void GradientOperator::GenerateMatrixForSpatialVariable(SpatialVariable& u)
     matrix_size_ = u.GetGrid().GetNumberOfNodes();
     const auto grid_dimension = u.GetGrid().GetDimension();
 
-    auto ux = u.GetGrid().GetElementsMutable();
+    const auto elements = u.GetGrid().GetElementsMutable();
 
     double delta_x{};
     if (grid_dimension == 1)
@@ -42,14 +42,25 @@ void GradientOperator::GenerateMatrixForSpatialVariable(SpatialVariable& u)
         {
             gradient_matrix.at(i).resize(matrix_size_);
 
-            if (i == 0 || (i == matrix_size_ - 1))
+            if (i == 0)
             {
-                gradient_matrix.at(i).at(i) = 1.0;
+                delta_x = std::abs(elements.at(i).GetElement().at(0).GetValues().at(0).value() -
+                                   elements.at(i).GetElement().at(1).GetValues().at(0).value());
+                gradient_matrix.at(i).at(i) = -1 / delta_x;
+                gradient_matrix.at(i).at(i + 1) = 1.0 / delta_x;
+                continue;
+            }
+            if (i == matrix_size_ - 1)
+            {
+                delta_x = std::abs(elements.at(i - 1).GetElement().at(0).GetValues().at(0).value() -
+                                   elements.at(i - 1).GetElement().at(1).GetValues().at(0).value());
+                gradient_matrix.at(i).at(i - 1) = -1.0 / delta_x;
+                gradient_matrix.at(i).at(i) = 1.0 / delta_x;
                 continue;
             }
 
-            delta_x = ux.at(i - 1).GetElement().at(0).GetValues().at(0).value() -
-                      ux.at(i).GetElement().at(0).GetValues().at(0).value();
+            delta_x = std::abs(elements.at(i - 1).GetElement().at(0).GetValues().at(0).value() -
+                               elements.at(i - 1).GetElement().at(1).GetValues().at(0).value());
             gradient_matrix.at(i).at(i - 1) = -wave_speed_ / delta_x;
             gradient_matrix.at(i).at(i) = wave_speed_ / delta_x;
             gradient_matrix.at(i).at(i + 1) = 0.0;

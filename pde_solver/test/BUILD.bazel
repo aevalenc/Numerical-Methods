@@ -13,3 +13,15 @@ cc_test(
         "@googletest//:gtest_main",
     ],
 )
+
+cc_test(
+    name = "ss_linear_gradient_tests",
+    srcs = ["ss_linear_gradient_tests.cpp"],
+    deps = [
+        "//pde_solver/data_types:discretization_lib",
+        "//pde_solver/data_types:spatial_variable",
+        "//pde_solver/operators:gradient",
+        "//pde_solver/utilities:grid_generator",
+        "@googletest//:gtest_main",
+    ],
+)

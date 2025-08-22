@@ -37,9 +37,12 @@ void SpatialVariable::SetGrid(const pde::geometry::Grid& grid)
 {
     spatial_grid_ = grid;
     discretized_variable_.resize(spatial_grid_.GetNumberOfNodes());
-    K_.resize(spatial_grid_.GetNumberOfNodes() - spatial_grid_.number_of_boundaries_);
-    C_.resize(spatial_grid_.GetNumberOfNodes() - spatial_grid_.number_of_boundaries_);
-    f_.resize(spatial_grid_.GetNumberOfNodes() - spatial_grid_.number_of_boundaries_);
+    // K_.resize(spatial_grid_.GetNumberOfNodes() - spatial_grid_.number_of_boundaries_);
+    // C_.resize(spatial_grid_.GetNumberOfNodes() - spatial_grid_.number_of_boundaries_);
+    // f_.resize(spatial_grid_.GetNumberOfNodes() - spatial_grid_.number_of_boundaries_);
+    K_.resize(spatial_grid_.GetNumberOfNodes());
+    C_.resize(spatial_grid_.GetNumberOfNodes());
+    f_.resize(spatial_grid_.GetNumberOfNodes());
 }
 
 geometry::Grid SpatialVariable::GetGrid() const
@@ -49,7 +52,7 @@ geometry::Grid SpatialVariable::GetGrid() const
 
 void SpatialVariable::SetDirichletBoundaryCondition(const double value, const std::int32_t boundary_index)
 {
-    if (boundary_index > discretized_variable_.size())
+    if (boundary_index > static_cast<std::int32_t>(discretized_variable_.size()))
     {
         std::cout << "Tried to access an index beyond the discretized variable max size of "
                   << discretized_variable_.size() << "\n";
@@ -57,16 +60,24 @@ void SpatialVariable::SetDirichletBoundaryCondition(const double value, const st
     }
 
     discretized_variable_.at(boundary_index) = value;
+
+    if (!K_.empty())
+    {
+        std::vector<double> boundary_row{};
+        boundary_row.resize(spatial_grid_.GetNumberOfNodes());
+        boundary_row.at(boundary_index) = 1.0;
+        K_.at(boundary_index) = boundary_row;
+    }
+    else
+    {
+        std::cout << "Stiffness matrix was not properly sized!\n"
+                  << "Attemped to assign Dirichlet boundary condition to stiffness matrix and failed";
+        return;
+    }
+
     if (!f_.empty())
     {
-        if (boundary_index == 0)
-        {
-            f_.at(boundary_index) = value;
-        }
-        else
-        {
-            f_.back() = value;
-        }
+        f_.at(boundary_index) = value;
     }
     else
     {
