@@ -95,7 +95,7 @@ void TimeVariable::Run()
         for (std::int32_t n = 0; n < number_of_steps; ++n)
         {
             const auto grad_u = nm::matrix::MatMult(ux_.GetStiffnessMatrix(), u_previous_);
-            const auto grad_u_delta_t = ScalarMultiply(delta_t_, grad_u);
+            const auto grad_u_delta_t = ScalarMultiply(-delta_t_, grad_u);
             u_current_ = AddVectors(u_previous_, grad_u_delta_t);
             u_previous_ = u_current_;
         }
@@ -109,7 +109,7 @@ void TimeVariable::StepOnce()
     if (time_discretization_method_ == TimeDiscretizationMethod::kEulerStep)
     {
         const auto grad_u = nm::matrix::MatMult(ux_.GetStiffnessMatrix(), u_previous_);
-        const auto grad_u_delta_t = ScalarMultiply(delta_t_, grad_u);
+        const auto grad_u_delta_t = ScalarMultiply(-delta_t_, grad_u);
         u_current_ = AddVectors(u_previous_, grad_u_delta_t);
         u_previous_ = u_current_;
     }

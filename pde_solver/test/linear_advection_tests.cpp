@@ -99,7 +99,7 @@ TEST_P(LinearAdvectionTestFixture, GivenSquareWaveAndCFLEqualToOne_ExpectNoNumer
     SetupParameterizedTest(param);
 
     // Call and Expect
-    for (std::int32_t t{}; t < static_cast<std::int32_t>((param.end_time - param.start_time) / param.delta_t); ++t)
+    for (std::int32_t t{0}; t < static_cast<std::int32_t>((param.end_time - param.start_time) / param.delta_t); ++t)
     {
         uu_.StepOnce();
         const auto max_value = std::max_element(uu_.GetTimeVariable().cbegin(), uu_.GetTimeVariable().cend());
