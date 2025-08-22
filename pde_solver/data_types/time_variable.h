@@ -18,8 +18,8 @@ namespace pde
 enum class TimeDiscretizationMethod
 {
     kEulerStep = 0,
-    kRungaKutta4,
-    kRungaKutta2,
+    kRungeKutta4,
+    kRungeKutta2,
     kInvalid,
 };
 
