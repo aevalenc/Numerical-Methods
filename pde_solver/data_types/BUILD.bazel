@@ -28,6 +28,9 @@ cc_library(
         ":discretization_lib",
         ":grid",
         "//matrix_solvers:utilities",
+        "//matrix_solvers/direct_solvers:lu_solve",
+        "//matrix_solvers/iterative_solvers:conjugate_gradient_method",
+        "//matrix_solvers/iterative_solvers:gauss_seidel_method",
         "//matrix_solvers/iterative_solvers:jacobi_method",
     ],
 )

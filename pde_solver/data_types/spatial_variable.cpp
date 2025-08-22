@@ -8,12 +8,13 @@
  */
 
 #include "pde_solver/data_types/spatial_variable.h"
+#include "matrix_solvers/direct_solvers/lu_solve.h"
+#include "matrix_solvers/iterative_solvers/conjugate_gradient.h"
+#include "matrix_solvers/iterative_solvers/gauss_seidel.h"
 #include "matrix_solvers/iterative_solvers/jacobi.h"
 #include "pde_solver/data_types/finite_difference_schemas.h"
-#include <algorithm>
 #include <cassert>
 #include <iostream>
-#include <tuple>
 
 namespace pde
 {
@@ -113,20 +114,30 @@ void SpatialVariable::Solve(const std::int32_t max_iterations, const double tole
     assert(!K_.empty());
     assert(!f_.empty());
 
-    std::vector<double>::iterator first_unknown_iterator{discretized_variable_.begin() + 1};
-    std::vector<double>::iterator last_unknown_iterator{discretized_variable_.end() - 1};
-    std::vector<double> u_subset{first_unknown_iterator, last_unknown_iterator};
+    // std::vector<double>::iterator first_unknown_iterator{discretized_variable_.begin() + 1};
+    // std::vector<double>::iterator last_unknown_iterator{discretized_variable_.end() - 1};
+    // std::vector<double> u_subset{first_unknown_iterator, last_unknown_iterator};
 
     switch (matrix_solver_)
     {
         case MatrixSolverEnum::kJacobi:
-            nm::matrix::jacobi(K_, f_, u_subset, max_iterations, tolerance);
+            nm::matrix::jacobi(K_, f_, discretized_variable_, max_iterations, tolerance);
+            break;
+        case MatrixSolverEnum::kGaussSeidel:
+            nm::matrix::GaussSeidel(K_, f_, discretized_variable_, max_iterations, tolerance);
+            break;
+        case MatrixSolverEnum::kConjugateGradient:
+            nm::matrix::ConjugateGradient(K_, f_, discretized_variable_, tolerance, max_iterations);
+            break;
+        case MatrixSolverEnum::kLUSolve:
+            discretized_variable_ = nm::matrix::LUSolve(K_, f_);
             break;
         default:
+            std::cout << "No matrix_solver found!\n";
             break;
     }
 
-    std::ignore = std::copy(std::cbegin(u_subset), std::cend(u_subset), first_unknown_iterator);
+    // std::ignore = std::copy(std::cbegin(u_subset), std::cend(u_subset), first_unknown_iterator);
 }
 
 }  // namespace pde

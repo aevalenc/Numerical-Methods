@@ -19,11 +19,12 @@ namespace pde
 {
 
 // Should be in Numerical Methods
-enum class MatrixSolverEnum : std::int32_t
+enum class MatrixSolverEnum : std::int16_t
 {
     kJacobi = 0,
     kGaussSeidel = 1,
-    kLUSolve = 2,
+    kConjugateGradient = 2,
+    kLUSolve = 3,
     kInvalid = 255,
 };
 
@@ -36,6 +37,10 @@ inline MatrixSolverEnum MatrixSolverEnumFromString(const std::string& str)
     if (str == "GaussSeidel")
     {
         return MatrixSolverEnum::kGaussSeidel;
+    }
+    if (str == "ConjugateGradient")
+    {
+        return MatrixSolverEnum::kConjugateGradient;
     }
     if (str == "LUSolve")
     {
@@ -52,6 +57,8 @@ inline std::string MatrixSolverEnumToString(const MatrixSolverEnum method)
             return "Jacobi";
         case MatrixSolverEnum::kGaussSeidel:
             return "GaussSeidel";
+        case MatrixSolverEnum::kConjugateGradient:
+            return "ConjugateGradient";
         case MatrixSolverEnum::kLUSolve:
             return "LUSolve";
         default:

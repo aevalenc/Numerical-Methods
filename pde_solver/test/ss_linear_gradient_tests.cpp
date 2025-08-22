@@ -37,6 +37,7 @@ struct SteadyStateLinearAdvectionTestParameter
     FiniteDifferenceSchema spatial_discretization_schema{FiniteDifferenceSchema::kBackwardsDifference};
     MatrixSolverEnum matrix_solver{MatrixSolverEnum::kJacobi};
     double expected_value{};
+    std::string test_name{};
 };
 
 class SteadyStateLinearAdvectionTestFixture : public ::testing::TestWithParam<SteadyStateLinearAdvectionTestParameter>
@@ -80,7 +81,7 @@ class SteadyStateLinearAdvectionTestFixture : public ::testing::TestWithParam<St
     double tolerance_{0.001};
 };
 
-TEST_P(SteadyStateLinearAdvectionTestFixture, GivenSquareWaveAndCFLEqualToOne_ExpectNoNumericalDiffusion)
+TEST_P(SteadyStateLinearAdvectionTestFixture, GivenNiceFunction_ExpectExactSolution)
 {
     // Get Parameter
     const auto param = GetParam();
@@ -97,44 +98,68 @@ TEST_P(SteadyStateLinearAdvectionTestFixture, GivenSquareWaveAndCFLEqualToOne_Ex
 
     // Expect
     EXPECT_NEAR(u_.GetDiscretizedVariable().back(), param.expected_value, tolerance_);
-    nm::matrix::PrintVector(u_.GetDiscretizedVariable());
-    // EXPECT_TRUE(true);
 }
 
-INSTANTIATE_TEST_SUITE_P(
-    LinearAdvectionTestFixtureTests,
-    SteadyStateLinearAdvectionTestFixture,
-    testing::Values(
-        //  SteadyStateLinearAdvectionTestParameter{
-        //      .number_of_grid_points = 11,
-        //      .xf = 1.0,
-        //      .max_iterations = 1000,
-        //      .delta_t = 0.1,
-        //      .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
-        //      .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
-
-        //  },
-        //  SteadyStateLinearAdvectionTestParameter{
-        //      .number_of_grid_points = 101,
-        //      .xf = 1.0,
-        //      .end_time = 0.8,
-        //      .delta_t = 0.01,
-        //      .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
-        //      .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
-
-        //  },
-        SteadyStateLinearAdvectionTestParameter{
-            .number_of_grid_points = 11,
-            .xf = 1.0,
-            .max_iterations = 1000,
-            .wave_speed = 1.0,
-            .forcing_term = 7.0,
-            .dirichlet_boundary_value = 3.0,
-            .boundary_index = 0,
-            .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
-            .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
-            .matrix_solver = MatrixSolverEnum::kJacobi,
-            .expected_value = 10.0}));
+INSTANTIATE_TEST_SUITE_P(LinearAdvectionTestFixtureTests,
+                         SteadyStateLinearAdvectionTestFixture,
+                         testing::Values(
+                             SteadyStateLinearAdvectionTestParameter{
+                                 .number_of_grid_points = 11,
+                                 .xf = 1.0,
+                                 .max_iterations = 1000,
+                                 .wave_speed = 2.0,
+                                 .forcing_term = 5.0,
+                                 .dirichlet_boundary_value = 2.5,
+                                 .boundary_index = 0,
+                                 .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
+                                 .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
+                                 .matrix_solver = MatrixSolverEnum::kJacobi,
+                                 .expected_value = 5.0,
+                                 .test_name = "JacobiSolveWithSlopeFiveHalves",
+                             },
+                             SteadyStateLinearAdvectionTestParameter{
+                                 .number_of_grid_points = 11,
+                                 .xf = 1.0,
+                                 .max_iterations = 1000,
+                                 .wave_speed = 2.0,
+                                 .forcing_term = 5.0,
+                                 .dirichlet_boundary_value = 2.5,
+                                 .boundary_index = 0,
+                                 .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
+                                 .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
+                                 .matrix_solver = MatrixSolverEnum::kGaussSeidel,
+                                 .expected_value = 5.0,
+                                 .test_name = "GaussSeidelSolveWithSlopeFiveHalves"},
+                             SteadyStateLinearAdvectionTestParameter{
+                                 .number_of_grid_points = 101,
+                                 .xf = 1.0,
+                                 .max_iterations = 1000,
+                                 .wave_speed = 2.0,
+                                 .forcing_term = 5.0,
+                                 .dirichlet_boundary_value = 2.5,
+                                 .boundary_index = 0,
+                                 .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
+                                 .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
+                                 .matrix_solver = MatrixSolverEnum::kLUSolve,
+                                 .expected_value = 5.0,
+                                 .test_name = "LUSolveWithSlopeFiveHalves",
+                             },
+                             SteadyStateLinearAdvectionTestParameter{
+                                 .number_of_grid_points = 11,
+                                 .xf = 1.0,
+                                 .max_iterations = 1000,
+                                 .wave_speed = 1.0,
+                                 .forcing_term = 7.0,
+                                 .dirichlet_boundary_value = 3.0,
+                                 .boundary_index = 0,
+                                 .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
+                                 .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
+                                 .matrix_solver = MatrixSolverEnum::kJacobi,
+                                 .expected_value = 10.0,
+                                 .test_name = "JacobiSolveWithSlopeSeven",
+                             }),
+                         [](const ::testing::TestParamInfo<SteadyStateLinearAdvectionTestParameter>& info)
+                             -> std::string { return info.param.test_name; });
 
 }  // namespace
 }  // namespace pde

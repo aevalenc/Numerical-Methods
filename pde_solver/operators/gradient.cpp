@@ -54,8 +54,8 @@ void GradientOperator::GenerateMatrixForSpatialVariable(SpatialVariable& u)
             {
                 delta_x = std::abs(elements.at(i - 1).GetElement().at(0).GetValues().at(0).value() -
                                    elements.at(i - 1).GetElement().at(1).GetValues().at(0).value());
-                gradient_matrix.at(i).at(i - 1) = -1.0 / delta_x;
-                gradient_matrix.at(i).at(i) = 1.0 / delta_x;
+                gradient_matrix.at(i).at(i - 1) = -wave_speed_ / delta_x;
+                gradient_matrix.at(i).at(i) = wave_speed_ / delta_x;
                 continue;
             }
 
