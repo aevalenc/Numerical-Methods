@@ -12,6 +12,7 @@
 #include <cassert>
 #include <cstdint>
 #include <iterator>
+#include <vector>
 
 namespace pde
 {
@@ -68,6 +69,12 @@ void TimeVariable::InitializeWithSpatialVariable(const SpatialVariable& u)
     u_previous_ = u.GetDiscretizedVariable();
 }
 
+void TimeVariable::SetInitialCondition(const std::vector<double>& u_initial)
+{
+    u_previous_ = u_initial;
+    u_current_ = u_previous_;
+}
+
 TimeDiscretizationMethod TimeVariable::GetTimeDiscretizationMethod() const
 {
     return time_discretization_method_;
@@ -76,6 +83,11 @@ TimeDiscretizationMethod TimeVariable::GetTimeDiscretizationMethod() const
 void TimeVariable::SetTimeDiscretizationMethod(TimeDiscretizationMethod time_discretization_method)
 {
     time_discretization_method_ = time_discretization_method;
+}
+
+void TimeVariable::SetRightHandSideMatrix(const nm::matrix::Matrix<double>& rhs_matrix)
+{
+    rhs_matrix_ = rhs_matrix;
 }
 
 void TimeVariable::Step(const std::vector<double>& wave_speeds)
@@ -101,6 +113,7 @@ void TimeVariable::Run()
 {
     assert(start_time_ != end_time_);
     assert(delta_t_ != 0.0);
+    assert(time_discretization_method_ != TimeDiscretizationMethod::kInvalid);
 
     const auto number_of_steps = static_cast<std::int32_t>((end_time_ - start_time_) / delta_t_);
 
@@ -108,9 +121,10 @@ void TimeVariable::Run()
     {
         for (std::int32_t n = 0; n < number_of_steps; ++n)
         {
-            const auto grad_u = nm::matrix::MatMult(ux_.GetStiffnessMatrix(), u_previous_);
-            const auto grad_u_delta_t = ScalarMultiply(-delta_t_, grad_u);
-            u_current_ = AddVectors(u_previous_, grad_u_delta_t);
+            // const auto grad_u = nm::matrix::MatMult(ux_.GetStiffnessMatrix(), u_previous_);
+            const auto rhs_multiplied = nm::matrix::MatMult(rhs_matrix_, u_previous_);
+            const auto rhs_delta_t = ScalarMultiply(delta_t_, rhs_multiplied);
+            u_current_ = AddVectors(u_previous_, rhs_delta_t);
             u_previous_ = u_current_;
         }
     }
@@ -134,9 +148,14 @@ void TimeVariable::StepOnce()
 
     if (time_discretization_method_ == TimeDiscretizationMethod::kEulerStep)
     {
-        const auto grad_u = nm::matrix::MatMult(ux_.GetStiffnessMatrix(), u_previous_);
-        const auto grad_u_delta_t = ScalarMultiply(-delta_t_, grad_u);
-        u_current_ = AddVectors(u_previous_, grad_u_delta_t);
+        // const auto grad_u = nm::matrix::MatMult(ux_.GetStiffnessMatrix(), u_previous_);
+        // const auto grad_u_delta_t = ScalarMultiply(-delta_t_, grad_u);
+        // u_current_ = AddVectors(u_previous_, grad_u_delta_t);
+        // u_previous_ = u_current_;
+
+        const auto rhs_multiplied = nm::matrix::MatMult(rhs_matrix_, u_previous_);
+        const auto rhs_delta_t = ScalarMultiply(delta_t_, rhs_multiplied);
+        u_current_ = AddVectors(u_previous_, rhs_delta_t);
         u_previous_ = u_current_;
     }
     else if (time_discretization_method_ == TimeDiscretizationMethod::kRungeKutta2)

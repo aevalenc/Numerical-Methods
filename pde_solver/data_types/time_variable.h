@@ -71,8 +71,9 @@ class TimeVariable
     void SetStartTime(const double start_time) { start_time_ = start_time; };
     void SetEndTime(const double end_time) { end_time_ = end_time; };
     void SetTimeStep(const double delta_t) { delta_t_ = delta_t; };
-    void SetInitialCondition(const std::vector<double>& u_initial) { u_previous_ = u_initial; };
+    void SetInitialCondition(const std::vector<double>& u_initial);
     void SetDirichletBoundaryCondition();
+    void SetRightHandSideMatrix(const nm::matrix::Matrix<double>& rhs);
     void Step(const std::vector<double>& wave_speeds);
     void Run();
     void StepOnce();
@@ -86,6 +87,7 @@ class TimeVariable
     TimeDiscretizationMethod time_discretization_method_;
     std::vector<double> u_current_{};
     std::vector<double> u_previous_{};
+    nm::matrix::Matrix<double> rhs_matrix_{};
     nm::matrix::Matrix<double> M_{};
     double start_time_{};
     double end_time_{};
