@@ -83,7 +83,7 @@ class Element
         return os;
     }
 
-    ElementEntity GetElement() const { return nodes_; };
+    ElementEntity GetNodes() const { return nodes_; };
     std::int8_t GetDimension() const { return dimension_; };
     FiniteElementOrder GetOrder() const { return order_; };
     const bool IsOnBoundary() const;

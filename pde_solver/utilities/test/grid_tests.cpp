@@ -28,7 +28,7 @@ TEST(OneDimensionLinearGridTests, GivenValidStartAndEnd_ExpectValidGrid)
 
     // Call
     const auto result = grid_generator.Create1DLinearGrid(size, start, end);
-    const auto first_node = result.GetElements().at(0).GetElement().front();
+    const auto first_node = result.GetElements().at(0).GetNodes().front();
     const auto first_node_x_value = first_node.GetValues().front();
 
     ASSERT_TRUE(first_node_x_value.has_value());
