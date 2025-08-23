@@ -48,8 +48,25 @@ class BaseClassFixture : public testing::Test
 TEST_F(BaseClassFixture, GivenValidSetup_ExpectCorrectMatrixGeneration)
 {
     const auto result = delta_.GenerateMatrix();
-    nm::matrix::PrintMatrix(result);
     EXPECT_NEAR(result.at(0).at(0), 2.0, tolerance_);
+}
+
+TEST(GivenValidSetup, CallGenerateMatrixForSpatialVariable_ExpectCorrectMatrix)
+{
+    // Given
+    geometry::GridGenerator grid_generator{};
+    const auto grid = grid_generator.Create1DLinearGrid(5, 0, 1);
+
+    SpatialVariable u{};
+    u.SetGrid(grid);
+
+    // Call
+    operators::LaplaceOperator laplace{};
+    laplace.GenerateMatrixForSpatialVariable(u);
+
+    // Expect
+    const auto result = u.GetStiffnessMatrix();
+    EXPECT_NEAR(result.at(0).at(0), -32, 0.001);
 }
 
 }  // namespace
