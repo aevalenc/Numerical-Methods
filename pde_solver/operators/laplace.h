@@ -32,6 +32,7 @@ class LaplaceOperator
     const SpatialVariable* u_{};
     std::int8_t dimension_{1};
     std::int32_t matrix_size_{};
+    double constant_diffusion{1.0};
 };
 
 }  // namespace operators

@@ -63,34 +63,42 @@ const nm::matrix::Matrix<double> LaplaceOperator::GenerateMatrix()
 
 void LaplaceOperator::GenerateMatrixForSpatialVariable(SpatialVariable& u)
 {
-    matrix_size_ = static_cast<std::int32_t>(u.GetGrid().GetNumberOfNodes());
+    const auto grid = u.GetGrid();
+    matrix_size_ = static_cast<std::int32_t>(grid.GetNumberOfNodes());
     nm::matrix::Matrix<double> output_matrix{};
-    const std::vector<double> matrix_entries{-1.0, 2.0, -1.0};
+    const auto elements = u.GetGrid().GetElements();
 
-    const auto n = static_cast<std::int32_t>(matrix_size_ - u.GetGrid().number_of_boundaries_);
-
-    output_matrix.resize(n);
-    for (std::int32_t i{0}; i < n; ++i)
+    output_matrix.resize(matrix_size_);
+    if (grid.GetDimension() == 1)
     {
-        output_matrix.at(i).resize(n);
-        if (i == 0)
+        for (std::int32_t i{0}; i < matrix_size_; ++i)
         {
-            output_matrix.at(i).at(i) = matrix_entries.at(1);
-            output_matrix.at(i).at(i + 1) = matrix_entries.at(2);
+            output_matrix.at(i).resize(matrix_size_);
+            if (i == 0)
+            {
+                const auto delta_x = std::abs(elements.at(i).GetElement().at(0).GetValues().at(0).value() -
+                                              elements.at(i).GetElement().at(1).GetValues().at(0).value());
+                output_matrix.at(i).at(i) = constant_diffusion / (delta_x * delta_x) * -2.0;
+                output_matrix.at(i).at(i + 1) = constant_diffusion / (delta_x * delta_x);
+            }
+            else if (i == matrix_size_ - 1)
+            {
+                const auto delta_x = std::abs(elements.at(i - 1).GetElement().at(0).GetValues().at(0).value() -
+                                              elements.at(i - 1).GetElement().at(1).GetValues().at(0).value());
+                output_matrix.at(i).at(i - 1) = constant_diffusion / (delta_x * delta_x);
+                output_matrix.at(i).at(i) = constant_diffusion / (delta_x * delta_x) * -2.0;
+            }
+            else
+            {
+                const auto delta_x = std::abs(elements.at(i).GetElement().at(0).GetValues().at(0).value() -
+                                              elements.at(i).GetElement().at(1).GetValues().at(0).value());
+                output_matrix.at(i).at(i - 1) = constant_diffusion / (delta_x * delta_x);
+                output_matrix.at(i).at(i) = constant_diffusion / (delta_x * delta_x) * -2.0;
+                output_matrix.at(i).at(i + 1) = constant_diffusion / (delta_x * delta_x);
+            }
         }
-        else if (i == n - 1)
-        {
-            output_matrix.at(i).at(i - 1) = matrix_entries.at(2);
-            output_matrix.at(i).at(i) = matrix_entries.at(1);
-        }
-        else
-        {
-            output_matrix.at(i).at(i - 1) = matrix_entries.at(0);
-            output_matrix.at(i).at(i) = matrix_entries.at(1);
-            output_matrix.at(i).at(i + 1) = matrix_entries.at(2);
-        }
+        u.SetStiffnessMatrix(output_matrix);
     }
-    u.SetStiffnessMatrix(output_matrix);
 }
 
 }  // namespace operators
