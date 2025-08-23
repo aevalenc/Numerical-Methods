@@ -25,3 +25,15 @@ cc_test(
         "@googletest//:gtest_main",
     ],
 )
+
+cc_test(
+    name = "ss_linear_laplace_tests",
+    srcs = ["ss_linear_laplace_tests.cpp"],
+    deps = [
+        "//pde_solver/data_types:discretization_lib",
+        "//pde_solver/data_types:spatial_variable",
+        "//pde_solver/operators:laplace",
+        "//pde_solver/utilities:grid_generator",
+        "@googletest//:gtest_main",
+    ],
+)
