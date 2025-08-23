@@ -33,10 +33,36 @@ class BaseClassFixture : public testing::Test
     operators::GradientOperator nabla_{};
 
   public:
-    // void SetUp() override
-    // {
+    void SetUp() override
+    {
+        const geometry::Grid grid_ =
+            grid_generator_.Create1DLinearGrid(number_of_grid_nodes_, initial_point_x_value_, end_point_x_value_);
+        u_.SetGrid(grid_);
+        u_.SetSpatialDiscretizationMethod(SpatialDiscretizationMethod::kFiniteDifferenceMethod);
+        u_.SetDiscretizationSchema(FiniteDifferenceSchema::kBackwardsDifference);
 
-    // }
+        // Apply given gradient
+        const double wave_speed = 1.0;
+        pde::operators::GradientOperator nabla(wave_speed);
+        nabla.GenerateMatrixForSpatialVariable(u_);
+
+        // Given time variable
+        uu_.InitializeWithSpatialVariable(u_);
+        uu_.SetStartTime(0.0);
+        uu_.SetEndTime(10.0);
+        uu_.SetInitialCondition(std::vector<double>{0, 1, 1, 0, 0});
+
+        // Given Boundary Conditions
+        uu_.ux_.SetDirichletBoundaryCondition(left_boundary_condition_, 0);
+        uu_.ux_.SetDirichletBoundaryCondition(right_boundary_condition_, number_of_grid_nodes_ - 1);
+
+        // Given time step
+        uu_.SetTimeStep(time_step_);
+
+        // Construct right hand side
+        const auto negative_gradient = nm::matrix::ScalarMultiply(-1.0, uu_.ux_.GetStiffnessMatrix());
+        uu_.SetRightHandSideMatrix(negative_gradient);
+    }
 
   public:
     std::int32_t number_of_grid_nodes_{5};
@@ -47,39 +73,30 @@ class BaseClassFixture : public testing::Test
     double time_step_{0.1};
 };
 
-TEST_F(BaseClassFixture, GivenSquareWaveInitialization_ExpectValidSingleStep)
+TEST_F(BaseClassFixture, GivenSquareWaveInitialization_WithEulerStep_ExpectValidSingleStep)
 {
-    const geometry::Grid grid_ =
-        grid_generator_.Create1DLinearGrid(number_of_grid_nodes_, initial_point_x_value_, end_point_x_value_);
-    u_.SetGrid(grid_);
-    u_.SetSpatialDiscretizationMethod(SpatialDiscretizationMethod::kFiniteDifferenceMethod);
-    u_.SetDiscretizationSchema(FiniteDifferenceSchema::kBackwardsDifference);
-
-    // Apply given gradient
-    const double wave_speed = 1.0;
-    pde::operators::GradientOperator nabla(wave_speed);
-    nabla.GenerateMatrixForSpatialVariable(u_);
-
-    // Given time variable
-    TimeVariable uu{u_};
-    uu.SetStartTime(0.0);
-    uu.SetEndTime(10.0);
-    uu.SetTimeDiscretizationMethod(TimeDiscretizationMethod::kEulerStep);
-    uu.SetInitialCondition(std::vector<double>{0, 1, 1, 0, 0});
-
-    // Given Boundary Conditions
-    uu.ux_.SetDirichletBoundaryCondition(left_boundary_condition_, 0);
-    uu.ux_.SetDirichletBoundaryCondition(right_boundary_condition_, number_of_grid_nodes_ - 1);
-
-    // Given time step
-    uu.SetTimeStep(time_step_);
+    // When
+    uu_.SetTimeDiscretizationMethod(TimeDiscretizationMethod::kEulerStep);
 
     // Call Advance One Step
-    uu.StepOnce();
+    uu_.StepOnce();
 
     // Expect
-    EXPECT_NEAR(uu.GetTimeVariable().at(1), 0.6, 0.001);
-    EXPECT_NEAR(uu.GetTimeVariable().at(2), 1.0, 0.001);
+    EXPECT_NEAR(uu_.GetTimeVariable().at(1), 0.6, 0.001);
+    EXPECT_NEAR(uu_.GetTimeVariable().at(2), 1.0, 0.001);
+}
+
+TEST_F(BaseClassFixture, GivenSquareWaveInitialization_WithSecondOrderRK_ExpectValidSingleStep)
+{
+    // When
+    uu_.SetTimeDiscretizationMethod(TimeDiscretizationMethod::kRungeKutta2);
+
+    // Call Advance One Step
+    uu_.StepOnce();
+
+    // Expect
+    EXPECT_NEAR(uu_.GetTimeVariable().at(1), 0.6, 0.001);
+    EXPECT_NEAR(uu_.GetTimeVariable().at(2), 1.0, 0.001);
 }
 
 }  // namespace
