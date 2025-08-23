@@ -76,22 +76,22 @@ void LaplaceOperator::GenerateMatrixForSpatialVariable(SpatialVariable& u)
             output_matrix.at(i).resize(matrix_size_);
             if (i == 0)
             {
-                const auto delta_x = std::abs(elements.at(i).GetElement().at(0).GetValues().at(0).value() -
-                                              elements.at(i).GetElement().at(1).GetValues().at(0).value());
+                const auto delta_x = std::abs(elements.at(i).GetNodes().at(0).GetValues().at(0).value() -
+                                              elements.at(i).GetNodes().at(1).GetValues().at(0).value());
                 output_matrix.at(i).at(i) = constant_diffusion / (delta_x * delta_x) * -2.0;
                 output_matrix.at(i).at(i + 1) = constant_diffusion / (delta_x * delta_x);
             }
             else if (i == matrix_size_ - 1)
             {
-                const auto delta_x = std::abs(elements.at(i - 1).GetElement().at(0).GetValues().at(0).value() -
-                                              elements.at(i - 1).GetElement().at(1).GetValues().at(0).value());
+                const auto delta_x = std::abs(elements.at(i - 1).GetNodes().at(0).GetValues().at(0).value() -
+                                              elements.at(i - 1).GetNodes().at(1).GetValues().at(0).value());
                 output_matrix.at(i).at(i - 1) = constant_diffusion / (delta_x * delta_x);
                 output_matrix.at(i).at(i) = constant_diffusion / (delta_x * delta_x) * -2.0;
             }
             else
             {
-                const auto delta_x = std::abs(elements.at(i).GetElement().at(0).GetValues().at(0).value() -
-                                              elements.at(i).GetElement().at(1).GetValues().at(0).value());
+                const auto delta_x = std::abs(elements.at(i).GetNodes().at(0).GetValues().at(0).value() -
+                                              elements.at(i).GetNodes().at(1).GetValues().at(0).value());
                 output_matrix.at(i).at(i - 1) = constant_diffusion / (delta_x * delta_x);
                 output_matrix.at(i).at(i) = constant_diffusion / (delta_x * delta_x) * -2.0;
                 output_matrix.at(i).at(i + 1) = constant_diffusion / (delta_x * delta_x);
