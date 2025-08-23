@@ -148,11 +148,6 @@ void TimeVariable::StepOnce()
 
     if (time_discretization_method_ == TimeDiscretizationMethod::kEulerStep)
     {
-        // const auto grad_u = nm::matrix::MatMult(ux_.GetStiffnessMatrix(), u_previous_);
-        // const auto grad_u_delta_t = ScalarMultiply(-delta_t_, grad_u);
-        // u_current_ = AddVectors(u_previous_, grad_u_delta_t);
-        // u_previous_ = u_current_;
-
         const auto rhs_multiplied = nm::matrix::MatMult(rhs_matrix_, u_previous_);
         const auto rhs_delta_t = ScalarMultiply(delta_t_, rhs_multiplied);
         u_current_ = AddVectors(u_previous_, rhs_delta_t);
@@ -160,15 +155,12 @@ void TimeVariable::StepOnce()
     }
     else if (time_discretization_method_ == TimeDiscretizationMethod::kRungeKutta2)
     {
-        const auto negative_gradient = ScalarMultiply(-1.0, ux_.GetStiffnessMatrix());
-        const auto grad_u = nm::matrix::MatMult(negative_gradient, u_previous_);
-        const auto k1 = ScalarMultiply(delta_t_, grad_u);
-        nm::matrix::PrintVector(k1);
+        const auto rhs_multiplied = nm::matrix::MatMult(rhs_matrix_, u_previous_);
+        const auto k1 = ScalarMultiply(delta_t_, rhs_multiplied);
 
         const auto u_hat = AddVectors(u_previous_, k1);
-        const auto grad_u_hat = nm::matrix::MatMult(negative_gradient, u_hat);
-        const auto k2 = ScalarMultiply(delta_t_, grad_u_hat);
-        nm::matrix::PrintVector(k2);
+        const auto u_hat_multiplied = nm::matrix::MatMult(rhs_matrix_, u_hat);
+        const auto k2 = ScalarMultiply(delta_t_, u_hat_multiplied);
 
         const auto k1_plus_k2 = AddVectors(k1, k2);
         const auto k1_plus_k2_by_2 = ScalarMultiply(0.5, k1_plus_k2);
