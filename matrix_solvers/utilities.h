@@ -117,6 +117,28 @@ std::vector<double> CalculateResidual(const Matrix<double>& A,
                                       const std::vector<double>& x,
                                       const std::int32_t n);
 
+nm::matrix::Matrix<double> ScalarMultiply(const double scalar_value, const nm::matrix::Matrix<double>& A);
+/// @brief Adds two vectors element-wise
+///
+/// @param a First std::vector of doubles
+/// @param b Second std::vector of doubles
+/// @return std::vector<double> The element-wise sum of a and b
+std::vector<double> AddVectors(const std::vector<double>& a, const std::vector<double>& b);
+
+/// @brief Multiplies a vector by a scalar value
+///
+/// @param scalar_value The scalar multiplier
+/// @param a The std::vector of doubles to be scaled
+/// @return std::vector<double> The scaled vector
+std::vector<double> ScalarMultiply(const double scalar_value, const std::vector<double>& a);
+
+/// @brief Multiplies a matrix by a scalar value
+///
+/// @param scalar_value The scalar multiplier
+/// @param A The matrix to be scaled
+/// @return Matrix<double> The scaled matrix
+nm::matrix::Matrix<double> ScalarMultiply(const double scalar_value, const nm::matrix::Matrix<double>& A);
+
 }  // namespace matrix
 
 }  // namespace nm
