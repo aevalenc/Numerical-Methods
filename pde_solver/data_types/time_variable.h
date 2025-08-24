@@ -79,6 +79,7 @@ class TimeVariable
     void StepOnce();
     void GenerateMassMatrix();
     void InitializeWithSpatialVariable(const SpatialVariable& u);
+    void Reset();
     SpatialVariable ux_{};
 
     std::vector<double>& GetTimeVariable() { return u_current_; }

@@ -16,44 +16,6 @@
 
 namespace pde
 {
-namespace
-{
-
-std::vector<double> AddVectors(const std::vector<double>& a, const std::vector<double>& b)
-{
-    // assert(a.size() != b.size());
-    std::vector<double> result{a};
-    for (std::int32_t i{0}; i < static_cast<int32_t>(a.size()); ++i)
-    {
-        result[i] += b[i];
-    }
-    return result;
-}
-
-std::vector<double> ScalarMultiply(const double scalar_value, const std::vector<double>& a)
-{
-    std::vector<double> result{a};
-    for (std::int32_t i{0}; i < static_cast<int32_t>(a.size()); ++i)
-    {
-        result[i] *= scalar_value;
-    }
-    return result;
-}
-
-nm::matrix::Matrix<double> ScalarMultiply(const double scalar_value, const nm::matrix::Matrix<double>& A)
-{
-    nm::matrix::Matrix<double> result{A};
-    for (std::int32_t i{0}; i < static_cast<int32_t>(A.size()); ++i)
-    {
-        for (std::int32_t j{0}; j < static_cast<std::int32_t>(A.at(0).size()); ++j)
-        {
-            result.at(i).at(j) *= scalar_value;
-        }
-    }
-    return result;
-}
-
-}  // namespace
 
 TimeVariable::TimeVariable(const SpatialVariable& u)
     : ux_(u), time_discretization_method_(TimeDiscretizationMethod::kInvalid)
@@ -121,24 +83,57 @@ void TimeVariable::Run()
     {
         for (std::int32_t n = 0; n < number_of_steps; ++n)
         {
-            // const auto grad_u = nm::matrix::MatMult(ux_.GetStiffnessMatrix(), u_previous_);
             const auto rhs_multiplied = nm::matrix::MatMult(rhs_matrix_, u_previous_);
-            const auto rhs_delta_t = ScalarMultiply(delta_t_, rhs_multiplied);
-            u_current_ = AddVectors(u_previous_, rhs_delta_t);
+            const auto rhs_delta_t = nm::matrix::ScalarMultiply(delta_t_, rhs_multiplied);
+            u_current_ = nm::matrix::AddVectors(u_previous_, rhs_delta_t);
             u_previous_ = u_current_;
         }
     }
     else if (time_discretization_method_ == TimeDiscretizationMethod::kRungeKutta2)
     {
-        const auto k1 = ScalarMultiply(-delta_t_, nm::matrix::MatMult(ux_.GetStiffnessMatrix(), u_previous_));
-        const auto u_hat = AddVectors(u_previous_, k1);
-        const auto k2 = ScalarMultiply(-delta_t_, nm::matrix::MatMult(ux_.GetStiffnessMatrix(), u_hat));
+        for (std::int32_t n = 0; n < number_of_steps; ++n)
+        {
+            const auto rhs_multiplied = nm::matrix::MatMult(rhs_matrix_, u_previous_);
+            const auto k1 = nm::matrix::ScalarMultiply(delta_t_, rhs_multiplied);
 
-        const auto k1_by_2 = ScalarMultiply(0.5, k1);
-        const auto k2_by_2 = ScalarMultiply(0.5, k2);
+            const auto u_hat = nm::matrix::AddVectors(u_previous_, k1);
+            const auto u_hat_multiplied = nm::matrix::MatMult(rhs_matrix_, u_hat);
+            const auto k2 = nm::matrix::ScalarMultiply(delta_t_, u_hat_multiplied);
 
-        u_current_ = AddVectors(AddVectors(u_previous_, k1_by_2), k2_by_2);
-        u_previous_ = u_current_;
+            const auto k1_plus_k2 = nm::matrix::AddVectors(k1, k2);
+            const auto k1_plus_k2_by_2 = nm::matrix::ScalarMultiply(0.5, k1_plus_k2);
+
+            u_current_ = nm::matrix::AddVectors(u_previous_, k1_plus_k2_by_2);
+            u_previous_ = u_current_;
+        }
+    }
+    else if (time_discretization_method_ == TimeDiscretizationMethod::kRungeKutta4)
+    {
+        for (std::int32_t n = 0; n < number_of_steps; ++n)
+        {
+            const auto k1 = nm::matrix::MatMult(rhs_matrix_, u_previous_);
+            const auto k1_x_delta_t_by_2 = nm::matrix::ScalarMultiply(delta_t_ / 2, k1);
+
+            const auto u_hat_k1 = nm::matrix::AddVectors(u_previous_, k1_x_delta_t_by_2);
+            const auto k2 = nm::matrix::MatMult(rhs_matrix_, u_hat_k1);
+
+            const auto k2_x_delta_t_by_2 = nm::matrix::ScalarMultiply(delta_t_ / 2, k2);
+            const auto u_hat_k2 = nm::matrix::AddVectors(u_previous_, k2_x_delta_t_by_2);
+            const auto k3 = nm::matrix::MatMult(rhs_matrix_, u_hat_k2);
+
+            const auto k3_x_delta_t = nm::matrix::ScalarMultiply(delta_t_, k3);
+            const auto u_hat_k3 = nm::matrix::AddVectors(u_previous_, k3_x_delta_t);
+            const auto k4 = nm::matrix::MatMult(rhs_matrix_, u_hat_k3);
+
+            const auto sum1 = nm::matrix::AddVectors(k1, nm::matrix::ScalarMultiply(2.0, k2));
+            const auto sum2 = nm::matrix::AddVectors(sum1, nm::matrix::ScalarMultiply(2.0, k3));
+            const auto sum3 = nm::matrix::AddVectors(sum2, k4);
+
+            const auto update = nm::matrix::ScalarMultiply(delta_t_ / 6, sum3);
+
+            u_current_ = nm::matrix::AddVectors(u_previous_, update);
+            u_previous_ = u_current_;
+        }
     }
 }
 
@@ -149,48 +144,58 @@ void TimeVariable::StepOnce()
     if (time_discretization_method_ == TimeDiscretizationMethod::kEulerStep)
     {
         const auto rhs_multiplied = nm::matrix::MatMult(rhs_matrix_, u_previous_);
-        const auto rhs_delta_t = ScalarMultiply(delta_t_, rhs_multiplied);
-        u_current_ = AddVectors(u_previous_, rhs_delta_t);
+        const auto rhs_delta_t = nm::matrix::ScalarMultiply(delta_t_, rhs_multiplied);
+        u_current_ = nm::matrix::AddVectors(u_previous_, rhs_delta_t);
         u_previous_ = u_current_;
     }
     else if (time_discretization_method_ == TimeDiscretizationMethod::kRungeKutta2)
     {
         const auto rhs_multiplied = nm::matrix::MatMult(rhs_matrix_, u_previous_);
-        const auto k1 = ScalarMultiply(delta_t_, rhs_multiplied);
+        const auto k1 = nm::matrix::ScalarMultiply(delta_t_, rhs_multiplied);
 
-        const auto u_hat = AddVectors(u_previous_, k1);
+        const auto u_hat = nm::matrix::AddVectors(u_previous_, k1);
         const auto u_hat_multiplied = nm::matrix::MatMult(rhs_matrix_, u_hat);
-        const auto k2 = ScalarMultiply(delta_t_, u_hat_multiplied);
+        const auto k2 = nm::matrix::ScalarMultiply(delta_t_, u_hat_multiplied);
 
-        const auto k1_plus_k2 = AddVectors(k1, k2);
-        const auto k1_plus_k2_by_2 = ScalarMultiply(0.5, k1_plus_k2);
+        const auto k1_plus_k2 = nm::matrix::AddVectors(k1, k2);
+        const auto k1_plus_k2_by_2 = nm::matrix::ScalarMultiply(0.5, k1_plus_k2);
 
-        u_current_ = AddVectors(u_previous_, k1_plus_k2_by_2);
+        u_current_ = nm::matrix::AddVectors(u_previous_, k1_plus_k2_by_2);
         u_previous_ = u_current_;
     }
     else if (time_discretization_method_ == TimeDiscretizationMethod::kRungeKutta4)
     {
-        const auto negative_gradient = ScalarMultiply(-1.0, ux_.GetStiffnessMatrix());
-        const auto k1 = nm::matrix::MatMult(negative_gradient, u_previous_);
+        const auto k1 = nm::matrix::MatMult(rhs_matrix_, u_previous_);
+        const auto k1_x_delta_t_by_2 = nm::matrix::ScalarMultiply(delta_t_ / 2, k1);
 
-        const auto u_hat1 = AddVectors(u_previous_, ScalarMultiply(delta_t_ / 2, k1));
-        const auto k2 = nm::matrix::MatMult(negative_gradient, u_hat1);
+        const auto u_hat_k1 = nm::matrix::AddVectors(u_previous_, k1_x_delta_t_by_2);
+        const auto k2 = nm::matrix::MatMult(rhs_matrix_, u_hat_k1);
 
-        const auto u_hat2 = AddVectors(u_previous_, ScalarMultiply(delta_t_ / 2, k2));
-        const auto k3 = nm::matrix::MatMult(negative_gradient, u_hat2);
+        const auto k2_x_delta_t_by_2 = nm::matrix::ScalarMultiply(delta_t_ / 2, k2);
+        const auto u_hat_k2 = nm::matrix::AddVectors(u_previous_, k2_x_delta_t_by_2);
+        const auto k3 = nm::matrix::MatMult(rhs_matrix_, u_hat_k2);
 
-        const auto u_hat3 = AddVectors(u_previous_, ScalarMultiply(delta_t_, k3));
-        const auto k4 = nm::matrix::MatMult(negative_gradient, u_hat3);
+        const auto k3_x_delta_t = nm::matrix::ScalarMultiply(delta_t_, k3);
+        const auto u_hat_k3 = nm::matrix::AddVectors(u_previous_, k3_x_delta_t);
+        const auto k4 = nm::matrix::MatMult(rhs_matrix_, u_hat_k3);
 
-        const auto sum1 = AddVectors(k1, ScalarMultiply(2.0, k2));
-        const auto sum2 = AddVectors(sum1, ScalarMultiply(2.0, k3));
-        const auto sum3 = AddVectors(sum2, k4);
+        const auto sum1 = nm::matrix::AddVectors(k1, nm::matrix::ScalarMultiply(2.0, k2));
+        const auto sum2 = nm::matrix::AddVectors(sum1, nm::matrix::ScalarMultiply(2.0, k3));
+        const auto sum3 = nm::matrix::AddVectors(sum2, k4);
 
-        const auto update = ScalarMultiply(delta_t_ / 6, sum3);
+        const auto update = nm::matrix::ScalarMultiply(delta_t_ / 6, sum3);
 
-        u_current_ = AddVectors(u_previous_, update);
+        u_current_ = nm::matrix::AddVectors(u_previous_, update);
         u_previous_ = u_current_;
     }
+}
+
+void TimeVariable::Reset()
+{
+    u_current_ = {};
+    u_previous_ = {};
+    rhs_matrix_ = {};
+    M_ = {};
 }
 
 }  // namespace pde
