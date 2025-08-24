@@ -89,7 +89,7 @@ TEST_F(BaseClassFixture, GivenSquareWaveInitialization_WithEulerStep_ExpectValid
 TEST_F(BaseClassFixture, DISABLED_GivenSquareWaveInitialization_WithSecondOrderRK_ExpectValidSingleStep)
 {
     // When
-    uu_.SetTimeDiscretizationMethod(TimeDiscretizationMethod::kEulerStep);
+    uu_.SetTimeDiscretizationMethod(TimeDiscretizationMethod::kRungeKutta2);
     uu_.SetTimeStep(0.25);
 
     // Call Advance One Step
@@ -98,6 +98,73 @@ TEST_F(BaseClassFixture, DISABLED_GivenSquareWaveInitialization_WithSecondOrderR
     // Expect
     EXPECT_NEAR(uu_.GetTimeVariable().at(1), 0.0, 0.001);
     EXPECT_NEAR(uu_.GetTimeVariable().at(2), 1.0, 0.001);
+}
+
+class SpringMassDamperSystemTestFixture : public ::testing::Test
+{
+  public:
+    void SetUp() override
+    {
+        // Given
+        m_ = 10.0;
+        k_ = 50.0;
+        c_ = 0.3 * (2 * sqrt(k_ * m_));
+
+        // Setup Right Hand Side
+        nm::matrix::Matrix<double> rhs{{-c_ / m_, -k_ / m_}, {1, 0}};
+        uu_.SetRightHandSideMatrix(rhs);
+
+        // Set initial condition
+        uu_.SetInitialCondition({0, 1});
+
+        // Simulation Defaults
+        uu_.SetStartTime(0.0);
+        uu_.SetEndTime(1);
+        uu_.SetTimeStep(0.1);
+    }
+
+  public:
+    double m_{};
+    double k_{};
+    double c_{};
+    TimeVariable uu_{};
+    double tolerance_{1e-3};
+};
+
+TEST_F(SpringMassDamperSystemTestFixture, WithEulerStep_ExpectCorrectResult)
+{
+    // With
+    uu_.SetTimeDiscretizationMethod(TimeDiscretizationMethod::kEulerStep);
+
+    // Call
+    uu_.Run();
+
+    // Expect
+    EXPECT_NEAR(uu_.GetTimeVariable().at(1), -0.2457, 0.001);
+}
+
+TEST_F(SpringMassDamperSystemTestFixture, WithSecondOrderRungeKutta_ExpectValidResults)
+{
+    // With
+    uu_.SetTimeDiscretizationMethod(TimeDiscretizationMethod::kRungeKutta2);
+
+    // Call
+    uu_.Run();
+
+    // Expect
+    EXPECT_NEAR(uu_.GetTimeVariable().at(1), -0.1420, 0.001);
+}
+
+TEST_F(SpringMassDamperSystemTestFixture, WithFourthOrderRungeKutta_ExpectValidResults)
+{
+    // With
+    uu_.SetTimeDiscretizationMethod(TimeDiscretizationMethod::kRungeKutta4);
+
+    // Call
+    uu_.Run();
+
+    // Expect
+    EXPECT_NEAR(uu_.GetTimeVariable().at(1), -0.1365, 0.001);
 }
 
 }  // namespace
