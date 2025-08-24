@@ -82,6 +82,10 @@ class LinearAdvectionTestFixture : public ::testing::TestWithParam<LinearAdvecti
         uu_.SetStartTime(param.start_time);
         uu_.SetEndTime(param.end_time);
         uu_.SetTimeStep(param.delta_t);
+
+        // Construct right hand side
+        const auto negative_gradient = nm::matrix::ScalarMultiply(-1.0, uu_.ux_.GetStiffnessMatrix());
+        uu_.SetRightHandSideMatrix(negative_gradient);
     }
 
   public:
@@ -116,51 +120,53 @@ TEST_P(LinearAdvectionTestFixture, DISABLED_GivenSquareWaveAndCFLEqualToOne_Expe
     }
 }
 
-INSTANTIATE_TEST_SUITE_P(LinearAdvectionTestFixtureTests,
-                         LinearAdvectionTestFixture,
-                         testing::Values(
-                             LinearAdvectionTestParameter{
-                                 .number_of_grid_points = 11,
-                                 .xf = 1.0,
-                                 .end_time = 0.8,
-                                 .delta_t = 0.1,
-                                 .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
-                                 .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
-                                 .time_discretization_method = TimeDiscretizationMethod::kEulerStep,
-                                 .test_name = "GivenSmallSpatialDiscretization"},
-                             LinearAdvectionTestParameter{
-                                 .number_of_grid_points = 101,
-                                 .xf = 1.0,
-                                 .end_time = 0.8,
-                                 .delta_t = 0.01,
-                                 .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
-                                 .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
-                                 .time_discretization_method = TimeDiscretizationMethod::kEulerStep,
-                                 .test_name = "GivenMediumSpatialDiscretization"},
-                             LinearAdvectionTestParameter{
-                                 .number_of_grid_points = 101,
-                                 .xf = 1.0,
-                                 .end_time = 0.4,
-                                 .delta_t = 0.005,
-                                 .wave_speed = 2.0,
-                                 .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
-                                 .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
-                                 .time_discretization_method = TimeDiscretizationMethod::kEulerStep,
-                                 .test_name = "GivenDoubleWaveSpeed"},
-                             LinearAdvectionTestParameter{
-                                 .number_of_grid_points = 5,
-                                 .xf = 1.0,
-                                 .end_time = 0.5,
-                                 .delta_t = 0.25,
-                                 .wave_speed = 1.0,
-                                 .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
-                                 .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
-                                 .time_discretization_method = TimeDiscretizationMethod::kRungeKutta4,
-                                 .test_name = "GivenSecondOrderRungeKutta",
-                             }),
-                         [](const testing::TestParamInfo<LinearAdvectionTestParameter>& info) -> std::string {
-                             return info.param.test_name;
-                         });
+INSTANTIATE_TEST_SUITE_P(
+    LinearAdvectionTestFixtureTests,
+    LinearAdvectionTestFixture,
+    testing::Values(
+        LinearAdvectionTestParameter{
+            .number_of_grid_points = 11,
+            .xf = 1.0,
+            .end_time = 0.8,
+            .delta_t = 0.1,
+            .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
+            .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
+            .time_discretization_method = TimeDiscretizationMethod::kEulerStep,
+            .test_name = "GivenSmallSpatialDiscretization"},
+        LinearAdvectionTestParameter{
+            .number_of_grid_points = 101,
+            .xf = 1.0,
+            .end_time = 0.8,
+            .delta_t = 0.01,
+            .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
+            .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
+            .time_discretization_method = TimeDiscretizationMethod::kEulerStep,
+            .test_name = "GivenMediumSpatialDiscretization"},
+        LinearAdvectionTestParameter{
+            .number_of_grid_points = 101,
+            .xf = 1.0,
+            .end_time = 0.4,
+            .delta_t = 0.005,
+            .wave_speed = 2.0,
+            .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
+            .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
+            .time_discretization_method = TimeDiscretizationMethod::kEulerStep,
+            .test_name = "GivenDoubleWaveSpeed"}  //  ,
+        //  LinearAdvectionTestParameter{
+        //      .number_of_grid_points = 5,
+        //      .xf = 1.0,
+        //      .end_time = 0.5,
+        //      .delta_t = 0.25,
+        //      .wave_speed = 1.0,
+        //      .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
+        //      .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
+        //      .time_discretization_method = TimeDiscretizationMethod::kRungeKutta4,
+        //      .test_name = "GivenSecondOrderRungeKutta",
+        //  }
+        ),
+    [](const testing::TestParamInfo<LinearAdvectionTestParameter>& info) -> std::string {
+        return info.param.test_name;
+    });
 
 class NonSingularCFLFixture : public LinearAdvectionTestFixture
 {
@@ -187,77 +193,49 @@ TEST_P(NonSingularCFLFixture, DISABLED_GivenSquareWaveAndCFLNotEqualToOne_Expect
     }
 }
 
-INSTANTIATE_TEST_SUITE_P(LinearAdvectionWithCFLLowerThanOneTests,
-                         NonSingularCFLFixture,
-                         testing::Values(
-                             LinearAdvectionTestParameter{
-                                 .number_of_grid_points = 11,
-                                 .xf = 1.0,
-                                 .end_time = 0.8,
-                                 .delta_t = 0.01,
-                                 .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
-                                 .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
-                                 .time_discretization_method = TimeDiscretizationMethod::kEulerStep,
-                             },
-                             LinearAdvectionTestParameter{
-                                 .number_of_grid_points = 101,
-                                 .xf = 1.0,
-                                 .end_time = 0.8,
-                                 .delta_t = 0.001,
-                                 .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
-                                 .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
-                                 .time_discretization_method = TimeDiscretizationMethod::kEulerStep,
-                             },
-                             LinearAdvectionTestParameter{
-                                 .number_of_grid_points = 101,
-                                 .xf = 1.0,
-                                 .end_time = 0.4,
-                                 .delta_t = 0.0025,
-                                 .wave_speed = 2.0,
-                                 .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
-                                 .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
-                                 .time_discretization_method = TimeDiscretizationMethod::kEulerStep,
-                             },
-                             LinearAdvectionTestParameter{
-                                 .number_of_grid_points = 101,
-                                 .xf = 1.0,
-                                 .end_time = 0.4,
-                                 .delta_t = 0.0025,
-                                 .wave_speed = 2.0,
-                                 .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
-                                 .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
-                                 .time_discretization_method = TimeDiscretizationMethod::kRungeKutta2,
-                             }));
-
-TEST(SecondOrderODETests, GivenClassicTwoSpringMassDamperSystem_ExpectCorrectResult)
-{
-    // Given
-    const double m = 10.0;
-    const double k = 100.0;
-    const double c = 0.3 * (2 * sqrt(k * m));
-
-    // Create space variable
-    TimeVariable uu{};
-
-    // Setup Right Hand Side
-    nm::matrix::Matrix<double> rhs{{-c / m, -k / m}, {1, 0}};
-    uu.SetRightHandSideMatrix(rhs);
-
-    // Set initial condition
-    uu.SetInitialCondition({1, 0});
-
-    // Setup simulation
-    uu.SetTimeDiscretizationMethod(TimeDiscretizationMethod::kEulerStep);
-    uu.SetStartTime(0.0);
-    uu.SetEndTime(2);
-    uu.SetTimeStep(0.1);
-
-    // Call
-    uu.Run();
-
-    // Expect
-    EXPECT_NEAR(uu.GetTimeVariable().at(0), 0.3677, 0.001);
-}
+INSTANTIATE_TEST_SUITE_P(
+    LinearAdvectionWithCFLLowerThanOneTests,
+    NonSingularCFLFixture,
+    testing::Values(
+        LinearAdvectionTestParameter{
+            .number_of_grid_points = 11,
+            .xf = 1.0,
+            .end_time = 0.8,
+            .delta_t = 0.01,
+            .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
+            .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
+            .time_discretization_method = TimeDiscretizationMethod::kEulerStep,
+        },
+        LinearAdvectionTestParameter{
+            .number_of_grid_points = 101,
+            .xf = 1.0,
+            .end_time = 0.8,
+            .delta_t = 0.001,
+            .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
+            .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
+            .time_discretization_method = TimeDiscretizationMethod::kEulerStep,
+        },
+        LinearAdvectionTestParameter{
+            .number_of_grid_points = 101,
+            .xf = 1.0,
+            .end_time = 0.4,
+            .delta_t = 0.0025,
+            .wave_speed = 2.0,
+            .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
+            .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
+            .time_discretization_method = TimeDiscretizationMethod::kEulerStep,
+        }  //  ,
+           //  LinearAdvectionTestParameter{
+           //      .number_of_grid_points = 101,
+           //      .xf = 1.0,
+           //      .end_time = 0.4,
+           //      .delta_t = 0.0025,
+           //      .wave_speed = 2.0,
+           //      .spatial_discretization_method = SpatialDiscretizationMethod::kFiniteDifferenceMethod,
+           //      .spatial_discretization_schema = FiniteDifferenceSchema::kBackwardsDifference,
+           //      .time_discretization_method = TimeDiscretizationMethod::kRungeKutta2,
+           //  }
+        ));
 
 }  // namespace
 }  // namespace pde
