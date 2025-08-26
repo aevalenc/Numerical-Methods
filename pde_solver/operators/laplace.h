@@ -23,6 +23,7 @@ class LaplaceOperator
     const nm::matrix::Matrix<double> GenerateMatrix();
     void GenerateMatrixForSpatialVariable(SpatialVariable& u);
     void SetSpatialVariable(const SpatialVariable& u_in);
+    void SetConstantDiffusion(const double constant_diffusion) { constant_diffusion_ = constant_diffusion; };
 
   public:
     LaplaceOperator() {};
@@ -32,7 +33,7 @@ class LaplaceOperator
     const SpatialVariable* u_{};
     std::int8_t dimension_{1};
     std::int32_t matrix_size_{};
-    double constant_diffusion{1.0};
+    double constant_diffusion_{1.0};
 };
 
 }  // namespace operators
