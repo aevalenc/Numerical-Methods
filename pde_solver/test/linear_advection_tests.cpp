@@ -15,7 +15,6 @@
 #include "pde_solver/operators/gradient.h"
 #include "pde_solver/utilities/grid_generator.h"
 #include <algorithm>
-#include <cmath>
 #include <cstddef>
 #include <cstdint>
 #include <gtest/gtest.h>
