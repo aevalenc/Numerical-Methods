@@ -41,6 +41,22 @@ target_include_directories(
 )
 
 add_executable(
+    utilities_tests
+    utilities_tests.cpp
+)
+target_include_directories(
+    utilities_tests 
+    PUBLIC
+    ${CMAKE_SOURCE_DIR}
+)
+target_link_libraries(
+    utilities_tests 
+    PUBLIC
+    utilities
+    GTest::gtest_main
+)
+
+add_executable(
     direct_solvers_tests
     direct_solvers/test/direct_solvers_tests.cpp
 )
@@ -82,5 +98,6 @@ target_link_libraries(
 )
 
 include(GoogleTest)
+gtest_discover_tests(utilities_tests)
 gtest_discover_tests(direct_solvers_tests)
 gtest_discover_tests(iterative_solvers_tests)

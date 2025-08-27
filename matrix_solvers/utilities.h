@@ -5,12 +5,13 @@
  * Utility functions for matrix solvers
  */
 
+#ifndef MATRIX_SOLVERS_UTILITIES_H
+#define MATRIX_SOLVERS_UTILITIES_H
+
+#include <cassert>
 #include <cstdint>
 #include <iostream>
 #include <vector>
-
-#ifndef MATRIX_SOLVERS_UTILITIES_H
-#define MATRIX_SOLVERS_UTILITIES_H
 
 namespace nm
 {
@@ -22,7 +23,36 @@ namespace matrix
 ///
 /// @param T: template-parameter-typename
 template <typename T>
-using Matrix = std::vector<std::vector<T>>;
+// using Matrix = std::vector<std::vector<T>>;
+class Matrix : public std::vector<std::vector<T>>
+{
+  public:
+    Matrix() {};
+    Matrix(std::vector<std::vector<T>> other) { this->assign(other.begin(), other.end()); }
+    Matrix operator=(std::vector<std::vector<T>> other) { this->assign(other.begin(), other.end()); }
+
+    void Transpose()
+    {
+        assert(this->size() > 0);
+        assert(this->at(0).size() > 0);
+        for (std::int32_t i{0}; i < this->size(); ++i)
+        {
+            for (std::int32_t j{i}; j < this->at(0).size(); ++j)
+            {
+                if (i == j)
+                {
+                    continue;
+                }
+                else
+                {
+                    const auto tmp = this->at(i).at(j);
+                    this->at(i).at(j) = this->at(j).at(i);
+                    this->at(j).at(i) = tmp;
+                }
+            }
+        }
+    };
+};
 
 /// @brief Identity Square Matrix Constructor
 ///
@@ -79,7 +109,7 @@ void PrintMatrix(const Matrix<T>& matrix)
 /// @return std::vector<double> The resulting vector containing the elements of the matrix
 std::vector<double> Vectorize(const Matrix<double>& A);
 
-nm::matrix::Matrix<double> ScalarMultiply(const double scalar_value, const nm::matrix::Matrix<double>& A);
+Matrix<double> ScalarMultiply(const double scalar_value, const nm::matrix::Matrix<double>& A);
 /// @brief Adds two vectors element-wise
 ///
 /// @param a First std::vector of doubles
@@ -99,7 +129,7 @@ std::vector<double> ScalarMultiply(const double scalar_value, const std::vector<
 /// @param scalar_value The scalar multiplier
 /// @param A The matrix to be scaled
 /// @return Matrix<double> The scaled matrix
-nm::matrix::Matrix<double> ScalarMultiply(const double scalar_value, const nm::matrix::Matrix<double>& A);
+Matrix<double> ScalarMultiply(const double scalar_value, const nm::matrix::Matrix<double>& A);
 
 }  // namespace matrix
 
