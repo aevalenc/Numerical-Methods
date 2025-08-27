@@ -1,3 +1,5 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+
 cc_library(
     name = "utilities",
     srcs = ["utilities.cpp"],
@@ -10,6 +12,23 @@ cc_test(
     srcs = ["utilities_tests.cpp"],
     deps = [
         ":utilities",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "operations",
+    srcs = ["operations/operations.cpp"],
+    hdrs = ["operations/operations.h"],
+    visibility = ["//visibility:public"],
+    deps = [":utilities"],
+)
+
+cc_test(
+    name = "operations_tests",
+    srcs = ["operations/operations_tests.cpp"],
+    deps = [
+        ":operations",
         "@googletest//:gtest_main",
     ],
 )
