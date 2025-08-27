@@ -6,6 +6,9 @@
  *
  */
 
+#ifndef PDE_SOLVER_MAIN_SOLVER_H
+#define PDE_SOLVER_MAIN_SOLVER_H
+
 #include "pde_solver/data_types/time_variable.h"
 
 class Solver
@@ -24,3 +27,5 @@ class Solver
   public:
     Solver(const double delta_t, const double end_time);
 };
+
+#endif

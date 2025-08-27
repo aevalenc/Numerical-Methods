@@ -4,8 +4,8 @@
  * Update: May 1, 2025
  */
 
-#ifndef PDE_SOLVER_DISCRETIZATION_METHODS_H
-#define PDE_SOLVER_DISCRETIZATION_METHODS_H
+#ifndef PDE_SOLVER_DATA_TYPES_DISCRETIZATION_METHODS_H
+#define PDE_SOLVER_DATA_TYPES_DISCRETIZATION_METHODS_H
 
 #include <cstdint>
 #include <string>
@@ -55,4 +55,4 @@ inline std::string SpatialDiscretizationMethodToString(const SpatialDiscretizati
 
 }  // namespace pde
 
-#endif  // PDE_SOLVER_DISCRETIZATION_METHODS_H
+#endif  // PDE_SOLVER_DATA_TYPES_DISCRETIZATION_METHODS_H

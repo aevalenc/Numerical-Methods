@@ -15,6 +15,7 @@
 #include "pde_solver/data_types/time_variable.h"
 #include "pde_solver/operators/gradient.h"
 #include "pde_solver/utilities/grid_generator.h"
+#include <cmath>
 #include <cstdint>
 #include <gtest/gtest.h>
 
@@ -108,7 +109,7 @@ class SpringMassDamperSystemTestFixture : public ::testing::Test
         // Given
         m_ = 10.0;
         k_ = 50.0;
-        c_ = 0.3 * (2 * sqrt(k_ * m_));
+        c_ = 0.3 * (2 * std::sqrt(k_ * m_));
 
         // Setup Right Hand Side
         nm::matrix::Matrix<double> rhs{{-c_ / m_, -k_ / m_}, {1, 0}};
