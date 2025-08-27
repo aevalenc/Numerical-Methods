@@ -2,6 +2,8 @@
 BUILD file for iterative linear solvers
 """
 
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
 cc_library(
     name = "jacobi_method",
     srcs = ["jacobi.cpp"],
@@ -25,5 +27,8 @@ cc_library(
         "//conditions:default": [],
     }),
     visibility = ["//visibility:public"],
-    deps = ["//matrix_solvers:utilities"],
+    deps = [
+        "//matrix_solvers:operations",
+        "//matrix_solvers:utilities",
+    ],
 )
