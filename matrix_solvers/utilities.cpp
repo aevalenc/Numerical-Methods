@@ -17,22 +17,24 @@ namespace nm
 namespace matrix
 {
 
-// std::vector<double> Vectorize(const Matrix<double>& A)
-// {
-//     const auto m = A.size();
-//     const auto n = A.at(0).size();
+std::vector<double> Vectorize(const Matrix<double>& A)
+{
+    const auto m = A.size();
+    const auto n = A.at(0).size();
 
-//     std::vector<double> result{};
-//     result.resize(m * n);
+    std::vector<double> result{};
 
-//     // ptrdiff_t offset{};
-//     // for (std::int32_t i{0}; i < A.size(); ++i)
-//     // {
-//     //     offset = i + A.at(0).size();
-//     std::transform(A.at(i).begin(), A.at(i).end(), result.begin(), );
-//     // }
-//     return result;
-// }
+    // Loop through columns
+    for (std::int32_t j{0}; j < n; ++j)
+    {
+        // Within each column grab the corresponding value in that row
+        for (std::int32_t i{0}; i < m; ++i)
+        {
+            result.emplace_back(A.at(i).at(j));
+        }
+    }
+    return result;
+}
 
 std::vector<double> AddVectors(const std::vector<double>& a, const std::vector<double>& b)
 {

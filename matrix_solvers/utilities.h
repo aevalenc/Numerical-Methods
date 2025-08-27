@@ -73,7 +73,11 @@ void PrintMatrix(const Matrix<T>& matrix)
     }
 };
 
-// std::vector<double> Vectorize(const Matrix<double>& A);
+/// @brief Converts a matrix into a vector by stacking its elements column-wise
+///
+/// @param A The matrix to be vectorized
+/// @return std::vector<double> The resulting vector containing the elements of the matrix
+std::vector<double> Vectorize(const Matrix<double>& A);
 
 nm::matrix::Matrix<double> ScalarMultiply(const double scalar_value, const nm::matrix::Matrix<double>& A);
 /// @brief Adds two vectors element-wise
