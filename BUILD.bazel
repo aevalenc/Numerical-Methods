@@ -4,7 +4,14 @@ load("@hedron_compile_commands//:refresh_compile_commands.bzl", "refresh_compile
 refresh_compile_commands(
     name = "refresh_cuda_commands",
     targets = {
-        "//:my_output_1": "--important_flag1 --important_flag2=true",
+        "//...": "--@rules_cuda//cuda:archs=compute_75:compute_75,sm_75",
+    },
+)
+
+refresh_compile_commands(
+    name = "refresh_pde_commands",
+    targets = {
+        "//pde_solver/...": "--config=clang18_macos_aarch64",
     },
 )
 

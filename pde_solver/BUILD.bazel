@@ -1,0 +1,14 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "pde_solver",
+    srcs = ["main_solver.cpp"],
+    hdrs = ["main_solver.h"],
+    deps = [
+        "//pde_solver/data_types:discretization_lib",
+        "//pde_solver/data_types:spatial_variable",
+        "//pde_solver/data_types:time_variable",
+        "//pde_solver/operators:gradient",
+        "//pde_solver/utilities:grid_generator",
+    ],
+)

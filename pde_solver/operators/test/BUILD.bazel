@@ -1,0 +1,27 @@
+"""
+BUILD file for C++ operators tests.
+"""
+
+cc_test(
+    name = "laplace_operator_tests",
+    srcs = ["laplace_operator_tests.cpp"],
+    deps = [
+        "//pde_solver/data_types:grid",
+        "//pde_solver/data_types:spatial_variable",
+        "//pde_solver/operators:laplace",
+        "//pde_solver/utilities:grid_generator",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "gradient_operator_tests",
+    srcs = ["gradient_operator_tests.cpp"],
+    deps = [
+        "//pde_solver/data_types:grid",
+        "//pde_solver/data_types:spatial_variable",
+        "//pde_solver/operators:gradient",
+        "//pde_solver/utilities:grid_generator",
+        "@googletest//:gtest_main",
+    ],
+)

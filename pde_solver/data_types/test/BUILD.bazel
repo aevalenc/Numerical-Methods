@@ -1,0 +1,37 @@
+"""
+BUILD file for C++ data types tests.
+"""
+
+load("@rules_cc//cc:defs.bzl", "cc_test")
+
+cc_test(
+    name = "grid_tests",
+    srcs = ["grid_tests.cpp"],
+    deps = [
+        "//pde_solver/data_types:grid",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "spatial_variable_tests",
+    srcs = ["spatial_variable_tests.cpp"],
+    deps = [
+        "//pde_solver/data_types:spatial_variable",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "time_variable_tests",
+    srcs = ["time_variable_tests.cpp"],
+    deps = [
+        "//matrix_solvers:utilities",
+        "//pde_solver/data_types:discretization_lib",
+        "//pde_solver/data_types:spatial_variable",
+        "//pde_solver/data_types:time_variable",
+        "//pde_solver/operators:gradient",
+        "//pde_solver/utilities:grid_generator",
+        "@googletest//:gtest_main",
+    ],
+)
