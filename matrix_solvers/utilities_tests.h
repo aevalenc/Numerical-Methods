@@ -39,9 +39,9 @@ class MatrixUtilitiesBaseTestFixture : public ::testing::Test
     }
 
   public:
-    std::vector<std::vector<double>> A_{};
-    std::vector<std::vector<double>> B_{};
-    std::vector<std::vector<double>> C_{};
+    Matrix<double> A_{};
+    Matrix<double> B_{};
+    Matrix<double> C_{};
     double tolerance_{0.001};
 };
 

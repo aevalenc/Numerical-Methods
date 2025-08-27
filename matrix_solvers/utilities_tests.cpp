@@ -92,6 +92,56 @@ TEST_F(MatrixUtilitiesTestFixture, GivenMatrix_ExpectValidVectorization)
     }
 }
 
+struct MatrixTransposeTestParameter
+{
+    Matrix<double> matrix{};
+    Matrix<double> expected_transpose{};
+    std::string test_name{};
+};
+
+class MatrixTransposeTestFixture : public ::testing::TestWithParam<MatrixTransposeTestParameter>
+{
+  public:
+    double tolerance_{0.001};
+};
+
+TEST_P(MatrixTransposeTestFixture, GivenSqaureMatrices_ExpectValidTransposes)
+{
+    // Given
+    auto param = GetParam();
+
+    // Call
+    param.matrix.Transpose();
+
+    // Expect
+    for (std::int32_t i{0}; i < static_cast<std::int32_t>(param.matrix.size()); ++i)
+    {
+        for (std::int32_t j{0}; j < static_cast<std::int32_t>(param.matrix.at(0).size()); ++j)
+        {
+            EXPECT_NEAR(param.matrix.at(i).at(j), param.expected_transpose.at(i).at(j), tolerance_);
+        }
+    }
+}
+
+INSTANTIATE_TEST_SUITE_P(MatrixTransposeTests,
+                         MatrixTransposeTestFixture,
+                         ::testing::Values(
+                             // clang-format off
+                         MatrixTransposeTestParameter{
+                             .matrix = Matrix<double>({{3, 5}, {7, 9}}),
+                             .expected_transpose = Matrix<double>({{3, 7}, {5, 9}}),
+                             .test_name = "TwoByTwo",
+                         },
+                         MatrixTransposeTestParameter{
+                             .matrix = Matrix<double>({{3, 5, 9}, {7, 9, 1}, {2, 8, 0}}),
+                             .expected_transpose = Matrix<double>({{3, 7, 2}, {5, 9, 8}, {9, 1, 0}}),
+                             .test_name = "ThreeByThree",
+                         }  // clang-format on
+                             ),
+                         [](const ::testing::TestParamInfo<MatrixTransposeTestParameter>& info) -> std::string {
+                             return info.param.test_name;
+                         });
+
 }  // namespace
 
 }  // namespace matrix
