@@ -9,8 +9,10 @@
 #define MATRIX_SOLVERS_UTILITIES_H
 
 #include <cassert>
+#include <cstddef>
 #include <cstdint>
 #include <iostream>
+#include <utility>
 #include <vector>
 
 namespace nm
@@ -28,8 +30,26 @@ class Matrix : public std::vector<std::vector<T>>
 {
   public:
     Matrix() {};
-    Matrix(std::vector<std::vector<T>> other) { this->assign(other.begin(), other.end()); }
-    Matrix operator=(std::vector<std::vector<T>> other) { this->assign(other.begin(), other.end()); }
+    Matrix(const std::vector<std::vector<T>>& other) { this->assign(other.begin(), other.end()); }
+    Matrix(T* array_ptr, const std::int32_t number_of_rows, const std::int32_t number_of_columns)
+    {
+        this->resize(number_of_rows);
+        for (std::int32_t i{0}; i < number_of_rows; ++i)
+        {
+            this->at(i).resize(number_of_columns);
+            this->at(i) = std::vector<T>(array_ptr + (number_of_columns * i),
+                                         array_ptr + (number_of_columns * i + number_of_columns));
+        }
+    }
+
+    Matrix(const Matrix<T>& other) { this->assign(other.begin(), other.end()); }
+    Matrix(Matrix<T>&& other) noexcept : std::vector<std::vector<T>>(std::move(other)) {}
+
+    Matrix& operator=(const std::vector<std::vector<T>>& other)
+    {
+        this->assign(other.begin(), other.end());
+        return *this;
+    }
 
     void Transpose()
     {

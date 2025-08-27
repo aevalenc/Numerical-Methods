@@ -62,8 +62,7 @@ std::vector<double> CalculateResidual(const Matrix<double>& A,
                                       const std::vector<double>& x,
                                       const std::int32_t n);
 
-// Matrix<double> KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B);
-double* KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B);
+Matrix<double> KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B);
 
 }  // namespace matrix
 

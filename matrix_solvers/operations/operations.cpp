@@ -171,8 +171,7 @@ std::vector<double> ScalarProduct(const std::vector<double>& A, const double val
     return result;
 }
 
-// Matrix<double> KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B)
-double* KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B)
+Matrix<double> KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B)
 {
     const std::int32_t m = static_cast<std::int32_t>(A.size());
     const std::int32_t n = static_cast<std::int32_t>(A.at(0).size());
@@ -197,7 +196,7 @@ double* KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B)
         }
     }
 
-    return C;
+    return Matrix<double>(C, m * n, p * q);
 }
 
 }  // namespace matrix
