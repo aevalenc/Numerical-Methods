@@ -18,7 +18,9 @@ refresh_compile_commands(
 refresh_compile_commands(
     name = "refresh_matrix_commands",
     targets = {
-        "//matrix_solvers:operations": "",
+        "//matrix_solvers:all": "--config=clang18_macos_aarch64",
+        "//matrix_solvers/direct_solvers:all": "--config=clang18_macos_aarch64",
+        "//matrix_solvers/iterative_solvers:all": "--config=clang18_macos_aarch64",
     },
 )
 
