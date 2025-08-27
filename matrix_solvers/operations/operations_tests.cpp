@@ -44,8 +44,8 @@ TEST_F(MatrixOperationKroneckerProductTestFixture, GivenValidMatrices_ExpectExac
 {
     const auto result = KroneckerProduct(A_, B_);
 
-    EXPECT_NEAR(result[5], 6, tolerance_);
-    EXPECT_NEAR(result[14], 72, tolerance_);
+    EXPECT_NEAR(result.at(1).at(1), 6, tolerance_);
+    EXPECT_NEAR(result.at(3).at(2), 72, tolerance_);
 }
 
 class MatrixUtilitiesDotProductTestFixture : public test::MatrixUtilitiesBaseTestFixture
