@@ -8,6 +8,7 @@
  */
 
 #include "pde_solver/data_types/time_variable.h"
+#include "matrix_solvers/operations/operations.h"
 #include "pde_solver/data_types/spatial_variable.h"
 #include <cassert>
 #include <cstdint>
@@ -192,10 +193,10 @@ void TimeVariable::StepOnce()
 
 void TimeVariable::Reset()
 {
-    u_current_ = {};
-    u_previous_ = {};
-    rhs_matrix_ = {};
-    M_ = {};
+    u_current_.clear();
+    u_previous_.clear();
+    rhs_matrix_.clear();
+    M_.clear();
 }
 
 }  // namespace pde

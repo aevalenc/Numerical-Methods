@@ -29,10 +29,33 @@ template <typename T>
 class Matrix : public std::vector<std::vector<T>>
 {
   public:
-    Matrix() {};
+    // Default constructor
+    Matrix() = default;
+
+    // Initializer-list constructor
+    Matrix(std::initializer_list<std::vector<T>> init) : std::vector<std::vector<T>>(init) {}
+
+    // Copy constructor
+    Matrix(const Matrix& other) : std::vector<std::vector<T>>(other) {}
+
+    // Copy assignment operator
+    Matrix& operator=(const Matrix& other)
+    {
+        std::vector<std::vector<T>>::operator=(other);
+        return *this;
+    }
+
+    // Move Constructor
+    Matrix(Matrix<T>&& other) noexcept : std::vector<std::vector<T>>(std::move(other)) {}
+
+    // Other constructors and operators
     Matrix(const std::vector<std::vector<T>>& other) { this->assign(other.begin(), other.end()); }
     Matrix(T* array_ptr, const std::int32_t number_of_rows, const std::int32_t number_of_columns)
     {
+        assert(array_ptr != nullptr);
+        assert(number_of_rows > 0);
+        assert(number_of_columns > 0);
+
         this->resize(number_of_rows);
         for (std::int32_t i{0}; i < number_of_rows; ++i)
         {
@@ -42,22 +65,17 @@ class Matrix : public std::vector<std::vector<T>>
         }
     }
 
-    Matrix(const Matrix<T>& other) { this->assign(other.begin(), other.end()); }
-    Matrix(Matrix<T>&& other) noexcept : std::vector<std::vector<T>>(std::move(other)) {}
-
-    Matrix& operator=(const std::vector<std::vector<T>>& other)
-    {
-        this->assign(other.begin(), other.end());
-        return *this;
-    }
-
     void Transpose()
     {
-        assert(this->size() > 0);
-        assert(this->at(0).size() > 0);
-        for (std::int32_t i{0}; i < this->size(); ++i)
+        const auto rows = static_cast<std::int32_t>(this->size());
+        assert(rows > 0);
+
+        const auto columns = static_cast<std::int32_t>(this->at(0).size());
+        assert(columns > 0);
+
+        for (std::int32_t i{0}; i < rows; ++i)
         {
-            for (std::int32_t j{i}; j < this->at(0).size(); ++j)
+            for (std::int32_t j{i}; j < columns; ++j)
             {
                 if (i == j)
                 {
