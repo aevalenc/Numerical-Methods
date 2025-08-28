@@ -179,6 +179,7 @@ Matrix<double> KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B
     const std::int32_t q = static_cast<std::int32_t>(B.at(0).size());
 
     auto C = static_cast<double*>(malloc(m * n * p * q * sizeof(double)));
+    std::int32_t indx{};
 
     for (std::int32_t i{0}; i < m; ++i)
     {
@@ -188,15 +189,15 @@ Matrix<double> KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B
             {
                 for (std::int32_t l{0}; l < q; ++l)
                 {
-                    const auto index = (l + 2 * j) + (p * q) * (k + 2 * i);
+                    indx = (l + p * j) + (q * n) * (k + p * i);
                     const auto product = A.at(i).at(j) * B.at(k).at(l);
-                    C[index] = product;
+                    C[indx] = product;
                 }
             }
         }
     }
 
-    return Matrix<double>(C, m * n, p * q);
+    return Matrix<double>(C, m * p, n * q);
 }
 
 }  // namespace matrix

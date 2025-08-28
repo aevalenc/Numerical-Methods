@@ -48,6 +48,26 @@ TEST_F(MatrixOperationKroneckerProductTestFixture, GivenValidMatrices_ExpectExac
     EXPECT_NEAR(result.at(3).at(2), 72, tolerance_);
 }
 
+TEST_F(MatrixOperationKroneckerProductTestFixture, GivenLargerValidMatrices_ExpectExactSolution)
+{
+    A_ = {{1, -4, 7}, {-2, 3, 3}};
+    B_ = {{8, -9, -6, 5}, {1, -3, -4, 7}, {2, 8, -8, -3}, {1, 2, -5, -1}};
+    const auto result = KroneckerProduct(A_, B_);
+
+    EXPECT_NEAR(result.at(1).at(1), -3, tolerance_);
+    EXPECT_NEAR(result.at(3).at(2), -5, tolerance_);
+}
+
+TEST_F(MatrixOperationKroneckerProductTestFixture, GivenOneRectangularAndOneSquareMatrix_ExpectExactSolution)
+{
+    A_ = {{1, 2, 3}, {4, 5, 6}};
+    B_ = {{7, 8}, {9, 10}};
+    const auto result = KroneckerProduct(A_, B_);
+
+    EXPECT_NEAR(result.at(1).at(1), 10, tolerance_);
+    EXPECT_NEAR(result.at(3).at(2), 45, tolerance_);
+}
+
 class MatrixUtilitiesDotProductTestFixture : public test::MatrixUtilitiesBaseTestFixture
 {
 
