@@ -71,6 +71,8 @@ target_link_libraries(
     direct_solvers_tests
     PUBLIC
     direct_solvers
+    utilities
+    operations
     GTest::gtest_main
 )
 
