@@ -7,6 +7,8 @@
 #include "matrix_solvers/direct_solvers/doolittle.h"
 #include "matrix_solvers/direct_solvers/forward_substitution.h"
 #include "matrix_solvers/direct_solvers/lu_solve.h"
+#include "matrix_solvers/operations/operations.h"
+#include "matrix_solvers/utilities.h"
 #include <gtest/gtest.h>
 
 namespace nm
@@ -174,6 +176,28 @@ TEST_F(LUSolverTestFixture, GivenStandardMatrixEq_ExpectExactSolution)
     {
         EXPECT_NEAR(x.at(i), x_expected_.at(i), tolerance_);
     }
+}
+
+TEST(MatrixEquationTests, GivenSqaureMatrices_ExpectCorrectResult)
+{
+    // Given
+    Matrix<double> A({{3, 5}, {7, 9}});
+    Matrix<double> B({{1, 8}, {9, 2}});
+    Matrix<double> C({{3, 4}, {1, 6}});
+    const double tolerance{0.001};
+
+    // Construct
+    B.Transpose();
+    const auto AA = KroneckerProduct(B, A);
+    const auto C_vectorized = Vectorize(C);
+    std::vector<double> x(C_vectorized.size(), 0.0);
+
+    // Solve
+    const auto result = LUSolve(AA, C_vectorized);
+    EXPECT_NEAR(result.at(0), -0.0179, tolerance);
+    EXPECT_NEAR(result.at(1), 0.0964, tolerance);
+    EXPECT_NEAR(result.at(2), -0.3036, tolerance);
+    EXPECT_NEAR(result.at(3), 0.2393, tolerance);
 }
 
 }  // namespace

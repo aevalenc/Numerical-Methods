@@ -6,6 +6,7 @@
 #include "matrix_solvers/iterative_solvers/conjugate_gradient.h"
 #include "matrix_solvers/iterative_solvers/gauss_seidel.h"
 #include "matrix_solvers/iterative_solvers/jacobi.h"
+#include "matrix_solvers/operations/operations.h"
 #include "matrix_solvers/utilities.h"
 #include <gtest/gtest.h>
 
@@ -48,14 +49,14 @@ TEST_F(JacobiMethodTestFixture, GivenValidMatrix_ExpectConvergedSolution)
     double residual{0.0};
     for (std::size_t iteration = 0; iteration < max_iterations_; ++iteration)
     {
-        residual = jacobi(A, b, x);
+        residual = Jacobi(A, b, x);
     }
     EXPECT_NEAR(residual, 0.0, tolerance_);
 }
 
 TEST_F(JacobiMethodTestFixture, GivenValidMatrix_ExpectConvergedSolutionWithVoidFunction)
 {
-    jacobi(A, b, x, max_iterations_, tolerance_);
+    Jacobi(A, b, x, max_iterations_, tolerance_);
     EXPECT_NEAR(x.at(0), -24.0, tolerance_);
 }
 
@@ -65,10 +66,10 @@ TEST_F(JacobiMethodTestFixture, GivenValidMatrix_ExpectSingleIterationToMatchWit
 
     for (std::size_t iteration = 0; iteration < max_iterations_; ++iteration)
     {
-        std::ignore = jacobi(A, b, x);
+        std::ignore = Jacobi(A, b, x);
     }
 
-    jacobi(A, b, x_void, max_iterations_, tolerance_);
+    Jacobi(A, b, x_void, max_iterations_, tolerance_);
     EXPECT_NEAR(x.at(0), x_void.at(0), tolerance_);
 }
 

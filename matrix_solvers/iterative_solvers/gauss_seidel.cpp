@@ -34,7 +34,7 @@ double L2Norm(const std::vector<double>& vector)
 
 }  // namespace
 
-double GaussSeidel(const std::vector<std::vector<double>>& A, const std::vector<double>& b, std::vector<double>& x)
+double GaussSeidel(const Matrix<double>& A, const std::vector<double>& b, std::vector<double>& x)
 {
 
     const auto x_initial = x;
@@ -65,7 +65,7 @@ double GaussSeidel(const std::vector<std::vector<double>>& A, const std::vector<
     return L2Norm(residual);
 }
 
-void GaussSeidel(const std::vector<std::vector<double>>& A,
+void GaussSeidel(const Matrix<double>& A,
                  const std::vector<double>& b,
                  std::vector<double>& x,
                  const int max_iterations,

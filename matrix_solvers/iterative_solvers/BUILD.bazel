@@ -9,6 +9,7 @@ cc_library(
     srcs = ["jacobi.cpp"],
     hdrs = ["jacobi.h"],
     visibility = ["//visibility:public"],
+    deps = ["//matrix_solvers:utilities"],
 )
 
 cc_library(
@@ -16,6 +17,7 @@ cc_library(
     srcs = ["gauss_seidel.cpp"],
     hdrs = ["gauss_seidel.h"],
     visibility = ["//visibility:public"],
+    deps = ["//matrix_solvers:utilities"],
 )
 
 cc_library(
