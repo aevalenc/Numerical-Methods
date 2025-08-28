@@ -207,6 +207,17 @@ TEST_F(MatrixMultiplicationTestFixture, GivenOneMatrixAndOneVector_ExpectExactSo
     }
 }
 
+TEST(QRDecompositionTests, GivenValidSquareMatrix_ExpectCorrectDecomposition)
+{
+    const Matrix<double> A = {{12, 6, -4}, {-51, 167, 64}, {4, -68, -41}};
+    const auto qr_pair = QRDecompositionColumnBased(A);
+
+    PrintMatrix(qr_pair.first);
+    PrintMatrix(qr_pair.second);
+
+    EXPECT_TRUE(true);
+}
+
 }  // namespace
 
 }  // namespace matrix

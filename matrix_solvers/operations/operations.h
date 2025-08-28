@@ -64,6 +64,8 @@ std::vector<double> CalculateResidual(const Matrix<double>& A,
 
 Matrix<double> KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B);
 
+std::pair<Matrix<double>, Matrix<double>> QRDecompositionColumnBased(const Matrix<double>& A);
+
 }  // namespace matrix
 
 }  // namespace nm

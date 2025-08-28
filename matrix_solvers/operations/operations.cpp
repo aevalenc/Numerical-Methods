@@ -200,6 +200,41 @@ Matrix<double> KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B
     return Matrix<double>(C, m * p, n * q);
 }
 
+std::pair<Matrix<double>, Matrix<double>> QRDecompositionColumnBased(const Matrix<double>& A)
+{
+    const std::int32_t n = static_cast<std::int32_t>(A.size());
+    const std::int32_t m = static_cast<std::int32_t>(A.at(0).size());
+
+    Matrix<double> Q = A;
+    Matrix<double> U = A;
+
+    for (std::int32_t k{1}; k < n; ++k)
+    {
+
+        for (std::int32_t j{0}; j < k - 1; ++j)
+        {
+            const auto numerator = Dot(A.at(k), U.at(j));
+            const auto denominator = Dot(U.at(j), U.at(j));
+            const auto projection = ScalarMultiply(numerator / denominator, U.at(j));
+            U.at(k) = AddVectors(U.at(k), ScalarMultiply(-1.0, projection));
+        }
+    }
+
+    for (std::int32_t i{0}; i < n; ++i)
+    {
+        const auto norm = L2Norm(U.at(i));
+        Q.at(i) = ScalarMultiply(1.0 / norm, U.at(i));
+    }
+
+    Q.Transpose();
+    auto q_transposed = Q;
+    q_transposed.Transpose();
+
+    auto R = MatMult(q_transposed, A);
+
+    return {Q, R};
+}
+
 }  // namespace matrix
 
 }  // namespace nm
