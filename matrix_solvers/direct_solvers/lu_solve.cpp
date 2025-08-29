@@ -14,7 +14,7 @@ namespace nm
 namespace matrix
 {
 
-std::vector<double> LUSolve(Matrix<double>& A, const std::vector<double>& b)
+std::vector<double> LUSolve(const Matrix<double>& A, const std::vector<double>& b)
 {
     const auto LU_matrices = Doolittle(A);
     const auto y = ForwardSubstitution(LU_matrices.first, b);

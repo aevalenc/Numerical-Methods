@@ -9,6 +9,7 @@
 #include "matrix_solvers/direct_solvers/lu_solve.h"
 #include "matrix_solvers/operations/operations.h"
 #include "matrix_solvers/utilities.h"
+#include <cstdint>
 #include <gtest/gtest.h>
 
 namespace nm
@@ -36,7 +37,7 @@ class DirectSolverBaseTestFixture : public ::testing::Test
 
   public:
     std::vector<double> b_{};
-    std::vector<std::vector<double>> A_{};
+    Matrix<double> A_{};
     std::vector<double> x_{0.0, 0.0, 0.0};
     double tolerance_{0.001};
 };
@@ -78,8 +79,8 @@ class DooLittleTestFixture : public DirectSolverBaseTestFixture
     }
 
   public:
-    std::vector<std::vector<double>> L_expected_{};
-    std::vector<std::vector<double>> U_expected_{};
+    Matrix<double> L_expected_{};
+    Matrix<double> U_expected_{};
 };
 
 TEST_F(DooLittleTestFixture, GivenUpperTriangularMatrix_ExpectExactSolution)
@@ -94,9 +95,9 @@ TEST_F(DooLittleTestFixture, GivenUpperTriangularMatrix_ExpectExactSolution)
     const auto L = LU_matrices.first;
     const auto U = LU_matrices.second;
 
-    for (std::ptrdiff_t i{0}; i < L.size(); ++i)
+    for (std::int32_t i{0}; i < static_cast<std::int32_t>(L.size()); ++i)
     {
-        for (std::ptrdiff_t j{0}; j < L.size(); ++j)
+        for (std::int32_t j{0}; j < static_cast<std::int32_t>(L.size()); ++j)
         {
             EXPECT_NEAR(L.at(i).at(j), L_expected_.at(i).at(j), tolerance_);
             EXPECT_NEAR(U.at(i).at(j), U_expected_.at(i).at(j), tolerance_);
@@ -122,7 +123,7 @@ class ForwardSubstitutionTestFixture : public DirectSolverBaseTestFixture
     }
 
   public:
-    std::vector<std::vector<double>> L_{};
+    Matrix<double> L_{};
     std::vector<double> x_expected_{};
 };
 
@@ -159,7 +160,7 @@ class LUSolverTestFixture : public DirectSolverBaseTestFixture
     }
 
   public:
-    std::vector<std::vector<double>> AA_{};
+    Matrix<double> AA_{};
     std::vector<double> x_expected_{};
 };
 
@@ -188,17 +189,14 @@ TEST(MatrixEquationTests, GivenSqaureMatrices_ExpectCorrectResult)
 
     // Construct
     B.Transpose();
-    // PrintMatrix(B);
     const auto AA = KroneckerProduct(B, A);
-    // PrintMatrix(AA);
     const auto C_vectorized = Vectorize(C);
-    // PrintVector(C_vectorized);
-    std::vector<double> x(C_vectorized.size(), 0.0);
-    // PrintVector(x);
+    std::vector<double> x(C_vectorized.size(), 1.0);
 
-    // Solve
+    // Call
     const auto result = LUSolve(AA, C_vectorized);
-    // PrintVector(result);
+
+    // Expect
     EXPECT_NEAR(result.at(0), -0.0179, tolerance);
     EXPECT_NEAR(result.at(1), 0.0964, tolerance);
     EXPECT_NEAR(result.at(2), -0.3036, tolerance);
