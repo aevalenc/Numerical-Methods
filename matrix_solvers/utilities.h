@@ -110,7 +110,7 @@ Matrix<T> CreateIdentityMatrix(const std::int32_t size)
     for (std::int32_t i{0}; i < size; ++i)
     {
         I.at(i).resize(size);
-        I.at(i).at(i) = 1.0;
+        I.at(i).at(i) = static_cast<T>(1);
     }
 
     return I;

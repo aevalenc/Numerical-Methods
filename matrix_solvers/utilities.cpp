@@ -19,8 +19,8 @@ namespace matrix
 
 std::vector<double> Vectorize(const Matrix<double>& A)
 {
-    const auto m = A.size();
-    const auto n = A.at(0).size();
+    const auto m = static_cast<std::int32_t>(A.size());
+    const auto n = static_cast<std::int32_t>(A.at(0).size());
 
     std::vector<double> result{};
 
