@@ -7,6 +7,7 @@ cc_library(
     srcs = ["backwards_substitution.cpp"],
     hdrs = ["backwards_substitution.h"],
     visibility = ["//visibility:public"],
+    deps = ["//matrix_solvers:utilities"],
 )
 
 cc_library(
