@@ -188,12 +188,17 @@ TEST(MatrixEquationTests, GivenSqaureMatrices_ExpectCorrectResult)
 
     // Construct
     B.Transpose();
+    // PrintMatrix(B);
     const auto AA = KroneckerProduct(B, A);
+    // PrintMatrix(AA);
     const auto C_vectorized = Vectorize(C);
+    // PrintVector(C_vectorized);
     std::vector<double> x(C_vectorized.size(), 0.0);
+    // PrintVector(x);
 
     // Solve
     const auto result = LUSolve(AA, C_vectorized);
+    // PrintVector(result);
     EXPECT_NEAR(result.at(0), -0.0179, tolerance);
     EXPECT_NEAR(result.at(1), 0.0964, tolerance);
     EXPECT_NEAR(result.at(2), -0.3036, tolerance);

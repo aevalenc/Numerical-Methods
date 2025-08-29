@@ -136,6 +136,11 @@ INSTANTIATE_TEST_SUITE_P(MatrixTransposeTests,
                              .matrix = Matrix<double>({{3, 5, 9}, {7, 9, 1}, {2, 8, 0}}),
                              .expected_transpose = Matrix<double>({{3, 7, 2}, {5, 9, 8}, {9, 1, 0}}),
                              .test_name = "ThreeByThree",
+                         },
+                         MatrixTransposeTestParameter{
+                             .matrix = Matrix<double>({{2, 4, 9, 5}, {7, 9, 1, 0}, {2, 8, 0, 2}, {6, 6, 2, 5}}),
+                             .expected_transpose = Matrix<double>({{2, 7, 2, 6}, {4, 9, 8, 6}, {9, 1, 0, 2}, {5, 0, 2, 5}}),
+                             .test_name = "FourByFour",
                          }  // clang-format on
                              ),
                          [](const ::testing::TestParamInfo<MatrixTransposeTestParameter>& info) -> std::string {

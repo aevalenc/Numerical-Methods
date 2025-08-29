@@ -5,6 +5,9 @@
  * Update: August 27, 2025
  */
 
+#ifndef MATRIX_SOLVERS_UTILITIES_TESTS_H
+#define MATRIX_SOLVERS_UTILITIES_TESTS_H
+
 #include "matrix_solvers/utilities.h"
 #include <gtest/gtest.h>
 #include <vector>
@@ -50,3 +53,5 @@ class MatrixUtilitiesBaseTestFixture : public ::testing::Test
 }  // namespace matrix
 
 }  // namespace nm
+
+#endif  // MATRIX_SOLVERS_UTILITIES_TESTS_H

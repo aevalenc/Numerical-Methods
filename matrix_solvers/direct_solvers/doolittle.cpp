@@ -20,42 +20,45 @@ std::pair<std::vector<std::vector<double>>, std::vector<std::vector<double>>> Do
 {
 
     /* Declarations */
-    int m, i, j;
-    double tempu, templ, sumu, suml;
+    double tempu{};
+    double templ{};
+    double sumu{};
+    double suml{};
+    const auto m = A.size();
 
     /* Set Identity Matrix */
     auto L = CreateIdentityMatrix<double>(static_cast<std::int32_t>(A.size()));
     auto U = CreateIdentityMatrix<double>(static_cast<std::int32_t>(A.size()));
 
     /* Main Algorithm */
-    for (std::int32_t k{0}; k < A.size(); ++k)
+    for (std::int32_t k{0}; k < m; ++k)
     {
 
         // Upper Triangular Matrix
-        for (m = k; m < A.size(); ++m)
+        for (std::int32_t q = k; q < m; ++q)
         {
             sumu = 0.0;
-            for (j = 0; j < k; ++j)
+            for (std::int32_t j = 0; j < k; ++j)
             {
-                tempu = L.at(k).at(j) * U.at(j).at(m);
+                tempu = L.at(k).at(j) * U.at(j).at(q);
                 sumu = sumu + tempu;
             }
 
-            U.at(k).at(m) = A.at(k).at(m) - sumu;
+            U.at(k).at(q) = A.at(k).at(q) - sumu;
         }
 
         // Lower Triangular Matrix
         //  Recall principle diagonal (i,i) are 1s
-        for (i = k + 1; i < A.size(); ++i)
+        for (std::int32_t i = k + 1; i < m; ++i)
         {
             suml = 0.0;
-            for (j = 0; j < k; j++)
+            for (std::int32_t j = 0; j < k; ++j)
             {
                 templ = L.at(i).at(j) * U.at(j).at(k);
                 suml = suml + templ;
             }
 
-            L.at(i).at(k) = (A.at(i).at(j) - suml) / U.at(k).at(k);
+            L.at(i).at(k) = (A.at(i).at(k) - suml) / U.at(k).at(k);
         }
     }
 
