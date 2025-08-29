@@ -15,8 +15,7 @@ namespace nm
 namespace matrix
 {
 
-std::pair<std::vector<std::vector<double>>, std::vector<std::vector<double>>> Doolittle(
-    const std::vector<std::vector<double>>& A)
+std::pair<Matrix<double>, Matrix<double>> Doolittle(const Matrix<double>& A)
 {
 
     /* Declarations */
@@ -24,11 +23,11 @@ std::pair<std::vector<std::vector<double>>, std::vector<std::vector<double>>> Do
     double templ{};
     double sumu{};
     double suml{};
-    const auto m = A.size();
+    const auto m = static_cast<std::int32_t>(A.size());
 
     /* Set Identity Matrix */
-    auto L = CreateIdentityMatrix<double>(static_cast<std::int32_t>(A.size()));
-    auto U = CreateIdentityMatrix<double>(static_cast<std::int32_t>(A.size()));
+    auto L = CreateIdentityMatrix<double>(m);
+    auto U = CreateIdentityMatrix<double>(m);
 
     /* Main Algorithm */
     for (std::int32_t k{0}; k < m; ++k)

@@ -4,6 +4,7 @@
  */
 
 #include "matrix_solvers/direct_solvers/forward_substitution.h"
+#include "matrix_solvers/utilities.h"
 #include <cstdint>
 
 namespace nm
@@ -12,7 +13,7 @@ namespace nm
 namespace matrix
 {
 
-std::vector<double> ForwardSubstitution(const std::vector<std::vector<double>>& A, const std::vector<double>& b)
+std::vector<double> ForwardSubstitution(const Matrix<double>& A, const std::vector<double>& b)
 {
     /* Declarations */
     double sum;

@@ -34,5 +34,6 @@ cc_library(
         ":backwards_substitution",
         ":doolittle",
         ":forward_substitution",
+        "//matrix_solvers:utilities",
     ],
 )
