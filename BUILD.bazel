@@ -15,6 +15,16 @@ refresh_compile_commands(
     },
 )
 
+refresh_compile_commands(
+    name = "refresh_matrix_commands",
+    targets = {
+        "//matrix_solvers:all": "--config=clang18_macos_aarch64",
+        "//matrix_solvers/direct_solvers/...": "--config=clang18_macos_aarch64",
+        "//matrix_solvers/iterative_solvers:all": "--config=clang18_macos_aarch64",
+        "//matrix_solvers/iterative_solvers/test:all": "--config=clang18_macos_aarch64",
+    },
+)
+
 bool_flag(
     name = "print_debug_info_flag",
     build_setting_default = False,

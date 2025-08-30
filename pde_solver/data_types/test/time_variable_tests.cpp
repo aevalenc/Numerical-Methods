@@ -112,7 +112,7 @@ class SpringMassDamperSystemTestFixture : public ::testing::Test
         c_ = 0.3 * (2 * std::sqrt(k_ * m_));
 
         // Setup Right Hand Side
-        nm::matrix::Matrix<double> rhs{{-c_ / m_, -k_ / m_}, {1, 0}};
+        nm::matrix::Matrix<double> rhs{{-c_ / m_, -k_ / m_}, {1.0, 0.0}};
         uu_.SetRightHandSideMatrix(rhs);
 
         // Set initial condition

@@ -1,9 +1,13 @@
 /*
+ * Matrix utilities tests
+ *
  * Author: Alejandro Valencia
- * Update: April 1st, 2024
+ * Update: August 27, 2025
  */
 
+#include "matrix_solvers/utilities_tests.h"
 #include "matrix_solvers/utilities.h"
+#include <cstdint>
 #include <gtest/gtest.h>
 #include <vector>
 
@@ -16,100 +20,9 @@ namespace matrix
 namespace
 {
 
-class MatrixUtilitiesBaseTestFixture : public ::testing::Test
-{
-    void SetUp() override
-    {
-        A_.push_back(std::vector<double>{1.0, 0.0, 1.0});
-        A_.push_back(std::vector<double>{2.0, 1.0, 1.0});
-        A_.push_back(std::vector<double>{0.0, 1.0, 1.0});
-        A_.push_back(std::vector<double>{1.0, 1.0, 2.0});
-
-        B_.push_back(std::vector<double>{1.0, 2.0, 1.0});
-        B_.push_back(std::vector<double>{2.0, 3.0, 1.0});
-        B_.push_back(std::vector<double>{4.0, 2.0, 2.0});
-
-        C_.push_back(std::vector<double>{5.0, 4.0, 3.0});
-        C_.push_back(std::vector<double>{8.0, 9.0, 5.0});
-        C_.push_back(std::vector<double>{6.0, 5.0, 3.0});
-        C_.push_back(std::vector<double>{11.0, 9.0, 6.0});
-    }
-
-  public:
-    std::vector<std::vector<double>> A_{};
-    std::vector<std::vector<double>> B_{};
-    std::vector<std::vector<double>> C_{};
-    double tolerance_{0.001};
-};
-
-class MatrixUtilitiesTestFixture : public MatrixUtilitiesBaseTestFixture
+class MatrixUtilitiesTestFixture : public test::MatrixUtilitiesBaseTestFixture
 {
 };
-
-TEST_F(MatrixUtilitiesTestFixture, GivenInvalidMatrix_ExpectException)
-{
-    A_.clear();
-
-    // Call & Expect
-    EXPECT_ANY_THROW({
-        try
-        {
-            const auto result = MatMult(A_, B_);
-        }
-        catch (const std::exception& exception)
-        {
-            throw;
-        }
-    });
-}
-
-TEST_F(MatrixUtilitiesTestFixture, GivenInvalidMatricesForMultiplication_ExpectException)
-{
-    // Given
-    std::vector<double> b = {1, 2, 3};
-
-    // Call & Expect
-    EXPECT_ANY_THROW({
-        try
-        {
-            const auto result = MatMult(A_, b);
-        }
-        catch (const std::exception& exception)
-        {
-            throw;
-        }
-    });
-}
-
-TEST_F(MatrixUtilitiesTestFixture, GivenValidMatrices_ExpectExactSolution)
-{
-    const auto m = static_cast<std::int32_t>(A_.size());
-    const auto p = static_cast<std::int32_t>(B_.at(0).size());
-    const auto C = MatMult(A_, B_);
-
-    for (std::int32_t i = 0; i < m; ++i)
-    {
-        for (std::int32_t j = 0; j < p; ++j)
-        {
-            EXPECT_NEAR(C.at(i).at(j), C_.at(i).at(j), tolerance_);
-        }
-    }
-}
-
-TEST_F(MatrixUtilitiesTestFixture, GivenOneMatrixAndOneVector_ExpectExactSolution)
-{
-    const std::vector<double> b = {1, 2, 3};
-    const std::vector<double> C_expected = {8, 11, 14};
-
-    const auto n = static_cast<std::int32_t>(b.size());
-    const auto C = MatMult(B_, b);
-
-    for (std::int32_t i = 0; i < n; ++i)
-    {
-
-        EXPECT_NEAR(C.at(i), C_expected.at(i), tolerance_);
-    }
-}
 
 TEST_F(MatrixUtilitiesTestFixture, GivenValidSizeForMatrix_ExpectValidIdentityMatrix)
 {
@@ -164,75 +77,75 @@ TEST_F(MatrixUtilitiesTestFixture, GivenSizeOfZeroForMatrix_ExpectExecption)
     EXPECT_ANY_THROW(CreateIdentityMatrix<double>(size););
 }
 
-class MatrixUtilitiesDotProductTestFixture : public MatrixUtilitiesBaseTestFixture
+TEST_F(MatrixUtilitiesTestFixture, GivenMatrix_ExpectValidVectorization)
 {
-
-  public:
-    std::vector<double> a_{1.0, 2.0, 3.0};
-    std::vector<double> b_{4.0, 5.0, 6.0};
-    std::vector<double> c_{4.0, 10.0, 18.0};
-};
-
-TEST_F(MatrixUtilitiesDotProductTestFixture, Given2ValidVectors_ExpectCorrectDotProductValue)
-{
-    // Given
-    const double expected_value{32.0};
-
     // Call
-    const auto result = Dot(a_, b_);
+    const auto result = Vectorize(A_);
 
     // Expect
-    EXPECT_NEAR(result, expected_value, tolerance_);
-}
+    std::vector<double> expected_result{1, 2, 0, 1, 0, 1, 1, 1, 1, 1, 1, 2};
 
-TEST_F(MatrixUtilitiesDotProductTestFixture, Given1EmptyVector_ExpectExecption)
-{
-    // Given
-    a_.clear();
-
-    // Call and Expect
-    EXPECT_ANY_THROW(Dot(a_, b_));
-
-    // Given
-    b_.clear();
-
-    // Call and Expect
-    EXPECT_ANY_THROW(Dot(c_, b_));
-}
-
-TEST_F(MatrixUtilitiesDotProductTestFixture, Given1VectorShorterThanTheOther_ExpectExecption)
-{
-    // Given
-    a_.resize(1);
-
-    // Call and Expect
-    EXPECT_ANY_THROW(Dot(a_, b_));
-}
-
-class ResidualTestFixture : public MatrixUtilitiesBaseTestFixture
-{
-
-  public:
-    std::vector<double> b_{4.0, 5.0, 6.0};
-    std::vector<double> expected_result_{4.0, 5.0, 6.0};
-};
-
-TEST_F(ResidualTestFixture, GivenValidMatrixEquation_ExpectValidResidual)
-{
-    // Given
-    const std::int32_t n{3};
-    std::vector<double> x{0.0, 0.0, 0.0};
-    A_.resize(n);
-
-    // Call and Expect
-    const auto result = CalculateResidual(A_, b_, x, n);
-
-    // Expect
-    for (std::int32_t i{0}; i < n; ++i)
+    EXPECT_EQ(result.size(), expected_result.size());
+    for (std::int32_t i{0}; i < static_cast<std::int32_t>(expected_result.size()); ++i)
     {
-        EXPECT_NEAR(result.at(i), expected_result_.at(i), tolerance_);
+        EXPECT_NEAR(result.at(i), expected_result.at(i), tolerance_);
     }
 }
+
+struct MatrixTransposeTestParameter
+{
+    Matrix<double> matrix{};
+    Matrix<double> expected_transpose{};
+    std::string test_name{};
+};
+
+class MatrixTransposeTestFixture : public ::testing::TestWithParam<MatrixTransposeTestParameter>
+{
+  public:
+    double tolerance_{0.001};
+};
+
+TEST_P(MatrixTransposeTestFixture, GivenSqaureMatrices_ExpectValidTransposes)
+{
+    // Given
+    auto param = GetParam();
+
+    // Call
+    param.matrix.Transpose();
+
+    // Expect
+    for (std::int32_t i{0}; i < static_cast<std::int32_t>(param.matrix.size()); ++i)
+    {
+        for (std::int32_t j{0}; j < static_cast<std::int32_t>(param.matrix.at(0).size()); ++j)
+        {
+            EXPECT_NEAR(param.matrix.at(i).at(j), param.expected_transpose.at(i).at(j), tolerance_);
+        }
+    }
+}
+
+INSTANTIATE_TEST_SUITE_P(MatrixTransposeTests,
+                         MatrixTransposeTestFixture,
+                         ::testing::Values(
+                             // clang-format off
+                         MatrixTransposeTestParameter{
+                             .matrix = Matrix<double>({{3, 5}, {7, 9}}),
+                             .expected_transpose = Matrix<double>({{3, 7}, {5, 9}}),
+                             .test_name = "TwoByTwo",
+                         },
+                         MatrixTransposeTestParameter{
+                             .matrix = Matrix<double>({{3, 5, 9}, {7, 9, 1}, {2, 8, 0}}),
+                             .expected_transpose = Matrix<double>({{3, 7, 2}, {5, 9, 8}, {9, 1, 0}}),
+                             .test_name = "ThreeByThree",
+                         },
+                         MatrixTransposeTestParameter{
+                             .matrix = Matrix<double>({{2, 4, 9, 5}, {7, 9, 1, 0}, {2, 8, 0, 2}, {6, 6, 2, 5}}),
+                             .expected_transpose = Matrix<double>({{2, 7, 2, 6}, {4, 9, 8, 6}, {9, 1, 0, 2}, {5, 0, 2, 5}}),
+                             .test_name = "FourByFour",
+                         }  // clang-format on
+                             ),
+                         [](const ::testing::TestParamInfo<MatrixTransposeTestParameter>& info) -> std::string {
+                             return info.param.test_name;
+                         });
 
 }  // namespace
 

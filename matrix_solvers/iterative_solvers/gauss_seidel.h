@@ -3,10 +3,11 @@
  * Update: October 8, 2023
  */
 
-#include <vector>
-
 #ifndef MATRIX_SOLVERS_ITERATIVE_SOLVERS_GAUSS_SEIDEL_H
 #define MATRIX_SOLVERS_ITERATIVE_SOLVERS_GAUSS_SEIDEL_H
+
+#include "matrix_solvers/utilities.h"
+#include <vector>
 
 namespace nm
 {
@@ -21,7 +22,7 @@ namespace matrix
 /// @param x: Initial guess to solution
 ///
 /// @return residual: Max absolute error defined max(|x-x0|)
-double GaussSeidel(const std::vector<std::vector<double>>& A, const std::vector<double>& b, std::vector<double>& x);
+double GaussSeidel(const Matrix<double>& A, const std::vector<double>& b, std::vector<double>& x);
 
 /// @brief Gauss Seidel foward sweep iterative linear solver
 ///
@@ -31,7 +32,7 @@ double GaussSeidel(const std::vector<std::vector<double>>& A, const std::vector<
 /// @param max_iterations: maximum iterations limit for algorithm
 /// @param tolerance: tolerance limit for algorithm break
 ///
-void GaussSeidel(const std::vector<std::vector<double>>& A,
+void GaussSeidel(const Matrix<double>& A,
                  const std::vector<double>& b,
                  std::vector<double>& x,
                  const int max_iterations,

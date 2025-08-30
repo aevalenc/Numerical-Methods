@@ -4,6 +4,7 @@
  */
 
 #include "matrix_solvers/iterative_solvers/conjugate_gradient.h"
+#include "matrix_solvers/operations/operations.h"
 
 namespace nm
 {

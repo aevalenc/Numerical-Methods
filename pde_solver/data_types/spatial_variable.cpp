@@ -121,7 +121,7 @@ void SpatialVariable::Solve(const std::int32_t max_iterations, const double tole
     switch (matrix_solver_)
     {
         case MatrixSolverEnum::kJacobi:
-            nm::matrix::jacobi(K_, f_, discretized_variable_, max_iterations, tolerance);
+            nm::matrix::Jacobi(K_, f_, discretized_variable_, max_iterations, tolerance);
             break;
         case MatrixSolverEnum::kGaussSeidel:
             nm::matrix::GaussSeidel(K_, f_, discretized_variable_, max_iterations, tolerance);

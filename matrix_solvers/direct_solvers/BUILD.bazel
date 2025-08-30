@@ -7,6 +7,7 @@ cc_library(
     srcs = ["backwards_substitution.cpp"],
     hdrs = ["backwards_substitution.h"],
     visibility = ["//visibility:public"],
+    deps = ["//matrix_solvers:utilities"],
 )
 
 cc_library(
@@ -22,6 +23,7 @@ cc_library(
     srcs = ["forward_substitution.cpp"],
     hdrs = ["forward_substitution.h"],
     visibility = ["//visibility:public"],
+    deps = ["//matrix_solvers:utilities"],
 )
 
 cc_library(
@@ -33,5 +35,6 @@ cc_library(
         ":backwards_substitution",
         ":doolittle",
         ":forward_substitution",
+        "//matrix_solvers:utilities",
     ],
 )

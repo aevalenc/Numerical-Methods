@@ -1,15 +1,15 @@
 /*
  * Author: Alejandro Valencia
- * Update: November 11, 2023
+ * Update: August 29, 2025
  *
  * Doolittle decomposition of linear system of equations
  */
 
-#include <utility>
-#include <vector>
-
 #ifndef MATRIX_SOLVERS_DIRECT_SOLVERS_DOOLITTLE_H
 #define MATRIX_SOLVERS_DIRECT_SOLVERS_DOOLITTLE_H
+
+#include "matrix_solvers/utilities.h"
+#include <utility>
 
 namespace nm
 {
@@ -17,8 +17,7 @@ namespace nm
 namespace matrix
 {
 
-std::pair<std::vector<std::vector<double>>, std::vector<std::vector<double>>> Doolittle(
-    const std::vector<std::vector<double>>& A);
+std::pair<Matrix<double>, Matrix<double>> Doolittle(const Matrix<double>& A);
 
 }  // namespace matrix
 

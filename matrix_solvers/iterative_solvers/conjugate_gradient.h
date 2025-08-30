@@ -31,13 +31,15 @@ std::pair<std::vector<double>, std::vector<double>> ConjugateGradient(const Matr
                                                                       std::vector<double>& residual,
                                                                       std::vector<double>& p);
 
-/// @brief Gauss Seidel foward sweep iterative linear solver
+/// @brief Conjugate Gradient iterative linear solver
 ///
-/// @param A: nxn Matrix
-/// @param b: Right hand side of matrix equation
-/// @param x: Initial guess to solution
-/// @param max_iterations: maximum iterations limit for algorithm
-/// @param tolerance: tolerance limit for algorithm break
+/// Solves the linear system Ax = b for symmetric positive-definite matrices using the Conjugate Gradient method.
+///
+/// @param A nxn symmetric positive-definite matrix
+/// @param b Right-hand side vector
+/// @param x On input: initial guess; on output: approximate solution
+/// @param tolerance Stopping criterion for the residual norm
+/// @param max_iterations Maximum number of iterations
 ///
 void ConjugateGradient(const Matrix<double>& A,
                        const std::vector<double>& b,

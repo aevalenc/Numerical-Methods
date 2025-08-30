@@ -14,10 +14,7 @@
  */
 
 #include "backwards_substitution.h"
-#include <algorithm>
-#include <iostream>
-#include <iterator>
-#include <numeric>
+#include <cstdint>
 
 namespace nm
 {
@@ -25,20 +22,20 @@ namespace nm
 namespace matrix
 {
 
-std::vector<double> BackwardsSubstitution(const std::vector<std::vector<double>>& A, const std::vector<double>& b)
+std::vector<double> BackwardsSubstitution(const Matrix<double>& A, const std::vector<double>& b)
 {
     const auto n = static_cast<int>(b.size() - 1);
-    std::vector<double> x(n + 1, 0);
+    std::vector<double> x(n + 1, 0.0);
     x.at(n) = b.at(n) / A.at(n).at(n);
 
-    auto i_row_of_A = std::crbegin(A);
-    int j{};
-    for (auto i = n - 1; i > -1; i--)
+    double sum{};
+    for (std::int32_t i = n - 1; i > -1; --i)
     {
-        i_row_of_A++;
-        j = (i - 1);
-        const auto sum =
-            std::inner_product(std::cbegin(*i_row_of_A) + j, std::cend(*i_row_of_A), std::cbegin(x) + j, 0.0);
+        sum = 0.0;
+        for (std::int32_t j = i + 1; j < n + 1; ++j)
+        {
+            sum += A.at(i).at(j) * x.at(j);
+        }
         x.at(i) = (b.at(i) - sum) / A.at(i).at(i);
     }
 

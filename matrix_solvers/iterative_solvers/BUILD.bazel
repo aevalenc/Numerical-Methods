@@ -2,11 +2,14 @@
 BUILD file for iterative linear solvers
 """
 
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
 cc_library(
     name = "jacobi_method",
     srcs = ["jacobi.cpp"],
     hdrs = ["jacobi.h"],
     visibility = ["//visibility:public"],
+    deps = ["//matrix_solvers:utilities"],
 )
 
 cc_library(
@@ -14,6 +17,7 @@ cc_library(
     srcs = ["gauss_seidel.cpp"],
     hdrs = ["gauss_seidel.h"],
     visibility = ["//visibility:public"],
+    deps = ["//matrix_solvers:utilities"],
 )
 
 cc_library(
@@ -25,5 +29,8 @@ cc_library(
         "//conditions:default": [],
     }),
     visibility = ["//visibility:public"],
-    deps = ["//matrix_solvers:utilities"],
+    deps = [
+        "//matrix_solvers:operations",
+        "//matrix_solvers:utilities",
+    ],
 )

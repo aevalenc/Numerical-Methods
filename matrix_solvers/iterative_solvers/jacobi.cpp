@@ -32,7 +32,7 @@ double L2Norm(const std::vector<double>& vector)
 
 }  // namespace
 
-double jacobi(const std::vector<std::vector<double>>& A, const std::vector<double>& b, std::vector<double>& x)
+double Jacobi(const Matrix<double>& A, const std::vector<double>& b, std::vector<double>& x)
 {
 
     const auto x_initial = x;
@@ -63,7 +63,7 @@ double jacobi(const std::vector<std::vector<double>>& A, const std::vector<doubl
 
 }  // end FUNCTION jacobi
 
-void jacobi(const std::vector<std::vector<double>>& A,
+void Jacobi(const Matrix<double>& A,
             const std::vector<double>& b,
             std::vector<double>& x,
             const int max_iterations,

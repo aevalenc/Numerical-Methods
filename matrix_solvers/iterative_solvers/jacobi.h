@@ -3,10 +3,11 @@
  * Update: 16 April, 2023
  */
 
-#include <vector>
-
 #ifndef MATRIX_SOLVERS_ITERATIVE_SOLVERS_JACOBI_H
 #define MATRIX_SOLVERS_ITERATIVE_SOLVERS_JACOBI_H
+
+#include "matrix_solvers/utilities.h"
+#include <vector>
 
 namespace nm
 {
@@ -21,7 +22,7 @@ namespace matrix
 /// @param x: Initialized solution
 ///
 /// @return residual: L2 norm defined as sqrt(sum((x-x0)^2))
-double jacobi(const std::vector<std::vector<double>>& A, const std::vector<double>& b, std::vector<double>& x);
+double Jacobi(const Matrix<double>& A, const std::vector<double>& b, std::vector<double>& x);
 
 /// @brief This function implements a full iterative jacobi method solver
 ///
@@ -30,7 +31,7 @@ double jacobi(const std::vector<std::vector<double>>& A, const std::vector<doubl
 /// @param x: Initialized solution
 ///
 /// @return residual: L2 norm defined as sqrt(sum((x-x0)^2))
-void jacobi(const std::vector<std::vector<double>>& A,
+void Jacobi(const Matrix<double>& A,
             const std::vector<double>& b,
             std::vector<double>& x,
             const int max_iterations,

@@ -5,12 +5,15 @@
  * Utility functions for matrix solvers
  */
 
-#include <cstdint>
-#include <iostream>
-#include <vector>
-
 #ifndef MATRIX_SOLVERS_UTILITIES_H
 #define MATRIX_SOLVERS_UTILITIES_H
+
+#include <cassert>
+#include <cstddef>
+#include <cstdint>
+#include <iostream>
+#include <utility>
+#include <vector>
 
 namespace nm
 {
@@ -22,7 +25,72 @@ namespace matrix
 ///
 /// @param T: template-parameter-typename
 template <typename T>
-using Matrix = std::vector<std::vector<T>>;
+// using Matrix = std::vector<std::vector<T>>;
+class Matrix : public std::vector<std::vector<T>>
+{
+  public:
+    // Default constructor
+    Matrix() = default;
+
+    // Initializer-list constructor
+    Matrix(std::initializer_list<std::vector<T>> init) : std::vector<std::vector<T>>(init) {}
+
+    // Copy constructor
+    Matrix(const Matrix& other) : std::vector<std::vector<T>>(other) {}
+
+    // Copy assignment operator
+    Matrix& operator=(const Matrix& other)
+    {
+        std::vector<std::vector<T>>::operator=(other);
+        return *this;
+    }
+
+    // Move Constructor
+    Matrix(Matrix<T>&& other) noexcept : std::vector<std::vector<T>>(std::move(other)) {}
+
+    // Other constructors and operators
+    Matrix(const std::vector<std::vector<T>>& other) { this->assign(other.begin(), other.end()); }
+    Matrix(T* array_ptr, const std::int32_t number_of_rows, const std::int32_t number_of_columns)
+    {
+        assert(array_ptr != nullptr);
+        assert(number_of_rows > 0);
+        assert(number_of_columns > 0);
+
+        this->resize(number_of_rows);
+        for (std::int32_t i{0}; i < number_of_rows; ++i)
+        {
+            this->at(i).resize(number_of_columns);
+            this->at(i) = std::vector<T>(array_ptr + (number_of_columns * i),
+                                         array_ptr + (number_of_columns * i + number_of_columns));
+        }
+    }
+
+    void Transpose()
+    {
+        const auto rows = static_cast<std::int32_t>(this->size());
+        assert(rows > 0);
+
+        const auto columns = static_cast<std::int32_t>(this->at(0).size());
+        assert(columns > 0);
+
+        for (std::int32_t i{0}; i < rows; ++i)
+        {
+            for (std::int32_t j{i}; j < columns; ++j)
+            {
+                if (i == j)
+                {
+                    continue;
+                }
+                else
+                {
+                    const auto tmp = this->at(i).at(j);
+                    this->at(i).at(j) = this->at(j).at(i);
+                    this->at(j).at(i) = tmp;
+                }
+            }
+        }
+    };
+};
 
 /// @brief Identity Square Matrix Constructor
 ///
@@ -42,7 +110,7 @@ Matrix<T> CreateIdentityMatrix(const std::int32_t size)
     for (std::int32_t i{0}; i < size; ++i)
     {
         I.at(i).resize(size);
-        I.at(i).at(i) = 1.0;
+        I.at(i).at(i) = static_cast<T>(1);
     }
 
     return I;
@@ -73,51 +141,13 @@ void PrintMatrix(const Matrix<T>& matrix)
     }
 };
 
-/// @brief Matrix Multiplication Function for 2 Matrices of type Matrix<double>
+/// @brief Converts a matrix into a vector by stacking its elements column-wise
 ///
-/// @param A: mxn Matrix of doubles
-/// @param B: nxp Matrix of doubles
-///
-/// @return C: a mxp Matrix of doubles
-Matrix<double> MatMult(const Matrix<double>& A, const Matrix<double>& B);
+/// @param A The matrix to be vectorized
+/// @return std::vector<double> The resulting vector containing the elements of the matrix
+std::vector<double> Vectorize(const Matrix<double>& A);
 
-/// @brief Matrix Multiplication between a Matrix and a vector
-///
-/// @param A: mxn Matrix of doubles
-/// @param b: nx1 std::vector of doubles
-///
-/// @return
-std::vector<double> MatMult(const Matrix<double>& A, const std::vector<double>& b);
-
-/// @brief Calculate the L2 norm of a vector
-///
-/// @param vector: std::vector of doubles
-///
-/// @return L2 norm computed value
-double L2Norm(const std::vector<double>& vector);
-
-/// @brief Performs the dot (scalar) product
-///
-/// @param vector_1: std::vector of doubles
-/// @param vector_2: std::vector of doubles
-///
-/// @return dot product result
-double Dot(const std::vector<double>& vector_1, const std::vector<double>& vector_2);
-
-/// @brief Helper function to calculate the residual of the matrix equation Ax = b
-///
-/// @param A: Matrix of doubles
-/// @param b: std::vector of doubles
-/// @param x: Guess value for solution
-/// @param n: size of x
-///
-/// @return residual as std::vector of doubles
-std::vector<double> CalculateResidual(const Matrix<double>& A,
-                                      const std::vector<double>& b,
-                                      const std::vector<double>& x,
-                                      const std::int32_t n);
-
-nm::matrix::Matrix<double> ScalarMultiply(const double scalar_value, const nm::matrix::Matrix<double>& A);
+Matrix<double> ScalarMultiply(const double scalar_value, const nm::matrix::Matrix<double>& A);
 /// @brief Adds two vectors element-wise
 ///
 /// @param a First std::vector of doubles
@@ -137,7 +167,7 @@ std::vector<double> ScalarMultiply(const double scalar_value, const std::vector<
 /// @param scalar_value The scalar multiplier
 /// @param A The matrix to be scaled
 /// @return Matrix<double> The scaled matrix
-nm::matrix::Matrix<double> ScalarMultiply(const double scalar_value, const nm::matrix::Matrix<double>& A);
+Matrix<double> ScalarMultiply(const double scalar_value, const nm::matrix::Matrix<double>& A);
 
 }  // namespace matrix
 
