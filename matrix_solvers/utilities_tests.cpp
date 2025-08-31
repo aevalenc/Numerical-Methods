@@ -111,7 +111,7 @@ TEST_P(MatrixTransposeTestFixture, GivenSqaureMatrices_ExpectValidTransposes)
     auto param = GetParam();
 
     // Call
-    param.matrix.Transpose();
+    param.matrix.TransposeInPlace();
 
     // Expect
     for (std::int32_t i{0}; i < static_cast<std::int32_t>(param.matrix.size()); ++i)

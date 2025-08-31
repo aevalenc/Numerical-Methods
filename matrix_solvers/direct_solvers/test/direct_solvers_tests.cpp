@@ -188,7 +188,7 @@ TEST(MatrixEquationTests, GivenSqaureMatrices_ExpectCorrectResult)
     const double tolerance{0.001};
 
     // Construct
-    B.Transpose();
+    B.TransposeInPlace();
     const auto AA = KroneckerProduct(B, A);
     const auto C_vectorized = Vectorize(C);
     std::vector<double> x(C_vectorized.size(), 1.0);

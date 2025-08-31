@@ -65,7 +65,7 @@ class Matrix : public std::vector<std::vector<T>>
         }
     }
 
-    void Transpose()
+    void TransposeInPlace()
     {
         const auto rows = static_cast<std::int32_t>(this->size());
         assert(rows > 0);
@@ -89,7 +89,35 @@ class Matrix : public std::vector<std::vector<T>>
                 }
             }
         }
-    };
+    }
+
+    Matrix<T> Transpose()
+    {
+        const auto rows = static_cast<std::int32_t>(this->size());
+        assert(rows > 0);
+
+        const auto columns = static_cast<std::int32_t>(this->at(0).size());
+        assert(columns > 0);
+
+        Matrix<T> result{this};
+
+        for (std::int32_t i{0}; i < rows; ++i)
+        {
+            for (std::int32_t j{i}; j < columns; ++j)
+            {
+                if (i == j)
+                {
+                    continue;
+                }
+                else
+                {
+                    this->at(i).at(j) = this->at(j).at(i);
+                    this->at(j).at(i) = this->at(i).at(j);
+                }
+            }
+        }
+        return result;
+    }
 };
 
 /// @brief Identity Square Matrix Constructor
