@@ -6,7 +6,6 @@
 #include "matrix_solvers/iterative_solvers/conjugate_gradient.h"
 #include "matrix_solvers/iterative_solvers/gauss_seidel.h"
 #include "matrix_solvers/iterative_solvers/jacobi.h"
-#include "matrix_solvers/operations/operations.h"
 #include "matrix_solvers/utilities.h"
 #include <gtest/gtest.h>
 
