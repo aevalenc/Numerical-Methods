@@ -59,17 +59,48 @@ class Matrix : public std::vector<std::vector<T>>
     }
 
     // Copy constructor
-    Matrix(const Matrix& other) : std::vector<std::vector<T>>(other) {}
+    Matrix(const Matrix& other) : std::vector<std::vector<T>>(other)
+    {
+        m_ = static_cast<std::int32_t>(this->size());
+        if (!this->at(0).empty())
+        {
+            n_ = this->at(0).size();
+        }
+        else
+        {
+            n_ = 1;
+        }
+    }
 
     // Copy assignment operator
     Matrix& operator=(const Matrix& other)
     {
         std::vector<std::vector<T>>::operator=(other);
+        m_ = static_cast<std::int32_t>(this->size());
+        if (!this->at(0).empty())
+        {
+            n_ = this->at(0).size();
+        }
+        else
+        {
+            n_ = 1;
+        }
         return *this;
     }
 
     // Move Constructor
-    Matrix(Matrix<T>&& other) noexcept : std::vector<std::vector<T>>(std::move(other)) {}
+    Matrix(Matrix<T>&& other) noexcept : std::vector<std::vector<T>>(std::move(other))
+    {
+        m_ = static_cast<std::int32_t>(this->size());
+        if (!this->at(0).empty())
+        {
+            n_ = this->at(0).size();
+        }
+        else
+        {
+            n_ = 1;
+        }
+    }
 
     // Other constructors and operators
     Matrix(const std::vector<std::vector<T>>& other) { this->assign(other.begin(), other.end()); }
@@ -103,8 +134,11 @@ class Matrix : public std::vector<std::vector<T>>
 
     Matrix<T> operator+(const Matrix<T>& other) const
     {
-        const auto m_ = static_cast<std::int32_t>(other.size());
-        if (NumberOfRows() != other.NumberOfRows() || NumberOfColumns() != other.NumberOfColumns())
+        const auto m = static_cast<std::int32_t>(this->size());
+        const auto n = static_cast<std::int32_t>(this->at(0).size());
+        const auto other_m = static_cast<std::int32_t>(other.size());
+        const auto other_n = static_cast<std::int32_t>(other.at(0).size());
+        if (m != other_m || n != other_n)
         {
             throw std::invalid_argument("Matrix dimensions must match for addition.");
         }
@@ -150,20 +184,21 @@ class Matrix : public std::vector<std::vector<T>>
         const auto columns = static_cast<std::int32_t>(this->at(0).size());
         assert(columns > 0);
 
-        Matrix<T> result{this};
+        Matrix<T> result{};
+        result.resize(columns);
 
         for (std::int32_t i{0}; i < rows; ++i)
         {
             for (std::int32_t j{i}; j < columns; ++j)
             {
+                result.at(j).resize(rows);
                 if (i == j)
                 {
-                    continue;
+                    result.at(i).at(j) = this->at(i).at(i);
                 }
                 else
                 {
-                    this->at(i).at(j) = this->at(j).at(i);
-                    this->at(j).at(i) = this->at(i).at(j);
+                    result.at(j).at(i) = this->at(i).at(j);
                 }
             }
         }
@@ -192,7 +227,7 @@ Matrix<T> CreateIdentityMatrix(const std::int32_t size)
         I.at(i).at(i) = static_cast<T>(1);
     }
 
-    return I;
+    return Matrix<T>{I};
 }
 
 /// @brief Print a std vector
