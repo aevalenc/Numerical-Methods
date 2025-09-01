@@ -27,7 +27,7 @@ TEST(LQRTests, GivenLyaponovEquation_ExpectValidSolution)
     matrix::Matrix<double> Q{{0, 0}, {0, 40}};
     matrix::Matrix<double> R{{0.2}};
 
-    matrix::Matrix<double> K0{{0.0, 0.0}};
+    matrix::Matrix<double> K0{{2.0, 2.0}};
 
     const auto result = NewtonKleinman(A, B, Q, R, K0);
 
