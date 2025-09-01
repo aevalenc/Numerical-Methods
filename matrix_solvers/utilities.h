@@ -176,7 +176,7 @@ class Matrix : public std::vector<std::vector<T>>
         }
     }
 
-    Matrix<T> Transpose()
+    Matrix<T> Transpose() const
     {
         const auto rows = static_cast<std::int32_t>(this->size());
         assert(rows > 0);

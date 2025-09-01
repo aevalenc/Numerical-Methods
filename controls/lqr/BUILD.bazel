@@ -1,0 +1,23 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+
+cc_library(
+    name = "lqr",
+    srcs = ["newton_kleinman.cpp"],
+    hdrs = ["newton_kleinman.h"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//matrix_solvers:operations",
+        "//matrix_solvers:utilities",
+    ],
+)
+
+cc_test(
+    name = "lqr_tests",
+    srcs = ["lqr_tests.cpp"],
+    deps = [
+        ":lqr",
+        "//matrix_solvers:operations",
+        "//matrix_solvers:utilities",
+        "@com_google_googletest//:gtest_main",
+    ],
+)
