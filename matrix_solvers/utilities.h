@@ -261,6 +261,13 @@ void PrintMatrix(const Matrix<T>& matrix)
 /// @return std::vector<double> The resulting vector containing the elements of the matrix
 std::vector<double> Vectorize(const Matrix<double>& A);
 
+/// @brief Converts a vector into a Matrix by re-ordering its elements column-wise
+///
+/// @param a The vector to be devectorized
+/// @param column_length The length of the columns for the new matrix
+/// @return Matrix<double> The resulting matrix containing the elements of the vector
+Matrix<double> Devectorize(const std::vector<double>& a, const std::int32_t column_length);
+
 Matrix<double> ScalarMultiply(const double scalar_value, const nm::matrix::Matrix<double>& A);
 
 /// @brief Multiplies a vector by a scalar value

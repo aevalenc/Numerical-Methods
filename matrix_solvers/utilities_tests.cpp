@@ -164,6 +164,40 @@ TEST(AdditionOperatorTests, GivenTwoMatrices_ExpectCorrectSum)
     EXPECT_NEAR(result.at(1).at(1), 6, tolerance);
 }
 
+TEST(AdditionOperatorTests, GivenTwoOneDimensionalMatrices_ExpectCorrectSum)
+{
+    // Given
+    const Matrix<double> A{{1, 1, 1, 1}};
+    const Matrix<double> B{{2, 3, 4, 5}};
+    const double tolerance = 1e-3;
+
+    // Call
+    const auto result = A + B;
+
+    // Expect
+    EXPECT_NEAR(result.at(0).at(0), 3, tolerance);
+    EXPECT_NEAR(result.at(0).at(1), 4, tolerance);
+    EXPECT_NEAR(result.at(0).at(2), 5, tolerance);
+    EXPECT_NEAR(result.at(0).at(3), 6, tolerance);
+}
+
+TEST(DevectorizeTests, GivenVectorAndColumnHeight_ExpectCorrectMatrix)
+{
+    // Given
+    const std::vector<double> B{{2, 3, 4, 5}};
+    const double tolerance = 1e-3;
+
+    // Call
+    const auto result = Devectorize(B, 2);
+    PrintMatrix(result);
+
+    // Expect
+    EXPECT_NEAR(result.at(0).at(0), 2, tolerance);
+    EXPECT_NEAR(result.at(0).at(1), 4, tolerance);
+    EXPECT_NEAR(result.at(1).at(0), 3, tolerance);
+    EXPECT_NEAR(result.at(1).at(1), 5, tolerance);
+}
+
 }  // namespace
 
 }  // namespace matrix
