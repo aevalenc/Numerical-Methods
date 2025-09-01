@@ -19,7 +19,7 @@ nm::matrix::Matrix<double> NewtonKleinman(const nm::matrix::Matrix<double>& A,
                                           const nm::matrix::Matrix<double>& B,
                                           const nm::matrix::Matrix<double>& Q,
                                           const nm::matrix::Matrix<double>& R,
-                                          const nm::matrix::Matrix<double> K0);
+                                          const nm::matrix::Matrix<double>& K0);
 
 }  // namespace controls
 }  // namespace nm
