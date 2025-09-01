@@ -8,16 +8,17 @@ cc_library(
     deps = [
         "//matrix_solvers:operations",
         "//matrix_solvers:utilities",
+        "//matrix_solvers/iterative_solvers:jacobi_method",
     ],
 )
 
 cc_test(
     name = "lqr_tests",
-    srcs = ["lqr_tests.cpp"],
+    srcs = ["test/lqr_tests.cpp"],
     deps = [
         ":lqr",
         "//matrix_solvers:operations",
         "//matrix_solvers:utilities",
-        "@com_google_googletest//:gtest_main",
+        "@googletest//:gtest_main",
     ],
 )

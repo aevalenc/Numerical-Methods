@@ -122,15 +122,15 @@ class Matrix : public std::vector<std::vector<T>>
     std::int32_t NumberOfRows() const { return m_; }
     std::int32_t NumberOfColumns() const { return n_; }
 
-    Matrix<T>& operator+(const Matrix<T>& A)
-    {
-        const auto m_ = static_cast<std::int32_t>(A.size());
-        for (std::int32_t i{0}; i < m_; ++i)
-        {
-            this->at(i) = AddVectors(this->at(i), A.at(i));
-        }
-        return *this;
-    }
+    // Matrix<T>& operator+(const Matrix<T>& A)
+    // {
+    //     const auto m_ = static_cast<std::int32_t>(A.size());
+    //     for (std::int32_t i{0}; i < m_; ++i)
+    //     {
+    //         this->at(i) = AddVectors(this->at(i), A.at(i));
+    //     }
+    //     return *this;
+    // }
 
     Matrix<T> operator+(const Matrix<T>& other) const
     {
@@ -143,7 +143,7 @@ class Matrix : public std::vector<std::vector<T>>
             throw std::invalid_argument("Matrix dimensions must match for addition.");
         }
         Matrix<T> result = *this;
-        for (std::int32_t i{0}; i < m_; ++i)
+        for (std::int32_t i{0}; i < m; ++i)
         {
             result.at(i) = AddVectors(this->at(i), other.at(i));
         }
