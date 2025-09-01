@@ -9,19 +9,15 @@ refresh_compile_commands(
 )
 
 refresh_compile_commands(
-    name = "refresh_pde_commands",
+    name = "refresh_compile_commands",
     targets = {
         "//pde_solver/...": "--config=clang18_macos_aarch64",
-    },
-)
-
-refresh_compile_commands(
-    name = "refresh_matrix_commands",
-    targets = {
         "//matrix_solvers:all": "--config=clang18_macos_aarch64",
         "//matrix_solvers/direct_solvers/...": "--config=clang18_macos_aarch64",
         "//matrix_solvers/iterative_solvers:all": "--config=clang18_macos_aarch64",
         "//matrix_solvers/iterative_solvers/test:all": "--config=clang18_macos_aarch64",
+        "//optimization/...": "--config=clang18_macos_aarch64",
+        "//controls/...": "--config=clang18_macos_aarch64",
     },
 )
 
