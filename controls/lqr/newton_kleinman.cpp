@@ -16,30 +16,31 @@ namespace nm
 namespace controls
 {
 
-nm::matrix::Matrix<double> NewtonKleinman(const nm::matrix::Matrix<double>& A,
-                                          const nm::matrix::Matrix<double>& B,
-                                          const nm::matrix::Matrix<double>& Q,
-                                          const nm::matrix::Matrix<double>& R,
-                                          const nm::matrix::Matrix<double>& K0)
+std::pair<matrix::Matrix<double>, matrix::Matrix<double>> NewtonKleinman(const matrix::Matrix<double>& A,
+                                                                         const matrix::Matrix<double>& B,
+                                                                         const matrix::Matrix<double>& Q,
+                                                                         const matrix::Matrix<double>& R,
+                                                                         const matrix::Matrix<double>& K0)
 {
     // Apply Kronecker product
     // To solve the system S0'P + PS0 = -Q - K0'RK0
     const std::int32_t max_iterations = 1000;
     const double tolerance = 1e-12;
-    const auto I = nm::matrix::CreateIdentityMatrix<double>(A.size());
+
+    const auto I = matrix::CreateIdentityMatrix<double>(A.size());
+    matrix::Matrix<double> P(Q.size(), Q.size());
     auto K_previous = K0;
     auto K_next = K0;
-    matrix::Matrix<double> P_previous{{0, 0}, {0, 0}};
     matrix::Matrix<double> R_inv{R};
     R_inv.at(0).at(0) = 1 / R.at(0).at(0);
 
     for (std::int32_t iter{0}; iter < max_iterations; ++iter)
     {
-        const auto BK = nm::matrix::MatMult(B, K_previous);
+        const auto BK = matrix::MatMult(B, K_previous);
         auto S = A + BK;
 
         const auto K_transposed = K_previous.Transpose();
-        const auto KTRK = nm::matrix::MatMult((MatMult(K_transposed, R)), K_previous);
+        const auto KTRK = matrix::MatMult((MatMult(K_transposed, R)), K_previous);
         const auto RHS = Q + KTRK;
         const auto negative_RHS = matrix::ScalarMultiply(-1.0, RHS);
 
@@ -51,7 +52,7 @@ nm::matrix::Matrix<double> NewtonKleinman(const nm::matrix::Matrix<double>& A,
         const auto AA = (IS + SI);
         const auto P_vectorized = matrix::LUSolve(AA, RHS_vectorized);
 
-        const auto P = matrix::Devectorize(P_vectorized, negative_RHS.size());
+        P = matrix::Devectorize(P_vectorized, negative_RHS.size());
         const auto RinvBT = matrix::MatMult(R_inv, B.Transpose());
         K_next = matrix::ScalarMultiply(-1.0, matrix::MatMult(RinvBT, P));
 
@@ -68,7 +69,7 @@ nm::matrix::Matrix<double> NewtonKleinman(const nm::matrix::Matrix<double>& A,
         }
     }
 
-    return K_next;
+    return {K_next, P};
 }
 
 }  // namespace controls

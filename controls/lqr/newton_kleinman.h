@@ -15,11 +15,11 @@ namespace nm
 namespace controls
 {
 
-nm::matrix::Matrix<double> NewtonKleinman(const nm::matrix::Matrix<double>& A,
-                                          const nm::matrix::Matrix<double>& B,
-                                          const nm::matrix::Matrix<double>& Q,
-                                          const nm::matrix::Matrix<double>& R,
-                                          const nm::matrix::Matrix<double>& K0);
+std::pair<matrix::Matrix<double>, matrix::Matrix<double>> NewtonKleinman(const matrix::Matrix<double>& A,
+                                                                         const matrix::Matrix<double>& B,
+                                                                         const matrix::Matrix<double>& Q,
+                                                                         const matrix::Matrix<double>& R,
+                                                                         const matrix::Matrix<double>& K0);
 
 }  // namespace controls
 }  // namespace nm
