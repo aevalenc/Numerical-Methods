@@ -4,6 +4,7 @@
 
 #include "controls/lqr/newton_kleinman.h"
 #include "matrix_solvers/utilities.h"
+#include <cmath>
 #include <gtest/gtest.h>
 
 namespace nm
@@ -31,7 +32,8 @@ TEST(LQRTests, GivenLyaponovEquation_ExpectValidSolution)
 
     const auto result = NewtonKleinman(A, B, Q, R, K0);
 
-    matrix::PrintMatrix(result);
+    matrix::PrintMatrix(result.first);
+    matrix::PrintMatrix(result.second);
 
     EXPECT_TRUE(true);
 }

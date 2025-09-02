@@ -8,7 +8,6 @@ cc_library(
     deps = [
         "//matrix_solvers:operations",
         "//matrix_solvers:utilities",
-        # "//matrix_solvers/iterative_solvers:jacobi_method",
         "//matrix_solvers/direct_solvers:lu_solve",
     ],
 )
