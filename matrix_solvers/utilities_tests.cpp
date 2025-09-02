@@ -189,7 +189,6 @@ TEST(DevectorizeTests, GivenVectorAndColumnHeight_ExpectCorrectMatrix)
 
     // Call
     const auto result = Devectorize(B, 2);
-    PrintMatrix(result);
 
     // Expect
     EXPECT_NEAR(result.at(0).at(0), 2, tolerance);

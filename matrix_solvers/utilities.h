@@ -58,6 +58,21 @@ class Matrix : public std::vector<std::vector<T>>
         }
     }
 
+    // Resize constuctor
+    Matrix(const std::int32_t rows, const std::int32_t columns)
+    {
+        assert(rows > 0);
+        assert(columns > 0);
+
+        this->resize(rows);
+        for (std::int32_t i{0}; i < rows; ++i)
+        {
+            this->at(i).resize(columns);
+        }
+        m_ = rows;
+        n_ = columns;
+    }
+
     // Copy constructor
     Matrix(const Matrix& other) : std::vector<std::vector<T>>(other)
     {
@@ -121,16 +136,6 @@ class Matrix : public std::vector<std::vector<T>>
 
     std::int32_t NumberOfRows() const { return m_; }
     std::int32_t NumberOfColumns() const { return n_; }
-
-    // Matrix<T>& operator+(const Matrix<T>& A)
-    // {
-    //     const auto m_ = static_cast<std::int32_t>(A.size());
-    //     for (std::int32_t i{0}; i < m_; ++i)
-    //     {
-    //         this->at(i) = AddVectors(this->at(i), A.at(i));
-    //     }
-    //     return *this;
-    // }
 
     Matrix<T> operator+(const Matrix<T>& other) const
     {
@@ -219,15 +224,13 @@ Matrix<T> CreateIdentityMatrix(const std::int32_t size)
         throw std::exception{};
     }
 
-    Matrix<T> I{};
-    I.resize(size);
+    Matrix<T> I(size, size);
     for (std::int32_t i{0}; i < size; ++i)
     {
-        I.at(i).resize(size);
         I.at(i).at(i) = static_cast<T>(1);
     }
 
-    return Matrix<T>{I};
+    return I;
 }
 
 /// @brief Print a std vector
