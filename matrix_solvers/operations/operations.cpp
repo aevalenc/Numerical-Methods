@@ -202,7 +202,7 @@ Matrix<double> KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B
 
 std::pair<Matrix<double>, Matrix<double>> QRDecompositionGramSchmidt(const Matrix<double>& A)
 {
-    const std::int32_t n = static_cast<std::int32_t>(A.size());
+    const std::int32_t n = static_cast<std::int32_t>(A.at(0).size());
 
     const auto A_tranpose = A.Transpose();
     Matrix<double> U = A_tranpose;
