@@ -99,13 +99,13 @@ struct MatrixTransposeTestParameter
     std::string test_name{};
 };
 
-class MatrixTransposeTestFixture : public ::testing::TestWithParam<MatrixTransposeTestParameter>
+class MatrixTransposeInPlaceTestFixture : public ::testing::TestWithParam<MatrixTransposeTestParameter>
 {
   public:
     double tolerance_{0.001};
 };
 
-TEST_P(MatrixTransposeTestFixture, GivenSqaureMatrices_ExpectValidTransposes)
+TEST_P(MatrixTransposeInPlaceTestFixture, GivenSqaureMatrices_ExpectValidTransposes)
 {
     // Given
     auto param = GetParam();
@@ -124,7 +124,7 @@ TEST_P(MatrixTransposeTestFixture, GivenSqaureMatrices_ExpectValidTransposes)
 }
 
 INSTANTIATE_TEST_SUITE_P(MatrixTransposeTests,
-                         MatrixTransposeTestFixture,
+                         MatrixTransposeInPlaceTestFixture,
                          ::testing::Values(
                              // clang-format off
                          MatrixTransposeTestParameter{
@@ -143,6 +143,53 @@ INSTANTIATE_TEST_SUITE_P(MatrixTransposeTests,
                              .test_name = "FourByFour",
                          }  // clang-format on
                              ),
+                         [](const ::testing::TestParamInfo<MatrixTransposeTestParameter>& info) -> std::string {
+                             return info.param.test_name;
+                         });
+
+class MatrixTransposeTestFixture : public ::testing::TestWithParam<MatrixTransposeTestParameter>
+{
+  public:
+    double tolerance_{0.001};
+};
+
+TEST_P(MatrixTransposeTestFixture, GivenSqaureMatrices_ExpectValidTransposes)
+{
+    // Given
+    auto param = GetParam();
+
+    // Call
+    const auto result = param.matrix.Transpose();
+
+    // Expect
+    for (std::int32_t i{0}; i < static_cast<std::int32_t>(result.size()); ++i)
+    {
+        for (std::int32_t j{0}; j < static_cast<std::int32_t>(result.at(0).size()); ++j)
+        {
+            EXPECT_NEAR(result.at(i).at(j), param.expected_transpose.at(i).at(j), tolerance_);
+        }
+    }
+    // EXPECT_TRUE(true);
+}
+
+INSTANTIATE_TEST_SUITE_P(MatrixTransposeTests,
+                         MatrixTransposeTestFixture,
+                         ::testing::Values(
+                             MatrixTransposeTestParameter{
+                                 .matrix = Matrix<double>({{3, 5}, {7, 9}}),
+                                 .expected_transpose = Matrix<double>({{3, 7}, {5, 9}}),
+                                 .test_name = "TwoByTwo",
+                             },
+                             MatrixTransposeTestParameter{
+                                 .matrix = Matrix<double>({{3, 5}}),
+                                 .expected_transpose = Matrix<double>({{3}, {5}}),
+                                 .test_name = "OneByTwo",
+                             },
+                             MatrixTransposeTestParameter{
+                                 .matrix = Matrix<double>({{2, 3}, {4, 5}, {6, 7}}),
+                                 .expected_transpose = Matrix<double>({{2, 4, 6}, {3, 5, 7}}),
+                                 .test_name = "ThreeByTwo",
+                             }),
                          [](const ::testing::TestParamInfo<MatrixTransposeTestParameter>& info) -> std::string {
                              return info.param.test_name;
                          });
