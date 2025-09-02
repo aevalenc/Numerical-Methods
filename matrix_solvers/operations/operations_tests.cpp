@@ -209,13 +209,25 @@ TEST_F(MatrixMultiplicationTestFixture, GivenOneMatrixAndOneVector_ExpectExactSo
 
 TEST(QRDecompositionTests, GivenValidSquareMatrix_ExpectCorrectDecomposition)
 {
+    // Given
     const Matrix<double> A = {{12, -51, 4}, {6, 167, -68}, {-4, 24, -41}};
-    const auto qr_pair = QRDecompositionColumnBased(A);
 
-    PrintMatrix(qr_pair.first);
-    PrintMatrix(qr_pair.second);
+    // Call
+    const auto qr_pair = QRDecompositionGramSchmidt(A);
 
-    EXPECT_TRUE(true);
+    // Expect
+    EXPECT_NEAR(qr_pair.first.at(0).at(0), 6.0 / 7.0, 0.001);
+    EXPECT_NEAR(qr_pair.first.at(1).at(0), 3.0 / 7.0, 0.001);
+    EXPECT_NEAR(qr_pair.first.at(2).at(0), -2.0 / 7.0, 0.001);
+    EXPECT_NEAR(qr_pair.second.at(0).at(0), 14.0, 0.001);
+    EXPECT_NEAR(qr_pair.second.at(0).at(1), 21.0, 0.001);
+    EXPECT_NEAR(qr_pair.second.at(0).at(2), -14.0, 0.001);
+    EXPECT_NEAR(qr_pair.second.at(1).at(0), 0.0, 0.001);
+    EXPECT_NEAR(qr_pair.second.at(1).at(1), 175.0, 0.001);
+    EXPECT_NEAR(qr_pair.second.at(1).at(2), -70.0, 0.001);
+    EXPECT_NEAR(qr_pair.second.at(2).at(0), 0.0, 0.001);
+    EXPECT_NEAR(qr_pair.second.at(2).at(1), 0.0, 0.001);
+    EXPECT_NEAR(qr_pair.second.at(2).at(2), 35.0, 0.001);
 }
 
 }  // namespace
