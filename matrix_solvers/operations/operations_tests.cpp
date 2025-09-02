@@ -209,7 +209,7 @@ TEST_F(MatrixMultiplicationTestFixture, GivenOneMatrixAndOneVector_ExpectExactSo
 
 TEST(QRDecompositionTests, GivenValidSquareMatrix_ExpectCorrectDecomposition)
 {
-    const Matrix<double> A = {{12, 6, -4}, {-51, 167, 64}, {4, -68, -41}};
+    const Matrix<double> A = {{12, -51, 4}, {6, 167, -68}, {-4, 24, -41}};
     const auto qr_pair = QRDecompositionColumnBased(A);
 
     PrintMatrix(qr_pair.first);
