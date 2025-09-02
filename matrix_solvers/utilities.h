@@ -9,7 +9,6 @@
 #define MATRIX_SOLVERS_UTILITIES_H
 
 #include <cassert>
-#include <cstddef>
 #include <cstdint>
 #include <iostream>
 #include <utility>
@@ -77,9 +76,9 @@ class Matrix : public std::vector<std::vector<T>>
     Matrix(const Matrix& other) : std::vector<std::vector<T>>(other)
     {
         m_ = static_cast<std::int32_t>(this->size());
-        if (!this->at(0).empty())
+        if (m_ > 0)
         {
-            n_ = this->at(0).size();
+            n_ = static_cast<std::int32_t>(this->at(0).size());
         }
         else
         {
