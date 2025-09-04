@@ -5,7 +5,7 @@
  * Update: September 9th, 2025
  */
 
-#include "matrix_solvers/decomposition_methods/doolittle.h"
+#include "matrix_solvers/decomposition_methods/lu_decomposition.h"
 #include "matrix_solvers/direct_solvers/backwards_substitution.h"
 #include "matrix_solvers/direct_solvers/forward_substitution.h"
 #include "matrix_solvers/utilities.h"
@@ -21,6 +21,14 @@ std::vector<double> LUSolve(const Matrix<double>& A, const std::vector<double>& 
     const auto LU_matrices = Doolittle(A);
     const auto y = ForwardSubstitution(LU_matrices.first, b);
     const auto x = BackwardsSubstitution(LU_matrices.second, y);
+    return x;
+}
+
+std::vector<double> LUSolveCholesky(const Matrix<double>& A, const std::vector<double>& b)
+{
+    const auto L = CholeskyDecomposition(A);
+    const auto z = ForwardSubstitution(L, b);
+    const auto x = BackwardsSubstitution(L.Transpose(), z);
     return x;
 }
 

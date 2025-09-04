@@ -5,9 +5,9 @@ BUILD file for direct solvers of the matrix solver namespace
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
 cc_library(
-    name = "doolittle",
-    srcs = ["doolittle.cpp"],
-    hdrs = ["doolittle.h"],
+    name = "lu_decomposition",
+    srcs = ["lu_decomposition.cpp"],
+    hdrs = ["lu_decomposition.h"],
     visibility = ["//visibility:public"],
     deps = ["//matrix_solvers:utilities"],
 )
