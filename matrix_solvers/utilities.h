@@ -27,6 +27,13 @@ namespace matrix
 /// @return std::vector<double> The element-wise sum of a and b
 std::vector<double> AddVectors(const std::vector<double>& a, const std::vector<double>& b);
 
+/// @brief Multiplies a vector by a scalar value
+///
+/// @param scalar_value The scalar multiplier
+/// @param a The std::vector of doubles to be scaled
+/// @return std::vector<double> The scaled vector
+std::vector<double> ScalarMultiply(const double scalar_value, const std::vector<double>& a);
+
 /// @brief Matrix alias template
 ///
 /// @param T: template-parameter-typename
@@ -154,6 +161,25 @@ class Matrix : public std::vector<std::vector<T>>
         return result;
     }
 
+    Matrix<T> operator-(const Matrix<T>& other) const
+    {
+        const auto m = static_cast<std::int32_t>(this->size());
+        const auto n = static_cast<std::int32_t>(this->at(0).size());
+        const auto other_m = static_cast<std::int32_t>(other.size());
+        const auto other_n = static_cast<std::int32_t>(other.at(0).size());
+
+        if (m != other_m || n != other_n)
+        {
+            throw std::invalid_argument("Matrix dimensions must match for addition.");
+        }
+        Matrix<T> result = *this;
+        for (std::int32_t i{0}; i < m; ++i)
+        {
+            result.at(i) = AddVectors(this->at(i), ScalarMultiply(-1, other.at(i)));
+        }
+        return result;
+    }
+
     void TransposeInPlace()
     {
         const auto rows = static_cast<std::int32_t>(this->size());
@@ -271,13 +297,6 @@ std::vector<double> Vectorize(const Matrix<double>& A);
 Matrix<double> Devectorize(const std::vector<double>& a, const std::int32_t column_length);
 
 Matrix<double> ScalarMultiply(const double scalar_value, const nm::matrix::Matrix<double>& A);
-
-/// @brief Multiplies a vector by a scalar value
-///
-/// @param scalar_value The scalar multiplier
-/// @param a The std::vector of doubles to be scaled
-/// @return std::vector<double> The scaled vector
-std::vector<double> ScalarMultiply(const double scalar_value, const std::vector<double>& a);
 
 /// @brief Multiplies a matrix by a scalar value
 ///
