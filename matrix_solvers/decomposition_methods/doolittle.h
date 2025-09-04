@@ -5,8 +5,8 @@
  * Doolittle decomposition of linear system of equations
  */
 
-#ifndef MATRIX_SOLVERS_DIRECT_SOLVERS_DOOLITTLE_H
-#define MATRIX_SOLVERS_DIRECT_SOLVERS_DOOLITTLE_H
+#ifndef MATRIX_SOLVERS_DECOMPOSITION_METHODS_DOOLITTLE_H
+#define MATRIX_SOLVERS_DECOMPOSITION_METHODS_DOOLITTLE_H
 
 #include "matrix_solvers/utilities.h"
 #include <utility>
@@ -23,4 +23,4 @@ std::pair<Matrix<double>, Matrix<double>> Doolittle(const Matrix<double>& A);
 
 }  // namespace nm
 
-#endif  // MATRIX_SOLVERS_DIRECT_SOLVERS_DOOLITTLE_H
+#endif  // MATRIX_SOLVERS_DECOMPOSITION_METHODS_DOOLITTLE_H

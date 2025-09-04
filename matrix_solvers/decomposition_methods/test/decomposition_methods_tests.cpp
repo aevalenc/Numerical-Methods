@@ -7,6 +7,7 @@
 
 #include "matrix_solvers/decomposition_methods/doolittle.h"
 #include "matrix_solvers/decomposition_methods/qr_decomposition.h"
+#include <cmath>
 #include <gtest/gtest.h>
 
 namespace nm
