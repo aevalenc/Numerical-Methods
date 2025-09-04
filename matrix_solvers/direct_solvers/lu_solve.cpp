@@ -24,6 +24,14 @@ std::vector<double> LUSolve(const Matrix<double>& A, const std::vector<double>& 
     return x;
 }
 
+std::vector<double> LUSolveCholesky(const Matrix<double>& A, const std::vector<double>& b)
+{
+    const auto L = CholeskyDecomposition(A);
+    const auto z = ForwardSubstitution(L, b);
+    const auto x = BackwardsSubstitution(L.Transpose(), z);
+    return x;
+}
+
 }  // namespace matrix
 
 }  // namespace nm
