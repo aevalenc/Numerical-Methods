@@ -10,6 +10,7 @@
 #include "matrix_solvers/utilities.h"
 #include <cmath>
 #include <gtest/gtest.h>
+#include <stdexcept>
 
 namespace nm
 {
@@ -193,6 +194,15 @@ INSTANTIATE_TEST_SUITE_P(
             .test_name = "FourByFour"}),
     // clang-format on
     [](const ::testing::TestParamInfo<CholeskyDecompositionTestParameter>& info) { return info.param.test_name; });
+
+TEST(CholeskyDecompositionTests, GivenNonPositiveDefiniteMatrix_ExpectThrow)
+{
+    // Given
+    const Matrix<double> A{{2, 3}, {4, -9}};
+
+    // Call and Expect
+    EXPECT_THROW(CholeskyDecomposition(A), std::invalid_argument);
+}
 
 }  // namespace
 }  // namespace matrix
