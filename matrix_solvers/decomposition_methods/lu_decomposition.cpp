@@ -1,11 +1,11 @@
 /*
- * Author: Alejandro Valencia
- * Update: November 11, 2023
+ * LU decomposition methods
  *
- * Doolittle decomposition of linear system of equations
+ * Author: Alejandro Valencia
+ * Update: September 9th, 2025
  */
 
-#include "matrix_solvers/decomposition_methods/doolittle.h"
+#include "matrix_solvers/decomposition_methods/lu_decomposition.h"
 #include "matrix_solvers/utilities.h"
 #include <cstdint>
 
@@ -62,6 +62,11 @@ std::pair<Matrix<double>, Matrix<double>> Doolittle(const Matrix<double>& A)
     }
 
     return std::make_pair(L, U);
+}
+
+Matrix<double> CholeskyDecomposition(const Matrix<double>& A)
+{
+    return {};
 }
 
 }  // namespace matrix

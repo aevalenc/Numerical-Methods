@@ -1,5 +1,5 @@
 /*
- * Doolittle decomposition of linear system of equations
+ * QR decomposition methods
  *
  * Author: Alejandro Valencia
  * Update: August 29, 2025
