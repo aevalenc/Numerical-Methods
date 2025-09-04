@@ -20,6 +20,8 @@ std::pair<Matrix<double>, Matrix<double>> QRDecompositionGramSchmidt(const Matri
     const auto A_tranpose = A.Transpose();
     Matrix<double> U = A_tranpose;
     Matrix<double> Q = A_tranpose;
+    const auto norm = L2Norm(U.at(0));
+    Q.at(0) = ScalarMultiply(1.0 / norm, U.at(0));
 
     for (std::int32_t k{1}; k < n; ++k)
     {
@@ -30,12 +32,8 @@ std::pair<Matrix<double>, Matrix<double>> QRDecompositionGramSchmidt(const Matri
             const auto projection = ScalarMultiply(numerator / denominator, U.at(j));
             U.at(k) = AddVectors(U.at(k), ScalarMultiply(-1.0, projection));
         }
-    }
-
-    for (std::int32_t i{0}; i < n; ++i)
-    {
-        const auto norm = L2Norm(U.at(i));
-        Q.at(i) = ScalarMultiply(1.0 / norm, U.at(i));
+        const auto norm = L2Norm(U.at(k));
+        Q.at(k) = ScalarMultiply(1.0 / norm, U.at(k));
     }
 
     return {Q.Transpose(), MatMult(Q, A)};
