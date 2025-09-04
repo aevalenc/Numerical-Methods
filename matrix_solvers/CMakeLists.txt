@@ -10,17 +10,28 @@ target_include_directories(operations PUBLIC
     ${CMAKE_SOURCE_DIR}
 )
 
+add_library(decomposition_methods STATIC
+    decomposition_methods/lu_decomposition.cpp
+    decomposition_methods/qr_decomposition.cpp
+)
+target_include_directories(decomposition_methods PUBLIC
+    ${CMAKE_SOURCE_DIR}
+)
+
 add_library(
     direct_solvers
     STATIC
     direct_solvers/backwards_substitution.cpp
-    direct_solvers/doolittle.cpp
     direct_solvers/forward_substitution.cpp
     direct_solvers/lu_solve.cpp
 )
 
 target_include_directories(direct_solvers PUBLIC
     ${CMAKE_SOURCE_DIR}
+)
+
+target_link_libraries(direct_solvers PUBLIC
+    decomposition_methods
 )
 
 add_library(
@@ -53,6 +64,26 @@ target_link_libraries(
     utilities_tests 
     PUBLIC
     utilities
+    GTest::gtest_main
+)
+
+
+add_executable(
+    decomposition_methods_tests
+    decomposition_methods/test/decomposition_methods_tests.cpp
+)
+target_include_directories(
+    decomposition_methods_tests 
+    PUBLIC
+    ${CMAKE_SOURCE_DIR}
+    decomposition_methods
+)
+target_link_libraries(
+    decomposition_methods_tests 
+    PUBLIC
+    utilities
+    operations
+    decomposition_methods
     GTest::gtest_main
 )
 
@@ -103,3 +134,4 @@ include(GoogleTest)
 gtest_discover_tests(utilities_tests)
 gtest_discover_tests(direct_solvers_tests)
 gtest_discover_tests(iterative_solvers_tests)
+gtest_discover_tests(decomposition_methods_tests)
