@@ -2,18 +2,12 @@
 BUILD file for direct solvers of the matrix solver namespace
 """
 
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
 cc_library(
     name = "backwards_substitution",
     srcs = ["backwards_substitution.cpp"],
     hdrs = ["backwards_substitution.h"],
-    visibility = ["//visibility:public"],
-    deps = ["//matrix_solvers:utilities"],
-)
-
-cc_library(
-    name = "doolittle",
-    srcs = ["doolittle.cpp"],
-    hdrs = ["doolittle.h"],
     visibility = ["//visibility:public"],
     deps = ["//matrix_solvers:utilities"],
 )
@@ -33,8 +27,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":backwards_substitution",
-        ":doolittle",
         ":forward_substitution",
         "//matrix_solvers:utilities",
+        "//matrix_solvers/decomposition_methods:doolittle",
     ],
 )

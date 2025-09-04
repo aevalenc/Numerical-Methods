@@ -71,14 +71,6 @@ std::vector<double> CalculateResidual(const Matrix<double>& A,
 /// @return Matrix<double> The resulting Kronecker product matrix (mp x nq)
 Matrix<double> KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B);
 
-/// @brief Computes the QR decomposition of a matrix using the classical Gram-Schmidt process.
-///
-/// Decomposes matrix A into an orthogonal matrix Q and an upper triangular matrix R such that A = QR.
-///
-/// @param A The input matrix to decompose (m x n)
-/// @return std::pair<Matrix<double>, Matrix<double>> A pair (Q, R) where Q is m x n and R is n x n
-std::pair<Matrix<double>, Matrix<double>> QRDecompositionGramSchmidt(const Matrix<double>& A);
-
 }  // namespace matrix
 
 }  // namespace nm
