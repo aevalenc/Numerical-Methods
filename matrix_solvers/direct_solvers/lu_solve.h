@@ -1,6 +1,8 @@
 /*
+ * Direct Solution to Linear System via Doolittle LU decomposition
+ *
  * Author: Alejandro Valencia
- * Update: January 21, 2024
+ * Update: September 9th, 2025
  */
 
 #ifndef MATRIX_SOLVERS_DIRECT_SOLVERS_LU_SOLVE_H
@@ -15,7 +17,7 @@ namespace nm
 namespace matrix
 {
 
-/// @brief This function performs an LU decomposition to solve
+/// @brief This function performs a Doolittle LU decomposition to solve
 /// the matrix equation Ax = b
 ///
 /// @param A: The lower triangular matrix (square n x n)

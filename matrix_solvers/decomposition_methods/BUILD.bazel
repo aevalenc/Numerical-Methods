@@ -1,0 +1,24 @@
+"""
+BUILD file for direct solvers of the matrix solver namespace
+"""
+
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "doolittle",
+    srcs = ["doolittle.cpp"],
+    hdrs = ["doolittle.h"],
+    visibility = ["//visibility:public"],
+    deps = ["//matrix_solvers:utilities"],
+)
+
+cc_library(
+    name = "qr_decomposition",
+    srcs = ["qr_decomposition.cpp"],
+    hdrs = ["qr_decomposition.h"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//matrix_solvers:operations",
+        "//matrix_solvers:utilities",
+    ],
+)

@@ -219,12 +219,12 @@ class Matrix : public std::vector<std::vector<T>>
 
         for (std::int32_t i{0}; i < rows; ++i)
         {
-            for (std::int32_t j{i}; j < columns; ++j)
+            for (std::int32_t j{0}; j < columns; ++j)
             {
                 result.at(j).resize(rows);
                 if (i == j)
                 {
-                    result.at(i).at(j) = this->at(i).at(i);
+                    result.at(i).at(j) = this->at(i).at(j);
                 }
                 else
                 {

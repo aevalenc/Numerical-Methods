@@ -1,0 +1,16 @@
+"""
+BUILD file for direct solvers of the matrix solver namespace
+"""
+
+load("@rules_cc//cc:defs.bzl", "cc_test")
+
+cc_test(
+    name = "decomposition_methods_tests",
+    srcs = ["decomposition_methods_tests.cpp"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//matrix_solvers/decomposition_methods:doolittle",
+        "//matrix_solvers/decomposition_methods:qr_decomposition",
+        "@googletest//:gtest_main",
+    ],
+)

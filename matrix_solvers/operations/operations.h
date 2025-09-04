@@ -62,6 +62,13 @@ std::vector<double> CalculateResidual(const Matrix<double>& A,
                                       const std::vector<double>& x,
                                       const std::int32_t n);
 
+/// @brief Computes the Kronecker product of two matrices.
+///
+/// The Kronecker product of matrices A (m x n) and B (p x q) is an (mp x nq) block matrix.
+///
+/// @param A The left-hand side matrix (m x n)
+/// @param B The right-hand side matrix (p x q)
+/// @return Matrix<double> The resulting Kronecker product matrix (mp x nq)
 Matrix<double> KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B);
 
 }  // namespace matrix

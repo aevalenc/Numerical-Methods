@@ -6,6 +6,7 @@
 #include "matrix_solvers/operations/operations.h"
 #include "matrix_solvers/utilities.h"
 #include "matrix_solvers/utilities_tests.h"
+#include <cmath>
 #include <gtest/gtest.h>
 #include <vector>
 

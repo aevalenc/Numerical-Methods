@@ -1,10 +1,12 @@
 /*
+ * Direct Solution to Linear System via Doolittle LU decomposition
+ *
  * Author: Alejandro Valencia
- * Update: January 21, 2024
+ * Update: September 9th, 2025
  */
 
+#include "matrix_solvers/decomposition_methods/doolittle.h"
 #include "matrix_solvers/direct_solvers/backwards_substitution.h"
-#include "matrix_solvers/direct_solvers/doolittle.h"
 #include "matrix_solvers/direct_solvers/forward_substitution.h"
 #include "matrix_solvers/utilities.h"
 
