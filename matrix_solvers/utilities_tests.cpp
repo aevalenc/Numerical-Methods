@@ -111,7 +111,7 @@ TEST_P(MatrixTransposeTestFixture, GivenSqaureMatrices_ExpectValidTransposes)
     auto param = GetParam();
 
     // Call
-    param.matrix.Transpose();
+    param.matrix.TransposeInPlace();
 
     // Expect
     for (std::int32_t i{0}; i < static_cast<std::int32_t>(param.matrix.size()); ++i)
@@ -146,6 +146,90 @@ INSTANTIATE_TEST_SUITE_P(MatrixTransposeTests,
                          [](const ::testing::TestParamInfo<MatrixTransposeTestParameter>& info) -> std::string {
                              return info.param.test_name;
                          });
+
+TEST(AdditionOperatorTests, GivenTwoMatrices_ExpectCorrectSum)
+{
+    // Given
+    const Matrix<double> A{{1, 1}, {1, 1}};
+    const Matrix<double> B{{2, 3}, {4, 5}};
+    const double tolerance = 1e-3;
+
+    // Call
+    const auto result = A + B;
+
+    // Expect
+    EXPECT_NEAR(result.at(0).at(0), 3, tolerance);
+    EXPECT_NEAR(result.at(0).at(1), 4, tolerance);
+    EXPECT_NEAR(result.at(1).at(0), 5, tolerance);
+    EXPECT_NEAR(result.at(1).at(1), 6, tolerance);
+}
+
+TEST(AdditionOperatorTests, GivenTwoOneDimensionalMatrices_ExpectCorrectSum)
+{
+    // Given
+    const Matrix<double> A{{1, 1, 1, 1}};
+    const Matrix<double> B{{2, 3, 4, 5}};
+    const double tolerance = 1e-3;
+
+    // Call
+    const auto result = A + B;
+
+    // Expect
+    EXPECT_NEAR(result.at(0).at(0), 3, tolerance);
+    EXPECT_NEAR(result.at(0).at(1), 4, tolerance);
+    EXPECT_NEAR(result.at(0).at(2), 5, tolerance);
+    EXPECT_NEAR(result.at(0).at(3), 6, tolerance);
+}
+
+TEST(SubtractionOperatorTests, GivenTwoMatrices_ExpectCorrectSum)
+{
+    // Given
+    const Matrix<double> A{{1, 1}, {1, 1}};
+    const Matrix<double> B{{2, 3}, {4, 5}};
+    const double tolerance = 1e-3;
+
+    // Call
+    const auto result = A - B;
+
+    // Expect
+    EXPECT_NEAR(result.at(0).at(0), -1, tolerance);
+    EXPECT_NEAR(result.at(0).at(1), -2, tolerance);
+    EXPECT_NEAR(result.at(1).at(0), -3, tolerance);
+    EXPECT_NEAR(result.at(1).at(1), -4, tolerance);
+}
+
+TEST(SubtractionOperatorTests, GivenTwoOneDimensionalMatrices_ExpectCorrectSum)
+{
+    // Given
+    const Matrix<double> A{{1, 1, 1, 1}};
+    const Matrix<double> B{{2, 3, 4, 5}};
+    const double tolerance = 1e-3;
+
+    // Call
+    const auto result = A - B;
+
+    // Expect
+    EXPECT_NEAR(result.at(0).at(0), -1, tolerance);
+    EXPECT_NEAR(result.at(0).at(1), -2, tolerance);
+    EXPECT_NEAR(result.at(0).at(2), -3, tolerance);
+    EXPECT_NEAR(result.at(0).at(3), -4, tolerance);
+}
+
+TEST(DevectorizeTests, GivenVectorAndColumnHeight_ExpectCorrectMatrix)
+{
+    // Given
+    const std::vector<double> B{{2, 3, 4, 5}};
+    const double tolerance = 1e-3;
+
+    // Call
+    const auto result = Devectorize(B, 2);
+
+    // Expect
+    EXPECT_NEAR(result.at(0).at(0), 2, tolerance);
+    EXPECT_NEAR(result.at(0).at(1), 4, tolerance);
+    EXPECT_NEAR(result.at(1).at(0), 3, tolerance);
+    EXPECT_NEAR(result.at(1).at(1), 5, tolerance);
+}
 
 }  // namespace
 

@@ -70,6 +70,19 @@ nm::matrix::Matrix<double> ScalarMultiply(const double scalar_value, const nm::m
     return result;
 }
 
+Matrix<double> Devectorize(const std::vector<double>& a, const std::int32_t column_length)
+{
+    Matrix<double> result{};
+    const auto number_of_columns = a.size() / column_length;
+    result.resize(number_of_columns);
+    for (std::int32_t i{0}; i < number_of_columns; ++i)
+    {
+        result.at(i) = {a.cbegin() + (i * column_length), a.cbegin() + (i * column_length + column_length)};
+    }
+    result.TransposeInPlace();
+    return result;
+}
+
 }  // namespace matrix
 
 }  // namespace nm
