@@ -5,7 +5,7 @@
  * Update: September 9th, 2025
  */
 
-#include "matrix_solvers/decomposition_methods/doolittle.h"
+#include "matrix_solvers/decomposition_methods/lu_decomposition.h"
 #include "matrix_solvers/direct_solvers/backwards_substitution.h"
 #include "matrix_solvers/direct_solvers/forward_substitution.h"
 #include "matrix_solvers/utilities.h"

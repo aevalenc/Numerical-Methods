@@ -9,7 +9,7 @@ cc_test(
     srcs = ["decomposition_methods_tests.cpp"],
     visibility = ["//visibility:public"],
     deps = [
-        "//matrix_solvers/decomposition_methods:doolittle",
+        "//matrix_solvers/decomposition_methods:lu_decomposition",
         "//matrix_solvers/decomposition_methods:qr_decomposition",
         "@googletest//:gtest_main",
     ],

@@ -29,6 +29,6 @@ cc_library(
         ":backwards_substitution",
         ":forward_substitution",
         "//matrix_solvers:utilities",
-        "//matrix_solvers/decomposition_methods:doolittle",
+        "//matrix_solvers/decomposition_methods:lu_decomposition",
     ],
 )
