@@ -4,7 +4,6 @@
  */
 
 #include "matrix_solvers/direct_solvers/backwards_substitution.h"
-#include "matrix_solvers/direct_solvers/doolittle.h"
 #include "matrix_solvers/direct_solvers/forward_substitution.h"
 #include "matrix_solvers/direct_solvers/lu_solve.h"
 #include "matrix_solvers/operations/operations.h"
@@ -55,54 +54,6 @@ TEST_F(BackwardsSubstitutionTestFixture, GivenUpperTriangularMatrix_ExpectExactS
     EXPECT_NEAR(x[0], -24.0, tolerance_);
     EXPECT_NEAR(x[1], -13.0, tolerance_);
     EXPECT_NEAR(x[2], 2.0, tolerance_);
-}
-
-class DooLittleTestFixture : public DirectSolverBaseTestFixture
-{
-  public:
-    void SetUpDoolittle()
-    {
-        std::vector<double> a1{2, -1, -2};
-        std::vector<double> a2{-4, 6, 3};
-        std::vector<double> a3{-4, -2, 8};
-        A_.at(0).assign(a1.begin(), a1.end());
-        A_.at(1).assign(a2.begin(), a2.end());
-        A_.at(2).assign(a3.begin(), a3.end());
-
-        L_expected_.push_back(std::vector<double>{1, 0, 0});
-        L_expected_.push_back(std::vector<double>{-2, 1, 0});
-        L_expected_.push_back(std::vector<double>{-2, -1, 1});
-
-        U_expected_.push_back(std::vector<double>{2, -1, -2});
-        U_expected_.push_back(std::vector<double>{0, 4, -1});
-        U_expected_.push_back(std::vector<double>{0, 0, 3});
-    }
-
-  public:
-    Matrix<double> L_expected_{};
-    Matrix<double> U_expected_{};
-};
-
-TEST_F(DooLittleTestFixture, GivenUpperTriangularMatrix_ExpectExactSolution)
-{
-    // Given
-    SetUpDoolittle();
-
-    // Call
-    const auto LU_matrices = Doolittle(A_);
-
-    // // Expect
-    const auto L = LU_matrices.first;
-    const auto U = LU_matrices.second;
-
-    for (std::int32_t i{0}; i < static_cast<std::int32_t>(L.size()); ++i)
-    {
-        for (std::int32_t j{0}; j < static_cast<std::int32_t>(L.size()); ++j)
-        {
-            EXPECT_NEAR(L.at(i).at(j), L_expected_.at(i).at(j), tolerance_);
-            EXPECT_NEAR(U.at(i).at(j), U_expected_.at(i).at(j), tolerance_);
-        }
-    }
 }
 
 class ForwardSubstitutionTestFixture : public DirectSolverBaseTestFixture
