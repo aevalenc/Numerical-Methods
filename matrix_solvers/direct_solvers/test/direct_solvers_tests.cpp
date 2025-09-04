@@ -10,6 +10,7 @@
 #include "matrix_solvers/utilities.h"
 #include <cstdint>
 #include <gtest/gtest.h>
+#include <vector>
 
 namespace nm
 {
@@ -98,35 +99,60 @@ class LUSolverTestFixture : public DirectSolverBaseTestFixture
   public:
     void SetUpLUSolve()
     {
-        AA_.push_back(std::vector<double>{1, 1, 1});
-        AA_.push_back(std::vector<double>{0, 2, 5});
-        AA_.push_back(std::vector<double>{2, 5, -1});
         b_.at(0) = 6;
         b_.at(1) = -4;
         b_.at(2) = 27;
-
-        x_expected_.push_back(5);
-        x_expected_.push_back(3);
-        x_expected_.push_back(-2);
     }
 
   public:
-    Matrix<double> AA_{};
-    std::vector<double> x_expected_{};
+    Matrix<double> non_symmetric_A_{{1, 1, 1}, {0, 2, 5}, {2, 5, -1}};
+    std::vector<double> x_expected_non_symmetric{5, 3, -2};
+    Matrix<double> symmetric_A_{{1, 1, 2}, {1, 10, 5}, {2, 5, 6}};
+    std::vector<double> x_expected_symmetric_{-23.4444, -7.2222, 18.3333};
 };
 
-TEST_F(LUSolverTestFixture, GivenStandardMatrixEq_ExpectExactSolution)
+TEST_F(LUSolverTestFixture, GivenNonSymmetricMatrix_WithDoolittleDecomposition_ExpectExactSolution)
 {
     // Given
     SetUpLUSolve();
 
     // Call
-    const auto x = LUSolve(AA_, b_);
+    const auto x = LUSolve(non_symmetric_A_, b_);
 
     // Expect
     for (std::size_t i{0}; i < b_.size(); ++i)
     {
-        EXPECT_NEAR(x.at(i), x_expected_.at(i), tolerance_);
+        EXPECT_NEAR(x.at(i), x_expected_non_symmetric.at(i), tolerance_);
+    }
+}
+
+TEST_F(LUSolverTestFixture, GivenSymmetricPositiveMatrix_WithDoolittleDecomposition_ExpectExactSolution)
+{
+    // Given
+    SetUpLUSolve();
+
+    // Call
+    const auto x = LUSolve(symmetric_A_, b_);
+
+    // Expect
+    for (std::size_t i{0}; i < b_.size(); ++i)
+    {
+        EXPECT_NEAR(x.at(i), x_expected_symmetric_.at(i), tolerance_);
+    }
+}
+
+TEST_F(LUSolverTestFixture, GivenSymmetricPositiveMatrix_WithCholeskyDecomposition_ExpectExactSolution)
+{
+    // Given
+    SetUpLUSolve();
+
+    // Call
+    const auto x = LUSolveCholesky(symmetric_A_, b_);
+
+    // Expect
+    for (std::size_t i{0}; i < b_.size(); ++i)
+    {
+        EXPECT_NEAR(x.at(i), x_expected_symmetric_.at(i), tolerance_);
     }
 }
 
