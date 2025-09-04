@@ -5,9 +5,8 @@ BUILD file for direct solvers of the matrix solver namespace
 load("@rules_cc//cc:defs.bzl", "cc_test")
 
 cc_test(
-    name = "decomposition_method_tests",
-    srcs = ["decomposition_method_tests.cpp"],
-    hdrs = ["decomposition_method_tests.h"],
+    name = "decomposition_methods_tests",
+    srcs = ["decomposition_methods_tests.cpp"],
     visibility = ["//visibility:public"],
     deps = [
         "//matrix_solvers/decomposition_methods:doolittle",

@@ -15,7 +15,7 @@ cc_library(
 cc_library(
     name = "qr_decomposition",
     srcs = ["qr_decomposition.cpp"],
-    srcs = ["qr_decomposition.h"],
+    hdrs = ["qr_decomposition.h"],
     visibility = ["//visibility:public"],
     deps = [
         "//matrix_solvers:operations",

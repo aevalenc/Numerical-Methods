@@ -37,7 +37,7 @@ class DooLittleTestFixture : public ::testing::Test
     }
 
   public:
-    Matrix<double> A_{};
+    Matrix<double> A_{3, 3};
     Matrix<double> L_expected_{};
     Matrix<double> U_expected_{};
     double tolerance_{1e-3};

@@ -5,7 +5,7 @@
  * Doolittle decomposition of linear system of equations
  */
 
-#include "matrix_solvers/direct_solvers/doolittle.h"
+#include "matrix_solvers/decomposition_methods/doolittle.h"
 #include "matrix_solvers/utilities.h"
 #include <cstdint>
 
