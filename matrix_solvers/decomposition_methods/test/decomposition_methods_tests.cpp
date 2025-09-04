@@ -7,6 +7,7 @@
 
 #include "matrix_solvers/decomposition_methods/lu_decomposition.h"
 #include "matrix_solvers/decomposition_methods/qr_decomposition.h"
+#include "matrix_solvers/utilities.h"
 #include <cmath>
 #include <gtest/gtest.h>
 
@@ -125,6 +126,73 @@ INSTANTIATE_TEST_SUITE_P(
                                      .expected_R = {{std::sqrt(5.0), 1.0}, {0, 3.0}},
                                      .test_name = "ThreeByTwo"}),
     [](const ::testing::TestParamInfo<QRDecompositionTestParameter>& info) { return info.param.test_name; });
+
+struct CholeskyDecompositionTestParameter
+{
+    Matrix<double> input_matrix{};
+    Matrix<double> expected_G{};
+    std::string test_name{};
+};
+
+class CholeskyDecompositionTestFixture : public ::testing::TestWithParam<CholeskyDecompositionTestParameter>
+{
+  public:
+    double tolerance_{0.001};
+};
+
+TEST_P(CholeskyDecompositionTestFixture, GivenValidMatrix_ExpectCorrectDecomposition)
+{
+    // Given
+    const auto& param = GetParam();
+    const Matrix<double> A = param.input_matrix;
+    const Matrix<double> expected_G = param.expected_G;
+
+    // Call
+    const auto G = CholeskyDecomposition(A);
+
+    // Expect
+    for (std::int32_t i{0}; i < static_cast<std::int32_t>(expected_G.size()); ++i)
+    {
+        for (std::int32_t j{0}; j < static_cast<std::int32_t>(expected_G.at(0).size()); ++j)
+        {
+            EXPECT_NEAR(G.at(i).at(j), expected_G.at(i).at(j), tolerance_);
+        }
+    }
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    CholeskyDecompositionTests,
+    CholeskyDecompositionTestFixture,
+    ::testing::Values(
+        // clang-format off
+        CholeskyDecompositionTestParameter{
+            .input_matrix = Matrix<double>({{1, 0, 1},
+                                            {0, 2, 0},
+                                            {1, 0, 3}}),
+            .expected_G = Matrix<double>({{1.0,     0.0,    0.0},
+                                          {0.0,  1.4142,    0.0},
+                                          {1.0,     0.0, 1.4142}}),
+            .test_name = "ThreeByThree"},
+        CholeskyDecompositionTestParameter{
+            .input_matrix = Matrix<double>({{ 4,   12, -16},
+                                            { 12,  37, -43},
+                                            {-16, -43,  98}}),
+            .expected_G = Matrix<double>({{ 2,  0, 0},
+                                          { 6,  1, 0},
+                                          {-8,  5, 3}}),
+            .test_name = "NonZeroThreeByThree"},
+        CholeskyDecompositionTestParameter{
+            .input_matrix = {{2,  -1,  0, 0},
+                            {-1,   2, -1, 0},
+                            { 0,  -1,  2, -1},
+                            { 0,   0, -1, 2}},
+            .expected_G = {{ 1.4142,       0,       0,      0},
+                           {-0.7071,  1.2247,       0,      0},
+                           {      0, -0.8165,  1.1547,      0},
+                           {      0,       0, -0.8660, 1.1180}},
+            .test_name = "FourByFour"}),
+    // clang-format on
+    [](const ::testing::TestParamInfo<CholeskyDecompositionTestParameter>& info) { return info.param.test_name; });
 
 }  // namespace
 }  // namespace matrix
