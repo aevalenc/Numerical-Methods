@@ -7,7 +7,11 @@
  */
 
 #include "curve_fitting/polynomial_regression/cholesky_regression.h"
+#include "matrix_solvers/utilities.h"
+#include <algorithm>
+#include <cstdint>
 #include <gtest/gtest.h>
+#include <vector>
 
 namespace nm
 {
@@ -64,6 +68,48 @@ TEST_F(PolynomialCurveFittingTestFixture, GivenBaseCase_WithCholeskyRegression_E
     for (size_t i = 0; i < coefficients.size(); ++i)
     {
         EXPECT_NEAR(coefficients.at(i), expected_coefficients.at(i), 1e-3);
+    }
+}
+
+TEST_F(PolynomialCurveFittingTestFixture, GivenData_WhenDegreeIsOne_ExpectCorrectMatrix)
+{
+    // Given
+    const auto A_transposed = A_.Transpose();
+
+    // Call
+    const auto A = ConstructVandermondeMatrix(A_transposed.at(1), 1);
+
+    // Expect
+    const auto m = static_cast<std::int32_t>(A.size());
+    const auto n = static_cast<std::int32_t>(A.at(0).size());
+    for (std::int32_t i{0}; i < m; ++i)
+    {
+        for (std::int32_t j{0}; j < n; ++j)
+        {
+            EXPECT_NEAR(A_.at(i).at(j), A.at(i).at(j), 1e-3);
+        }
+    }
+}
+
+TEST_F(PolynomialCurveFittingTestFixture, GivenData_WhenDegreeTwo_ExpectCorrectMatrix)
+{
+    // Given
+    const auto A_transposed = A_.Transpose();
+    matrix::Matrix<double> A_degree_2 = {
+        A_transposed.at(0), A_transposed.at(1), {0.716, 0.428, 0.115, 0.099, 0.605, 0.702, 0.323}};
+
+    // Call
+    const auto A = ConstructVandermondeMatrix(A_transposed.at(1), 2);
+
+    // Expect
+    const auto m = static_cast<std::int32_t>(A.size());
+    const auto n = static_cast<std::int32_t>(A.at(0).size());
+    for (std::int32_t i{0}; i < m; ++i)
+    {
+        for (std::int32_t j{0}; j < n; ++j)
+        {
+            EXPECT_NEAR(A.at(i).at(j), A_degree_2.Transpose().at(i).at(j), 1e-3);
+        }
     }
 }
 

@@ -10,8 +10,26 @@
 
 namespace nm
 {
+
 namespace curve_fitting
 {
+
+matrix::Matrix<double> ConstructVandermondeMatrix(const std::vector<double>& x_values, const std::int32_t degree)
+{
+    const auto n = static_cast<std::int32_t>(x_values.size());
+    matrix::Matrix<double> A(n, degree + 1);
+
+    for (std::int32_t i = 0; i < n; ++i)
+    {
+        double value = 1.0;
+        for (std::int32_t j = 0; j < degree + 1; ++j)
+        {
+            A.at(i).at(j) = value;
+            value *= x_values[i];
+        }
+    }
+    return A;
+}
 
 std::vector<double> CholeskyRegression(const matrix::Matrix<double>& A, const matrix::Matrix<double>& b)
 {
