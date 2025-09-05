@@ -1,0 +1,15 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "cholesky_regression",
+    srcs = ["polynomial_regression/cholesky_regression.cpp"],
+    hdrs = ["polynomial_regression/cholesky_regression.h"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//matrix_solvers:operations",
+        "//matrix_solvers:utilities",
+        "//matrix_solvers/decomposition_methods:lu_decomposition",
+        "//matrix_solvers/direct_solvers:backwards_substitution",
+        "//matrix_solvers/direct_solvers:forward_substitution",
+    ],
+)
