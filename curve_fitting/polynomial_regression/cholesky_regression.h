@@ -16,6 +16,7 @@ namespace nm
 namespace curve_fitting
 {
 
+matrix::Matrix<double> ConstructVandermondeMatrix(const std::vector<double>& x_values, const std::int32_t degree);
 std::vector<double> CholeskyRegression(const matrix::Matrix<double>& A, const matrix::Matrix<double>& b);
 
 }  // namespace curve_fitting
