@@ -61,7 +61,7 @@ TEST_F(PolynomialCurveFittingTestFixture, GivenBaseCase_WithCholeskyRegression_E
     const std::vector<double> expected_coefficients = {1.0825, -0.8412};
 
     // Call
-    const auto coefficients = CholeskyRegression(A_, b_);
+    const auto coefficients = CholeskyRegression(A_.Transpose().at(1), matrix::ToStdVectorRowBased(b_), 1);
 
     // Expect
     ASSERT_EQ(coefficients.size(), expected_coefficients.size());

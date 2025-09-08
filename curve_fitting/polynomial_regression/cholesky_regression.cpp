@@ -31,14 +31,17 @@ matrix::Matrix<double> ConstructVandermondeMatrix(const std::vector<double>& x_v
     return A;
 }
 
-std::vector<double> CholeskyRegression(const matrix::Matrix<double>& A, const matrix::Matrix<double>& b)
+std::vector<double> CholeskyRegression(const std::vector<double>& x_values,
+                                       const std::vector<double>& y_values,
+                                       const std::int32_t degree)
 {
+    const auto A = ConstructVandermondeMatrix(x_values, degree);
     const auto A_transposed = A.Transpose();
     const auto B = matrix::MatMult(A_transposed, A);
-    const auto y = matrix::MatMult(A_transposed, b);
+    const auto y = matrix::MatMult(A_transposed, y_values);
 
     const auto G = matrix::CholeskyDecomposition(B);
-    const auto z = matrix::ForwardSubstitution(G, matrix::ToStdVectorRowBased(y));
+    const auto z = matrix::ForwardSubstitution(G, y);
     const auto x = matrix::BackwardsSubstitution(G.Transpose(), z);
 
     return x;
