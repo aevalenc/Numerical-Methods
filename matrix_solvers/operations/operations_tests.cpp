@@ -163,7 +163,7 @@ TEST_F(MatrixMultiplicationTestFixture, GivenInvalidMatrix_ExpectException)
 TEST_F(MatrixMultiplicationTestFixture, GivenInvalidMatricesForMultiplication_ExpectException)
 {
     // Given
-    std::vector<double> b = {1, 2, 3};
+    std::vector<double> b = {1, 2};
 
     // Call & Expect
     EXPECT_ANY_THROW({
