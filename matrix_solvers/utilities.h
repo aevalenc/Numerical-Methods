@@ -8,6 +8,7 @@
 #ifndef MATRIX_SOLVERS_UTILITIES_H
 #define MATRIX_SOLVERS_UTILITIES_H
 
+#include <algorithm>
 #include <cassert>
 #include <cstdint>
 #include <iostream>
@@ -113,13 +114,13 @@ class Matrix : public std::vector<std::vector<T>>
     Matrix(Matrix<T>&& other) noexcept : std::vector<std::vector<T>>(std::move(other))
     {
         m_ = static_cast<std::int32_t>(this->size());
-        if (!this->at(0).empty())
+        if (!this->empty())
         {
             n_ = this->at(0).size();
         }
         else
         {
-            n_ = 1;
+            n_ = 0;
         }
     }
 
@@ -296,14 +297,32 @@ std::vector<double> Vectorize(const Matrix<double>& A);
 /// @return Matrix<double> The resulting matrix containing the elements of the vector
 Matrix<double> Devectorize(const std::vector<double>& a, const std::int32_t column_length);
 
-Matrix<double> ScalarMultiply(const double scalar_value, const nm::matrix::Matrix<double>& A);
-
 /// @brief Multiplies a matrix by a scalar value
 ///
 /// @param scalar_value The scalar multiplier
 /// @param A The matrix to be scaled
 /// @return Matrix<double> The scaled matrix
 Matrix<double> ScalarMultiply(const double scalar_value, const nm::matrix::Matrix<double>& A);
+
+template <typename T>
+std::vector<T> ToStdVectorRowBased(const Matrix<T>& A)
+{
+    const auto m = static_cast<std::int32_t>(A.size());
+    assert(m > 0);
+
+    const auto n = static_cast<std::int32_t>(A.at(0).size());
+    assert(n > 0);
+
+    std::vector<T> result{};
+    result.reserve(m * n);
+
+    for (std::int32_t i{0}; i < m; ++i)
+    {
+        std::transform(
+            A.at(i).cbegin(), A.at(i).cend(), std::back_inserter(result), [](const T& value) { return value; });
+    }
+    return result;
+}
 
 }  // namespace matrix
 

@@ -278,6 +278,67 @@ TEST(DevectorizeTests, GivenVectorAndColumnHeight_ExpectCorrectMatrix)
     EXPECT_NEAR(result.at(1).at(1), 5, tolerance);
 }
 
+struct ToStdVectorTestParameter
+{
+    Matrix<double> matrix{};
+    std::vector<double> expected_vector{};
+    std::string test_name{};
+};
+
+class ToStdVectorTestFixture : public ::testing::TestWithParam<ToStdVectorTestParameter>
+{
+  public:
+    double tolerance_{0.001};
+};
+
+TEST_P(ToStdVectorTestFixture, GivenValidMatrices_ExpectCorrectRowBasedVector)
+{
+    // Given
+    auto param = GetParam();
+    const auto m = static_cast<std::int32_t>(param.matrix.size());
+    const auto n = static_cast<std::int32_t>(param.matrix.at(0).size());
+
+    // Call
+    const auto result = ToStdVectorRowBased<double>(param.matrix);
+
+    // Expect
+    ASSERT_EQ(result.size(), m * n);
+    for (std::int32_t i{0}; i < m * n; ++i)
+    {
+        EXPECT_NEAR(result.at(i), param.expected_vector.at(i), tolerance_);
+    }
+}
+
+INSTANTIATE_TEST_SUITE_P(ToStdVectorTests,
+                         ToStdVectorTestFixture,
+                         ::testing::Values(
+                             // clang-format off
+                         ToStdVectorTestParameter{
+                             .matrix = {{3, 5}, {7, 9}},
+                             .expected_vector = {{3, 5, 7, 9}},
+                             .test_name = "TwoByTwo",
+                         },
+                         ToStdVectorTestParameter{
+                             .matrix = {{3, 5, 9}, {7, 9, 1}, {2, 8, 0}},
+                             .expected_vector = {{3, 5, 9, 7, 9, 1, 2, 8, 0}},
+                             .test_name = "ThreeByThree",
+                         },
+                         ToStdVectorTestParameter{
+                             .matrix = {{2, 4, 9, 5}, {7, 9, 1, 0}, {2, 8, 0, 2}, {6, 6, 2, 5}},
+                             .expected_vector = {{2, 4, 9, 5, 7, 9, 1, 0, 2, 8, 0, 2, 6, 6, 2, 5}},
+                             .test_name = "FourByFour",
+                         },
+                         ToStdVectorTestParameter{
+                             .matrix = {{3}, {5}, {7}, {9}},
+                             .expected_vector = {{3, 5, 7, 9}},
+                             .test_name = "OneByFour",
+                         }  
+                         ),
+                         // clang-format on
+                         [](const ::testing::TestParamInfo<ToStdVectorTestParameter>& info) -> std::string {
+                             return info.param.test_name;
+                         });
+
 }  // namespace
 
 }  // namespace matrix

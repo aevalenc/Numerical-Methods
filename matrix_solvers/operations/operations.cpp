@@ -62,21 +62,23 @@ Matrix<double> MatMult(const Matrix<double>& A, const Matrix<double>& B)
 
 std::vector<double> MatMult(const Matrix<double>& A, const std::vector<double>& b)
 {
+    assert(!A.empty());
     const auto m = static_cast<std::int32_t>(A.size());
-    const auto n = static_cast<std::int32_t>(b.size());
+    const auto n = static_cast<std::int32_t>(A.at(0).size());
+    const auto p = static_cast<std::int32_t>(b.size());
 
     if ((m <= 0) || (n <= 0))
     {
         throw std::length_error("The size of the matrices must be greater 0");
     }
 
-    if (m != n)
+    if (n != p)
     {
         throw std::length_error("Input matrix dimension mismatch. Are your matrices compatible?");
     }
 
     std::vector<double> result{};
-    result.resize(n);
+    result.resize(m);
 
     double sum{0.0};
     for (std::int32_t i = 0; i < m; ++i)

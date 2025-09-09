@@ -1,0 +1,12 @@
+load("@rules_cc//cc:defs.bzl", "cc_test")
+
+cc_test(
+    name = "polynomial_regression_tests",
+    srcs = ["polynomial_regression_tests.cpp"],
+    deps = [
+        "//curve_fitting:cholesky_regression",
+        "//matrix_solvers:operations",
+        "//matrix_solvers:utilities",
+        "@googletest//:gtest_main",
+    ],
+)
