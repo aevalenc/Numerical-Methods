@@ -8,6 +8,7 @@
 #include "root_finders/secant_method/secant_method.h"
 #include <cstdint>
 #include <cstdlib>
+#include <iostream>
 
 namespace nm
 {
@@ -28,8 +29,15 @@ double SecantMethod(const std::function<double(double)>& function,
         xkp1 = xk - function(xk) * (xk - xkm1) / (function(xk) - function(xkm1));
         if (std::abs(xkp1 - xk) < tolerance)
         {
+            std::cout << "Secant method converged in " << k << " iterations.\n";
             break;
         }
+        if (k == max_iterations - 1)
+        {
+            std::cout << "Max iterations reached.\n";
+        }
+        xkm1 = xk;
+        xk = xkp1;
     }
     return xkp1;
 }
