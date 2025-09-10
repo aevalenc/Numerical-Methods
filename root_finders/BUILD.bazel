@@ -13,3 +13,10 @@ cc_library(
     hdrs = ["bisection_method/bisection_method.h"],
     visibility = ["//visibility:public"],
 )
+
+cc_library(
+    name = "secant_method",
+    srcs = ["secant_method/secant_method.cpp"],
+    hdrs = ["secant_method/secant_method.h"],
+    visibility = ["//visibility:public"],
+)
