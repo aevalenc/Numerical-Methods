@@ -26,5 +26,9 @@ cc_library(
     srcs = ["secant_method/multivar_secant_method.cpp"],
     hdrs = ["secant_method/multivar_secant_method.h"],
     visibility = ["//visibility:public"],
-    deps = ["//matrix_solvers:operations"],
+    deps = [
+        "//matrix_solvers:operations",
+        "//matrix_solvers:utilities",
+        "//matrix_solvers/direct_solvers:lu_solve",
+    ],
 )
