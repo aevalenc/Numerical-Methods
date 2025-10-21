@@ -4,6 +4,7 @@
  * Update: September 9, 2023
  */
 
+#include "matrix_solvers/utilities.h"
 #include "root_finders/secant_method/multivar_secant_method.h"
 #include <cmath>
 #include <cstdint>
@@ -55,12 +56,22 @@ class MultiVarSecantMethodTestFixture : public ::testing::TestWithParam<MultiVar
 
 TEST_F(MultiVarSecantMethodTestFixture, GivenValidInputs_ExpectValidOutput)
 {
+    // Given
     auto lambda1 = [](std::vector<double> x) -> double { return x.at(0) * x.at(0) - x.at(1) - 1; };
     auto lambda2 = [](std::vector<double> x) -> double { return x.at(0) - x.at(1) * x.at(1) + 1; };
-    MultiVarSecantMethodTestParameter param{{lambda1, lambda2}, {1.0, 1.0}, {1.0, 2.0}, {1.5, 2.0}, {1.56, 9.0}, 1e-6};
-    const auto result = MultiVarSecantMethod(param.equations, param.x0, param.x1, param.x2);
-    // EXPECT_NEAR(result.at(0), param.expected_values.front(), expectation_tolerance_);
-    EXPECT_FALSE(false);
+    MultiVarSecantMethodTestParameter param{
+        {lambda1, lambda2}, {1.0, 1.0}, {1.0, 2.0}, {1.5, 2.0}, {1.618, 1.618}, 1e-6, 100};
+
+    // Call
+    const auto result = MultiVarSecantMethod(
+        param.equations, param.x0, param.x1, param.x2, param.algorithm_tolerance, param.max_iterations);
+    // matrix::PrintVector(result);
+
+    // Expect
+    for (std::int32_t i{0}; i < static_cast<std::int32_t>(result.size()); ++i)
+    {
+        EXPECT_NEAR(result.at(i), param.expected_values.at(i), expectation_tolerance_);
+    }
 }
 
 }  // namespace
