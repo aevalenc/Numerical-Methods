@@ -2,7 +2,7 @@
  * Secant method implementation for finding roots of a continuous function.
  *
  * Author: Alejandro Valencia
- * Update: September 10th, 2025
+ * Update: October 22nd, 2025
  */
 
 #include "root_finders/secant_method/multivar_secant_method.h"
@@ -43,25 +43,22 @@ matrix::Matrix<double> EvaluateSystem(const std::vector<std::function<double(std
 }  // namespace
 
 std::vector<double> MultiVarSecantMethod(const std::vector<std::function<double(std::vector<double>)>>& equations,
-                                         const std::vector<double>& x0,
-                                         const std::vector<double>& x1,
-                                         const std::vector<double>& x2,
+                                         std::vector<std::vector<double>>& equations_arguments,
                                          const double tolerance,
                                          const std::int32_t max_iterations)
 {
-    std::vector<double> xkm2{x0};
-    std::vector<double> xkm1{x1};
-    std::vector<double> xk{x2};
+
+    std::vector<double> xk{equations_arguments.back()};
     std::vector<double> xkp1{};
-    xkp1.resize(x0.size());
+    xkp1.resize(equations_arguments.at(0).size());
 
     std::vector<double> b{};
-    b.resize(x0.size() + 1);
+    b.resize(equations_arguments.at(0).size() + 1);
     b.at(0) = 1;
 
+    std::vector<std::vector<double>> arguments = {equations_arguments};
     for (std::int32_t k{1}; k < max_iterations; ++k)
     {
-        std::vector<std::vector<double>> arguments = {xkm2, xkm1, xk};
         const auto A = EvaluateSystem(equations, arguments);
         const auto coefficients = matrix::LUSolve(A, b);
 
@@ -80,8 +77,8 @@ std::vector<double> MultiVarSecantMethod(const std::vector<std::function<double(
         {
             std::cout << "Max iterations reached.\n";
         }
-        xkm2 = xkm1;
-        xkm1 = xk;
+
+        arguments = {arguments.at(1), arguments.back(), xkp1};
         xk = xkp1;
         xkp1.assign(xkp1.size(), 0);
     }
