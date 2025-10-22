@@ -1,21 +1,17 @@
 /*
  * Author : Alejandro Valencia
- * Project: Newton's Method - main unit tests
- * Update: September 9, 2023
+ * Project: Generalized Secant Method for Systems of Nonlinear Equations - main unit tests
+ * Update : October 22nd, 2025
  */
 
-#include "matrix_solvers/utilities.h"
 #include "root_finders/secant_method/multivar_secant_method.h"
-#include <cmath>
 #include <cstdint>
 #include <gtest/gtest.h>
 
 namespace nm
 {
-
 namespace root_finders
 {
-
 namespace
 {
 
@@ -23,12 +19,10 @@ struct MultiVarSecantMethodTestParameter
 {
     std::vector<std::function<double(std::vector<double>)>> equations{};
     std::vector<std::vector<double>> arguments{};
-    // std::vector<double> x0;
-    // std::vector<double> x1;
-    // std::vector<double> x2;
     std::vector<double> expected_values;
     double algorithm_tolerance{1e-6};
     std::int32_t max_iterations{1000};
+    std::string test_name{"TEST"};
 };
 
 class MultiVarSecantMethodTestFixture : public ::testing::TestWithParam<MultiVarSecantMethodTestParameter>
@@ -37,31 +31,10 @@ class MultiVarSecantMethodTestFixture : public ::testing::TestWithParam<MultiVar
     const double expectation_tolerance_{0.001};
 };
 
-// TEST_P(MultiVarSecantMethodTestFixture, GivenValidInputs_ExpectValidOutput)
-// {
-//     const auto& param = GetParam();
-//     const auto result = MultiVarSecantMethod(param.equations, param.x0, param.x1, param.x2);
-//     EXPECT_NEAR(result.at(0), param.expected_values.front(), expectation_tolerance_);
-// }
-
-// INSTANTIATE_TEST_SUITE_P(SecantMethodTests,
-//                          MultiVarSecantMethodTestFixture,
-//                          ::testing::Values(MultiVarSecantMethodTestParameter{
-//                              {[](std::vector<double> x) -> double { return x.at(0) * x.at(0) - x.at(1) - 1; },
-//                               [](std::vector<double> x) -> double { return x.at(0) - x.at(1) * x.at(1) + 1; }},
-//                              {1.0, 1.0},
-//                              {1.0, 2.0},
-//                              {1.5, 2.0},
-//                              {1.56, 9.0},
-//                              1e-6}));
-
-TEST_F(MultiVarSecantMethodTestFixture, GivenValidInputs_ExpectValidOutput)
+TEST_P(MultiVarSecantMethodTestFixture, GivenValidInputs_ExpectValidOutput)
 {
     // Given
-    auto lambda1 = [](std::vector<double> x) -> double { return x.at(0) * x.at(0) - x.at(1) - 1; };
-    auto lambda2 = [](std::vector<double> x) -> double { return x.at(0) - x.at(1) * x.at(1) + 1; };
-    MultiVarSecantMethodTestParameter param{
-        {lambda1, lambda2}, {{1.0, 1.0}, {1.0, 2.0}, {1.5, 2.0}}, {1.618, 1.618}, 1e-6, 100};
+    const auto& param = GetParam();
 
     // Call
     const auto result =
@@ -74,8 +47,45 @@ TEST_F(MultiVarSecantMethodTestFixture, GivenValidInputs_ExpectValidOutput)
     }
 }
 
+INSTANTIATE_TEST_SUITE_P(SecantMethodTests,
+                         MultiVarSecantMethodTestFixture,
+                         ::testing::Values(
+                             MultiVarSecantMethodTestParameter{
+                                 {[](std::vector<double> x) -> double { return x.at(0) * x.at(0) - x.at(1) - 1; },
+                                  [](std::vector<double> x) -> double { return x.at(0) - x.at(1) * x.at(1) + 1; }},
+                                 {{1.0, 1.0}, {1.0, 2.0}, {1.5, 2.0}},
+                                 {1.618, 1.618},
+                                 1e-6,
+                                 100,
+                                 "WithStartingValuesInFirstQuadrant"},
+                             MultiVarSecantMethodTestParameter{
+                                 {[](std::vector<double> x) -> double { return x.at(0) * x.at(0) - x.at(1) - 1; },
+                                  [](std::vector<double> x) -> double { return x.at(0) - x.at(1) * x.at(1) + 1; }},
+                                 {{-1.0, -1.0}, {-1.0, -2.0}, {-1.5, -2.0}},
+                                 {-0.618, -0.618},
+                                 1e-6,
+                                 100,
+                                 "WithStartingValuesInSecondQuadrant"},
+                             MultiVarSecantMethodTestParameter{
+                                 {[](std::vector<double> x) -> double { return x.at(0) * x.at(0) - x.at(1) - 1; },
+                                  [](std::vector<double> x) -> double { return x.at(0) - x.at(1) * x.at(1) + 1; }},
+                                 {{-1.0, 1.0}, {-1.0, 2.0}, {-1.5, 2.0}},
+                                 {-1.0, 0.0},
+                                 1e-6,
+                                 100,
+                                 "WithStartingValuesInThirdQuadrant"},
+                             MultiVarSecantMethodTestParameter{
+                                 {[](std::vector<double> x) -> double { return x.at(0) * x.at(0) - x.at(1) - 1; },
+                                  [](std::vector<double> x) -> double { return x.at(0) - x.at(1) * x.at(1) + 1; }},
+                                 {{1.0, -1.0}, {1.0, -2.0}, {1.5, -2.0}},
+                                 {0.0, -1.0},
+                                 1e-6,
+                                 100,
+                                 "WithStartingValuesInFourthQuadrant"}),
+                         [](const ::testing::TestParamInfo<MultiVarSecantMethodTestParameter>& info) {
+                             return info.param.test_name;
+                         });
+
 }  // namespace
-
 }  // namespace root_finders
-
 }  // namespace nm

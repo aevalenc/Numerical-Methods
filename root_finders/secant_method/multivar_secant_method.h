@@ -18,7 +18,7 @@ namespace root_finders
 {
 
 std::vector<double> MultiVarSecantMethod(const std::vector<std::function<double(std::vector<double>)>>& equations,
-                                         std::vector<std::vector<double>>& equations_arguments,
+                                         const std::vector<std::vector<double>>& equations_arguments,
                                          const double tolerance = 1e-6,
                                          const std::int32_t max_iterations = 1000);
 

@@ -20,7 +20,7 @@ namespace root_finders
 namespace
 {
 matrix::Matrix<double> EvaluateSystem(const std::vector<std::function<double(std::vector<double>)>>& equations,
-                                      std::vector<std::vector<double>>& equations_arguments)
+                                      const std::vector<std::vector<double>>& equations_arguments)
 {
     matrix::Matrix<double> A(equations.size() + 1, equations.size() + 1);
     std::int32_t i{};
@@ -43,7 +43,7 @@ matrix::Matrix<double> EvaluateSystem(const std::vector<std::function<double(std
 }  // namespace
 
 std::vector<double> MultiVarSecantMethod(const std::vector<std::function<double(std::vector<double>)>>& equations,
-                                         std::vector<std::vector<double>>& equations_arguments,
+                                         const std::vector<std::vector<double>>& equations_arguments,
                                          const double tolerance,
                                          const std::int32_t max_iterations)
 {
