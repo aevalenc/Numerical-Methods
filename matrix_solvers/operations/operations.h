@@ -75,7 +75,7 @@ Matrix<double> KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B
 ///
 /// @param A A square matrix (n x n)
 /// @return Matrix<double> The resulting Kronecker product matrix (mp x nq)
-Matrix<double> Invert(const Matrix<double>& A);
+Matrix<double> InvertWithLU(const Matrix<double>& A);
 
 }  // namespace matrix
 

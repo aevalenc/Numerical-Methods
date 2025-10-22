@@ -228,7 +228,7 @@ TEST_P(InvertMatrixTestFixture, GivenValidMatrix_ExpectValidInverse)
     const auto param = GetParam();
 
     // Call
-    const auto result = Invert(param.matrix);
+    const auto result = InvertWithLU(param.matrix);
 
     // Expect
     for (std::int32_t i{0}; i < static_cast<std::int32_t>(result.size()); ++i)

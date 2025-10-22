@@ -205,7 +205,7 @@ Matrix<double> KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B
     return Matrix<double>(C, m * p, n * q);
 }
 
-Matrix<double> Invert(const Matrix<double>& A)
+Matrix<double> InvertWithLU(const Matrix<double>& A)
 {
     // Decompose A into the product of an upper and lower triangular matrices
     const auto LU = Doolittle(A);
