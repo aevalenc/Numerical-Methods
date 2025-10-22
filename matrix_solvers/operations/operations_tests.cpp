@@ -3,10 +3,11 @@
  * Update: August 26, 2025
  */
 
+#include "gtest/gtest.h"
 #include "matrix_solvers/operations/operations.h"
 #include "matrix_solvers/utilities.h"
 #include "matrix_solvers/utilities_tests.h"
-#include <cmath>
+#include <cstdint>
 #include <gtest/gtest.h>
 #include <vector>
 
@@ -207,6 +208,51 @@ TEST_F(MatrixMultiplicationTestFixture, GivenOneMatrixAndOneVector_ExpectExactSo
         EXPECT_NEAR(C.at(i), C_expected.at(i), tolerance_);
     }
 }
+
+struct InvertMatrixTestParameter
+{
+    Matrix<double> matrix{};
+    Matrix<double> expected_result{};
+    std::string test_name{};
+};
+
+class InvertMatrixTestFixture : public ::testing::TestWithParam<InvertMatrixTestParameter>
+{
+  public:
+    double tolerance_{1e-3};
+};
+
+TEST_P(InvertMatrixTestFixture, GivenValidMatrix_ExpectValidInverse)
+{
+    // Given
+    const auto param = GetParam();
+
+    // Call
+    const auto result = InvertWithLU(param.matrix);
+
+    // Expect
+    for (std::int32_t i{0}; i < static_cast<std::int32_t>(result.size()); ++i)
+    {
+        for (std::int32_t j{0}; j < static_cast<std::int32_t>(result.size()); ++j)
+        {
+            EXPECT_NEAR(result.at(i).at(j), param.expected_result.at(i).at(j), tolerance_);
+        }
+    }
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    InvertMatrices,
+    InvertMatrixTestFixture,
+    testing::Values(
+        InvertMatrixTestParameter{{{3.0, 5.0}, {7.0, 9.0}}, {{-1.125, 0.625}, {0.875, -0.375}}, "GivenValidTwoByTwo"},
+        InvertMatrixTestParameter{{{1.0, 9.0}, {8.0, 2.0}},
+                                  {{-0.0286, 0.1286}, {0.1143, -0.0143}},
+                                  "GivenSecondValidTwoByTwo"},
+        InvertMatrixTestParameter{
+            {{1.0, 1.0, -1.0, -2.0}, {0.0, 1.0, -1.0, 0.0}, {0.0, 1.0, 1.0, 0.0}, {1.0, 0.0, 1.0, -1.0}},
+            {{-1.0, 2.0, -1.0, 2.0}, {0.0, 0.5, 0.5, 0.0}, {0.0, -0.5, 0.5, 0.0}, {-1.0, 1.5, -0.5, 1.0}},
+            "GivenValidFourByFour"}),
+    [](const testing::TestParamInfo<InvertMatrixTestParameter>& info) { return info.param.test_name; });
 
 }  // namespace
 

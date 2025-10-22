@@ -6,6 +6,9 @@
  */
 
 #include "matrix_solvers/operations/operations.h"
+#include "matrix_solvers/decomposition_methods/lu_decomposition.h"
+#include "matrix_solvers/direct_solvers/backwards_substitution.h"
+#include "matrix_solvers/direct_solvers/forward_substitution.h"
 #include "matrix_solvers/utilities.h"
 #include <algorithm>
 #include <cmath>
@@ -200,6 +203,37 @@ Matrix<double> KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B
     }
 
     return Matrix<double>(C, m * p, n * q);
+}
+
+Matrix<double> InvertWithLU(const Matrix<double>& A)
+{
+    // Decompose A into the product of an upper and lower triangular matrices
+    const auto LU = Doolittle(A);
+    const auto L = LU.first;
+    const auto U = LU.second;
+    const auto n = static_cast<std::int32_t>(A.size());
+
+    // Transpose Identity Matrix to solve column by column
+    const auto I = CreateIdentityMatrix<double>(n);
+
+    // Solve for U inverse column by column by backwards substitution
+    Matrix<double> X(n, n);
+    for (std::int32_t i{0}; i < n; ++i)
+    {
+        X.at(i) = BackwardsSubstitution(U, I.at(i));
+    }
+    X.TransposeInPlace();
+
+    // Solve for L inverse column by column by forwards substitution
+    Matrix<double> Y(n, n);
+    for (std::int32_t i{0}; i < n; ++i)
+    {
+        Y.at(i) = ForwardSubstitution(L, I.at(i));
+    }
+    Y.TransposeInPlace();
+
+    const auto Ainv = MatMult(X, Y);
+    return Ainv;
 }
 
 }  // namespace matrix

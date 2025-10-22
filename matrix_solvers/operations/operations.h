@@ -71,6 +71,12 @@ std::vector<double> CalculateResidual(const Matrix<double>& A,
 /// @return Matrix<double> The resulting Kronecker product matrix (mp x nq)
 Matrix<double> KroneckerProduct(const Matrix<double>& A, const Matrix<double>& B);
 
+/// @brief Computes the Inverse of a Square Matrix
+///
+/// @param A A square matrix (n x n)
+/// @return Matrix<double> The resulting Kronecker product matrix (mp x nq)
+Matrix<double> InvertWithLU(const Matrix<double>& A);
+
 }  // namespace matrix
 
 }  // namespace nm
