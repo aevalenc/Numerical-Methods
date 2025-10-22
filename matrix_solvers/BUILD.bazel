@@ -31,7 +31,12 @@ cc_library(
     srcs = ["operations/operations.cpp"],
     hdrs = ["operations/operations.h"],
     visibility = ["//visibility:public"],
-    deps = [":utilities"],
+    deps = [
+        ":utilities",
+        "//matrix_solvers/decomposition_methods:lu_decomposition",
+        "//matrix_solvers/direct_solvers:backwards_substitution",
+        "//matrix_solvers/direct_solvers:forward_substitution",
+    ],
 )
 
 cc_test(
