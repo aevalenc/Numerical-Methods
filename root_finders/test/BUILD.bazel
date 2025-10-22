@@ -26,3 +26,12 @@ cc_test(
         "@googletest//:gtest_main",
     ],
 )
+
+cc_test(
+    name = "multivar_secant_method_tests",
+    srcs = ["multivar_secant_method_tests.cpp"],
+    deps = [
+        "//root_finders:multivar_secant_method",
+        "@googletest//:gtest_main",
+    ],
+)
