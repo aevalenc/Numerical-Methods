@@ -21,10 +21,11 @@ namespace
 
 struct MultiVarSecantMethodTestParameter
 {
-    std::vector<std::function<double(std::vector<double>)>> equations;
-    std::vector<double> x0;
-    std::vector<double> x1;
-    std::vector<double> x2;
+    std::vector<std::function<double(std::vector<double>)>> equations{};
+    std::vector<std::vector<double>> arguments{};
+    // std::vector<double> x0;
+    // std::vector<double> x1;
+    // std::vector<double> x2;
     std::vector<double> expected_values;
     double algorithm_tolerance{1e-6};
     std::int32_t max_iterations{1000};
@@ -60,12 +61,11 @@ TEST_F(MultiVarSecantMethodTestFixture, GivenValidInputs_ExpectValidOutput)
     auto lambda1 = [](std::vector<double> x) -> double { return x.at(0) * x.at(0) - x.at(1) - 1; };
     auto lambda2 = [](std::vector<double> x) -> double { return x.at(0) - x.at(1) * x.at(1) + 1; };
     MultiVarSecantMethodTestParameter param{
-        {lambda1, lambda2}, {1.0, 1.0}, {1.0, 2.0}, {1.5, 2.0}, {1.618, 1.618}, 1e-6, 100};
+        {lambda1, lambda2}, {{1.0, 1.0}, {1.0, 2.0}, {1.5, 2.0}}, {1.618, 1.618}, 1e-6, 100};
 
     // Call
-    const auto result = MultiVarSecantMethod(
-        param.equations, param.x0, param.x1, param.x2, param.algorithm_tolerance, param.max_iterations);
-    // matrix::PrintVector(result);
+    const auto result =
+        MultiVarSecantMethod(param.equations, param.arguments, param.algorithm_tolerance, param.max_iterations);
 
     // Expect
     for (std::int32_t i{0}; i < static_cast<std::int32_t>(result.size()); ++i)
