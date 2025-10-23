@@ -32,3 +32,15 @@ cc_library(
         "//matrix_solvers/direct_solvers:lu_solve",
     ],
 )
+
+cc_library(
+    name = "broydens_method",
+    srcs = ["broydens_method/broydens_method.cpp"],
+    hdrs = ["broydens_method/broydens_method.h"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//matrix_solvers:operations",
+        "//matrix_solvers:utilities",
+        "//matrix_solvers/direct_solvers:lu_solve",
+    ],
+)

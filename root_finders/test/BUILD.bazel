@@ -35,3 +35,12 @@ cc_test(
         "@googletest//:gtest_main",
     ],
 )
+
+cc_test(
+    name = "broydens_method_tests",
+    srcs = ["broydens_method_tests.cpp"],
+    deps = [
+        "//root_finders:broydens_method",
+        "@googletest//:gtest_main",
+    ],
+)
