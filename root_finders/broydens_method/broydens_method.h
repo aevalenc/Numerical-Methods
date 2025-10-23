@@ -51,8 +51,8 @@ std::pair<matrix::Matrix<double>, std::vector<double>> EvaluateJacobian(
 std::vector<double> BroydensMethod(const std::vector<std::function<double(std::vector<double>)>>& equations,
                                    const std::vector<std::vector<double>>& equations_arguments,
                                    const double delta,
-                                   const double tolerance,
-                                   const std::int32_t max_iterations);
+                                   const double tolerance = 1e-3,
+                                   const std::int32_t max_iterations = 1000);
 
 }  // namespace root_finders
 
