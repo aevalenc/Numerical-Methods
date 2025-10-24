@@ -96,14 +96,12 @@ TEST_P(BroydensMethodTestFixture, GivenValidInputs_ExpectValidOutput)
 
     // Call
     const auto result = BroydensMethod(param.equations, param.arguments, param.delta);
-    matrix::PrintVector(result);
 
     // Expect
-    // for (std::int32_t i{0}; i < static_cast<std::int32_t>(result.size()); ++i)
-    // {
-    //     EXPECT_NEAR(result.at(i), param.expected_values.at(i), expectation_tolerance_);
-    // }
-    EXPECT_FALSE(false);
+    for (std::int32_t i{0}; i < static_cast<std::int32_t>(result.size()); ++i)
+    {
+        EXPECT_NEAR(result.at(i), param.expected_values.at(i), expectation_tolerance_);
+    }
 }
 
 INSTANTIATE_TEST_SUITE_P(
@@ -112,9 +110,9 @@ INSTANTIATE_TEST_SUITE_P(
     ::testing::Values(
         BroydensMethodTestParameter{{[](std::vector<double> x) -> double { return x.at(0) * x.at(0) - x.at(1) - 1; },
                                      [](std::vector<double> x) -> double { return x.at(0) - x.at(1) * x.at(1) + 1; }},
-                                    {{1.0, 1.0}},
+                                    {{1.0, 2.0}},
                                     0.1,
-                                    {2.1, -1.0},
+                                    {1.618, 1.618},
                                     "WithTwoParabolas"}
         //                             ,
         // BroydensMethodTestParameter{
