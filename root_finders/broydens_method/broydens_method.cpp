@@ -67,7 +67,7 @@ std::pair<matrix::Matrix<double>, std::vector<double>> EvaluateJacobian(
 }
 
 matrix::Matrix<double> EstimateJacobianInverse(const std::vector<std::function<double(std::vector<double>)>>& equations,
-                                               const std::vector<std::vector<double>>& equations_arguments,
+                                               const std::vector<double>& xk,
                                                const std::vector<double>& F_x,
                                                const std::vector<double>& xkp1,
                                                const matrix::Matrix<double>& JacobianInverse)
@@ -81,8 +81,8 @@ matrix::Matrix<double> EstimateJacobianInverse(const std::vector<std::function<d
     F_xkp1.resize(n);
     F_xkp1 = EvaluateSystem(equations, {xkp1});
 
-    const auto delta_x = matrix::AddVectors(xkp1, equations_arguments.back());
-    const auto delta_F = matrix::AddVectors(F_xkp1, F_x);
+    const auto delta_x = matrix::AddVectors(xkp1, matrix::ScalarMultiply(-1, xk));
+    const auto delta_F = matrix::AddVectors(F_xkp1, matrix::ScalarMultiply(-1, F_x));
 
     const matrix::Matrix<double> numerator{
         {matrix::AddVectors(delta_x, matrix::ScalarMultiply(-1, matrix::MatMult(JacobianInverse, delta_F)))}};
@@ -119,13 +119,13 @@ std::vector<double> BroydensMethod(const std::vector<std::function<double(std::v
     {
 
         xkp1 = matrix::AddVectors(
-            xk, matrix::ScalarMultiply(-1, matrix::MatMult(Jinverse, EvaluateSystem(equations, equations_arguments))));
+            xk, matrix::ScalarMultiply(-1, matrix::MatMult(Jinverse, EvaluateSystem(equations, {xk}))));
 
         const auto delta_x = matrix::AddVectors(xkp1, matrix::ScalarMultiply(-1.0, xk));
         residual = matrix::L2Norm(delta_x);
         if (residual < tolerance)
         {
-            std::cout << "Secant method converged in " << k << " iterations.\n";
+            std::cout << "Broyden's method converged in " << k << " iterations.\n";
             break;
         }
         if (k == max_iterations - 1)
@@ -133,8 +133,7 @@ std::vector<double> BroydensMethod(const std::vector<std::function<double(std::v
             std::cout << "Max iterations reached. Residual: " << residual << "\n";
         }
 
-        Jinverse = EstimateJacobianInverse(
-            equations, equations_arguments, EvaluateSystem(equations, equations_arguments), xkp1, Jinverse);
+        Jinverse = EstimateJacobianInverse(equations, xk, EvaluateSystem(equations, {xk}), xkp1, Jinverse);
         xk = xkp1;
     }
     return xkp1;

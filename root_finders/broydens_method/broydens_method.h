@@ -35,6 +35,12 @@ std::pair<matrix::Matrix<double>, std::vector<double>> EvaluateJacobian(
     const std::vector<std::vector<double>>& equations_arguments,
     const double delta);
 
+matrix::Matrix<double> EstimateJacobianInverse(const std::vector<std::function<double(std::vector<double>)>>& equations,
+                                               const std::vector<double>& xk,
+                                               const std::vector<double>& F_x,
+                                               const std::vector<double>& xkp1,
+                                               const matrix::Matrix<double>& JacobianInverse);
+
 /**
  * @brief Solves a system of nonlinear equations using Broyden's method (a quasi-Newton method).
  *
