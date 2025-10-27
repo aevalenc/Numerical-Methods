@@ -19,7 +19,7 @@ namespace
 struct FiniteDifferenceJacobianEvaluationTestParameter
 {
     std::vector<std::function<double(std::vector<double>)>> equations{};
-    std::vector<std::vector<double>> arguments{};
+    std::vector<double> arguments{};
     double delta{0.1};
     matrix::Matrix<double> expected_value{};
     std::string test_name{"TEST"};
@@ -28,7 +28,7 @@ struct FiniteDifferenceJacobianEvaluationTestParameter
 struct BroydensMethodTestParameter
 {
     std::vector<std::function<double(std::vector<double>)>> equations{};
-    std::vector<std::vector<double>> arguments{};
+    std::vector<double> arguments{};
     double delta{0.1};
     std::vector<double> expected_values{};
     std::string test_name{"TEST"};
@@ -52,11 +52,11 @@ TEST_P(FiniteDifferenceJacobianEvaluationTestFixture, DISABLED_GivenValidInputs_
     const auto result = EvaluateJacobian(param.equations, param.arguments, param.delta);
 
     // Expect
-    for (std::int32_t i{0}; i < static_cast<std::int32_t>(result.first.size()); ++i)
+    for (std::int32_t i{0}; i < static_cast<std::int32_t>(result.size()); ++i)
     {
-        for (std::int32_t j{0}; j < static_cast<std::int32_t>(result.first.size()); ++j)
+        for (std::int32_t j{0}; j < static_cast<std::int32_t>(result.size()); ++j)
         {
-            EXPECT_NEAR(result.first.at(i).at(j), param.expected_value.at(i).at(j), expectation_tolerance_);
+            EXPECT_NEAR(result.at(i).at(j), param.expected_value.at(i).at(j), expectation_tolerance_);
         }
     }
 }
@@ -68,14 +68,14 @@ INSTANTIATE_TEST_SUITE_P(
         FiniteDifferenceJacobianEvaluationTestParameter{
             {[](std::vector<double> x) -> double { return x.at(0) * x.at(0) - x.at(1) - 1; },
              [](std::vector<double> x) -> double { return x.at(0) - x.at(1) * x.at(1) + 1; }},
-            {{1.0, 1.0}},
+            {1.0, 1.0},
             0.1,
             {{2.1, -1.0}, {1.0, -2.1}},
             "WithTwoParabolas"},
         FiniteDifferenceJacobianEvaluationTestParameter{
             {[](std::vector<double> x) -> double { return x.at(0) * x.at(0) - 2 * x.at(0) - x.at(1) + 1; },
              [](std::vector<double> x) -> double { return x.at(0) * x.at(0) + x.at(1) * x.at(1) - 1; }},
-            {{1.0, 1.0}},
+            {1.0, 1.0},
             0.1,
             {{0.1, -1.0}, {2.1, 2.1}},
             "WithParabolaAndCircle"}),
@@ -110,7 +110,7 @@ INSTANTIATE_TEST_SUITE_P(
     ::testing::Values(
         BroydensMethodTestParameter{{[](std::vector<double> x) -> double { return x.at(0) * x.at(0) - x.at(1) - 1; },
                                      [](std::vector<double> x) -> double { return x.at(0) - x.at(1) * x.at(1) + 1; }},
-                                    {{1.0, 2.0}},
+                                    {1.0, 2.0},
                                     0.1,
                                     {1.618, 1.618},
                                     "WithTwoParabolas"}

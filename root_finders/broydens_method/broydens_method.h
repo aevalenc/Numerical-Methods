@@ -30,16 +30,16 @@ namespace root_finders
  * @param delta Perturbation value used for finite difference approximation.
  * @return matrix::Matrix<double> The approximated Jacobian matrix.
  */
-std::pair<matrix::Matrix<double>, std::vector<double>> EvaluateJacobian(
-    const std::vector<std::function<double(std::vector<double>)>>& equations,
-    const std::vector<std::vector<double>>& equations_arguments,
-    const double delta);
+matrix::Matrix<double> EvaluateJacobian(const std::vector<std::function<double(std::vector<double>)>>& equations,
+                                        const std::vector<double>& x,
+                                        const double delta);
 
-matrix::Matrix<double> EstimateJacobianInverse(const std::vector<std::function<double(std::vector<double>)>>& equations,
-                                               const std::vector<double>& xk,
-                                               const std::vector<double>& F_x,
-                                               const std::vector<double>& xkp1,
-                                               const matrix::Matrix<double>& JacobianInverse);
+// matrix::Matrix<double> EstimateJacobianInverse(const std::vector<std::function<double(std::vector<double>)>>&
+// equations,
+//                                                const std::vector<double>& xk,
+//                                                const std::vector<double>& F_x,
+//                                                const std::vector<double>& xkp1,
+//                                                const matrix::Matrix<double>& JacobianInverse);
 
 /**
  * @brief Solves a system of nonlinear equations using Broyden's method (a quasi-Newton method).
@@ -55,7 +55,7 @@ matrix::Matrix<double> EstimateJacobianInverse(const std::vector<std::function<d
  * @return std::vector<double> Solution vector containing the roots of the system.
  */
 std::vector<double> BroydensMethod(const std::vector<std::function<double(std::vector<double>)>>& equations,
-                                   const std::vector<std::vector<double>>& equations_arguments,
+                                   const std::vector<double>& initial_guess,
                                    const double delta,
                                    const double tolerance = 1e-3,
                                    const std::int32_t max_iterations = 1000);

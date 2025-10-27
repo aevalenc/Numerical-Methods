@@ -20,50 +20,14 @@ namespace root_finders
 namespace
 {
 std::vector<double> EvaluateSystem(const std::vector<std::function<double(std::vector<double>)>>& equations,
-                                   const std::vector<std::vector<double>>& equations_arguments)
+                                   const std::vector<double>& arguments)
 {
     std::vector<double> Fx{};
-    for (auto& arguments : equations_arguments)
+    for (auto& equation : equations)
     {
-        for (auto& equation : equations)
-        {
-            const auto value = (equation(arguments));
-            Fx.push_back(value);
-        }
+        Fx.push_back(equation(arguments));
     }
     return Fx;
-}
-
-}  // namespace
-
-std::pair<matrix::Matrix<double>, std::vector<double>> EvaluateJacobian(
-    const std::vector<std::function<double(std::vector<double>)>>& equations,
-    const std::vector<std::vector<double>>& equations_arguments,
-    const double delta)
-{
-    const auto n = static_cast<std::int32_t>(equations.size());
-    const auto I = matrix::CreateIdentityMatrix<double>(n);
-    const auto H = matrix::ScalarMultiply(delta, I);
-
-    matrix::Matrix<double> Jacobian(n, n);
-    std::vector<double> xpdx{};
-    std::vector<double> F_x{};
-    std::vector<double> F_xpdx{};
-    F_x.resize(n);
-    F_xpdx.resize(n);
-    for (std::int32_t i{0}; i < n; ++i)
-    {
-        xpdx = matrix::AddVectors(equations_arguments.at(0), matrix::MatMult(H, I.at(i)));
-        for (std::int32_t j{0}; j < n; ++j)
-        {
-            F_x.at(j) = (equations.at(j)(equations_arguments.at(0)));
-            F_xpdx.at(j) = (equations.at(j)(xpdx));
-        }
-        const auto dF = matrix::AddVectors(F_xpdx, matrix::ScalarMultiply(-1, F_x));
-        Jacobian.at(i) = dF;
-    }
-    Jacobian = matrix::ScalarMultiply(1.0 / delta, Jacobian);
-    return {Jacobian.Transpose(), F_x};
 }
 
 matrix::Matrix<double> EstimateJacobianInverse(const std::vector<std::function<double(std::vector<double>)>>& equations,
@@ -79,7 +43,7 @@ matrix::Matrix<double> EstimateJacobianInverse(const std::vector<std::function<d
 
     std::vector<double> F_xkp1{};
     F_xkp1.resize(n);
-    F_xkp1 = EvaluateSystem(equations, {xkp1});
+    F_xkp1 = EvaluateSystem(equations, xkp1);
 
     const auto delta_x = matrix::AddVectors(xkp1, matrix::ScalarMultiply(-1, xk));
     const auto delta_F = matrix::AddVectors(F_xkp1, matrix::ScalarMultiply(-1, F_x));
@@ -100,26 +64,57 @@ matrix::Matrix<double> EstimateJacobianInverse(const std::vector<std::function<d
     return JInverse_kp1;
 }
 
+}  // namespace
+
+matrix::Matrix<double> EvaluateJacobian(const std::vector<std::function<double(std::vector<double>)>>& equations,
+                                        const std::vector<double>& x,
+                                        const double delta)
+{
+    const auto n = static_cast<std::int32_t>(equations.size());
+    const auto I = matrix::CreateIdentityMatrix<double>(n);
+    const auto H = matrix::ScalarMultiply(delta, I);
+
+    matrix::Matrix<double> Jacobian(n, n);
+    std::vector<double> xpdx{};
+    std::vector<double> F_x{};
+    std::vector<double> F_xpdx{};
+    F_x.resize(n);
+    F_xpdx.resize(n);
+    for (std::int32_t i{0}; i < n; ++i)
+    {
+        xpdx = matrix::AddVectors(x, matrix::MatMult(H, I.at(i)));
+        for (std::int32_t j{0}; j < n; ++j)
+        {
+            F_x.at(j) = (equations.at(j)(x));
+            F_xpdx.at(j) = (equations.at(j)(xpdx));
+        }
+        const auto dF = matrix::AddVectors(F_xpdx, matrix::ScalarMultiply(-1, F_x));
+        Jacobian.at(i) = dF;
+    }
+    Jacobian = matrix::ScalarMultiply(1.0 / delta, Jacobian);
+    return Jacobian.Transpose();
+}
+
 std::vector<double> BroydensMethod(const std::vector<std::function<double(std::vector<double>)>>& equations,
-                                   const std::vector<std::vector<double>>& equations_arguments,
+                                   const std::vector<double>& initial_guess,
                                    const double delta,
                                    const double tolerance,
                                    const std::int32_t max_iterations)
 {
 
-    std::vector<double> xk{equations_arguments.back()};
+    std::vector<double> xk{initial_guess};
     std::vector<double> xkp1{};
-    xkp1.resize(equations_arguments.at(0).size());
+    xkp1.resize(initial_guess.size());
 
-    const auto J_Fx_pair = EvaluateJacobian(equations, equations_arguments, delta);
-    auto Jinverse = matrix::InvertWithLU(J_Fx_pair.first);
+    const auto Jacobian = EvaluateJacobian(equations, initial_guess, delta);
+    auto Jinverse = matrix::InvertWithLU(Jacobian);
     std::vector<double> Fxk{};
     double residual{};
     for (std::int32_t k{1}; k < max_iterations; ++k)
     {
 
-        xkp1 = matrix::AddVectors(
-            xk, matrix::ScalarMultiply(-1, matrix::MatMult(Jinverse, EvaluateSystem(equations, {xk}))));
+        xkp1 = matrix::AddVectors(xk,
+                                  matrix::ScalarMultiply(-1, matrix::MatMult(Jinverse, EvaluateSystem(equations, xk))));
 
         const auto delta_x = matrix::AddVectors(xkp1, matrix::ScalarMultiply(-1.0, xk));
         residual = matrix::L2Norm(delta_x);
@@ -133,7 +128,7 @@ std::vector<double> BroydensMethod(const std::vector<std::function<double(std::v
             std::cout << "Max iterations reached. Residual: " << residual << "\n";
         }
 
-        Jinverse = EstimateJacobianInverse(equations, xk, EvaluateSystem(equations, {xk}), xkp1, Jinverse);
+        Jinverse = EstimateJacobianInverse(equations, xk, EvaluateSystem(equations, xk), xkp1, Jinverse);
         xk = xkp1;
     }
     return xkp1;
