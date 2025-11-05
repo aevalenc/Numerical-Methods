@@ -101,6 +101,7 @@ cython_debug/
 # Virtual environments
 env/
 venv/
+.venv/
 ENV/
 env.bak/
 venv.bak/
