@@ -43,7 +43,7 @@ class FiniteDifferenceJacobianEvaluationTestFixture
     const double expectation_tolerance_{0.001};
 };
 
-TEST_P(FiniteDifferenceJacobianEvaluationTestFixture, DISABLED_GivenValidInputs_ExpectValidOutput)
+TEST_P(FiniteDifferenceJacobianEvaluationTestFixture, GivenValidInputs_ExpectValidOutput)
 {
     // Given
     const auto& param = GetParam();
@@ -113,16 +113,21 @@ INSTANTIATE_TEST_SUITE_P(
                                     {1.0, 2.0},
                                     0.1,
                                     {1.618, 1.618},
-                                    "WithTwoParabolas"}
-        //                             ,
-        // BroydensMethodTestParameter{
-        //     {[](std::vector<double> x) -> double { return x.at(0) * x.at(0) - 2 * x.at(0) - x.at(1) + 1; },
-        //      [](std::vector<double> x) -> double { return x.at(0) * x.at(0) + x.at(1) * x.at(1) - 1; }},
-        //     {{1.0, 1.0}},
-        //     0.1,
-        //     {0.1, -1.0},
-        //     "WithParabolaAndCircle"}
-        ),
+                                    "WithTwoParabolas"},
+        BroydensMethodTestParameter{
+            {[](std::vector<double> x) -> double { return x.at(0) * x.at(0) - 2 * x.at(0) - x.at(1) + 1; },
+             [](std::vector<double> x) -> double { return x.at(0) * x.at(0) + x.at(1) * x.at(1) - 1; }},
+            {1.0, 1.0},
+            0.1,
+            {1.0, 0.0},
+            "WithParabolaAndCircleGuessInFirstQuadrant"},
+        BroydensMethodTestParameter{
+            {[](std::vector<double> x) -> double { return x.at(0) * x.at(0) - 2 * x.at(0) - x.at(1) + 1; },
+             [](std::vector<double> x) -> double { return x.at(0) * x.at(0) + x.at(1) * x.at(1) - 1; }},
+            {-1.0, 1.0},
+            0.1,
+            {0.0, 1.0},
+            "WithParabolaAndCircleGuessinSecondQuadrant"}),
     [](const ::testing::TestParamInfo<BroydensMethodTestParameter>& info) { return info.param.test_name; });
 
 }  // namespace
