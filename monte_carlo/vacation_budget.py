@@ -16,10 +16,7 @@ def main():
 
     flight_cost_min = 500
     flight_cost_max = 1000
-    # flight_cost_dist = np.random.uniform(flight_cost_min, flight_cost_max, number_of_samples)
-    # flight_cost_samples = rng_generator.uniform(flight_cost_min, flight_cost_max, number_of_samples, endpoint=True)
     flight_cost_samples = rng_generator.uniform(flight_cost_min, flight_cost_max, number_of_samples)
-    # print(f"Flight cost samples: {flight_cost_samples}")
 
     hotel_nightly_cost_min = 80
     hotel_nightly_cost_max = 200
@@ -29,26 +26,12 @@ def main():
 
     total_cost_dist = flight_cost_samples + (hotel_nightly_cost_samples * 3)
 
-    # plt.figure()
-    # count, bins, ignored = plt.hist(flight_cost_dist, 10, density=True)
-    # plt.plot(bins, np.ones_like(bins), linewidth=2, color="r")
-
-    plt.figure()
-    counts, bins = np.histogram(flight_cost_samples, bins="auto")
-    print(f"Bins: {bins}")
-    print(f"Counts: {counts}")
-    # plt.plot(bins[:-1], counts)
-    plt.hist(flight_cost_samples, edgecolor="black", align="mid")
-    plt.title("Flight Cost Distribution")
-
-    plt.figure()
-    # plt.hist(bins[:-1], bins, weights=counts)
-    plt.title("Flight Cost Distribution Density")
-    plt.hist(flight_cost_samples, density=True)
-
-    plt.figure()
-    plt.title("Flight Cost Distribution Cummulative")
-    plt.hist(total_cost_dist, number_of_samples, cumulative=True, density=True)
+    # using tuple unpacking for multiple Axes
+    fig, (ax1, ax2) = plt.subplots(1, 2)
+    ax1.set_title("Density Distribution")
+    ax1.hist(total_cost_dist, density=True)
+    ax2.set_title("Cumulative Distribution")
+    ax2.hist(total_cost_dist, cumulative=True, density=True)
     plt.show()
 
     print(np.mean(total_cost_dist))
