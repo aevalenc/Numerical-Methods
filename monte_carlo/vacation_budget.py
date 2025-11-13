@@ -34,17 +34,17 @@ def main():
     # plt.plot(bins, np.ones_like(bins), linewidth=2, color="r")
 
     plt.figure()
-    counts, bins = np.histogram(flight_cost_samples, bins=500, density=True)
+    counts, bins = np.histogram(flight_cost_samples, bins="auto")
     print(f"Bins: {bins}")
     print(f"Counts: {counts}")
-    plt.plot(bins[:-1], counts)
-    # plt.hist(flight_cost_samples, edgecolor="black", align="mid")
+    # plt.plot(bins[:-1], counts)
+    plt.hist(flight_cost_samples, edgecolor="black", align="mid")
     plt.title("Flight Cost Distribution")
 
     plt.figure()
     # plt.hist(bins[:-1], bins, weights=counts)
     plt.title("Flight Cost Distribution Density")
-    plt.hist(flight_cost_samples, 500, density=True)
+    plt.hist(flight_cost_samples, density=True)
 
     plt.figure()
     plt.title("Flight Cost Distribution Cummulative")
