@@ -1,0 +1,14 @@
+"""
+BUILD file for C++ data types tests.
+"""
+
+load("@rules_cc//cc:defs.bzl", "cc_test")
+
+cc_test(
+    name = "uniformly_distributed_value_tests",
+    srcs = ["uniformly_distributed_value_tests.cpp"],
+    deps = [
+        "//probability_and_stats/data_types:uniformly_distributed_value",
+        "@googletest//:gtest_main",
+    ],
+)
