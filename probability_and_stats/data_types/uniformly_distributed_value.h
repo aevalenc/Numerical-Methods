@@ -22,7 +22,7 @@ class UniformlyDistributedRealValue
     UniformlyDistributedRealValue() {}
     UniformlyDistributedRealValue(T min_value, T max_value) : min_value_(min_value), max_value_(max_value)
     {
-        const std::uniform_real_distribution<> value(min_value_, max_value_);
+        std::uniform_real_distribution<> value(min_value_, max_value_);
         value_ = value;
     }
 
@@ -63,7 +63,11 @@ class UniformlyDistributedRealValue
   public:
     void SetMinValue(T min_value);
     void SetMaxValue(T max_value);
-    T GetSample(const T seed) const { value_(seed); }
+    template <typename URNG>
+    T GetSample(URNG& seed)
+    {
+        return value_(seed);
+    }
     T GetMinValue() const { return min_value_; }
     T GetMaxValue() const { return max_value_; }
 

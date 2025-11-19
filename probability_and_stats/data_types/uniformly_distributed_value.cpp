@@ -1,143 +1,16 @@
-// Author: Alejandro Valencia
-// 12-Steps-To-Navier-Stokes: Base Spatial Variable Class
-// Update: 9 October, 2022
-
 /*
+ * Author: Alejandro Valencia
+ *
  * This file serves as the implementation of member functions of the class
  * SpatialVariable
+ *
+ * Update: November 19, 2025
  */
 
-#include "pde_solver/data_types/spatial_variable.h"
-#include "matrix_solvers/direct_solvers/lu_solve.h"
-#include "matrix_solvers/iterative_solvers/conjugate_gradient.h"
-#include "matrix_solvers/iterative_solvers/gauss_seidel.h"
-#include "matrix_solvers/iterative_solvers/jacobi.h"
-#include "pde_solver/data_types/finite_difference_schemas.h"
-#include <cassert>
-#include <iostream>
-
-namespace pde
+namespace nm
+{
+namespace probs_and_stats
 {
 
-SpatialDiscretizationMethod SpatialVariable::GetSpatialDiscretizationMethod() const
-{
-    return spatial_discretization_method_;
-}
-
-void SpatialVariable::SetSpatialDiscretizationMethod(SpatialDiscretizationMethod spatial_discretization_method)
-{
-    spatial_discretization_method_ = spatial_discretization_method;
-}
-
-void SpatialVariable::SetDiscretizationSchema(FiniteDifferenceSchema discretization_schema)
-{
-    discretization_schema_ = discretization_schema;
-}
-
-void SpatialVariable::SetGrid(const pde::geometry::Grid& grid)
-{
-    spatial_grid_ = grid;
-    discretized_variable_.resize(spatial_grid_.GetNumberOfNodes());
-    // K_.resize(spatial_grid_.GetNumberOfNodes() - spatial_grid_.number_of_boundaries_);
-    // C_.resize(spatial_grid_.GetNumberOfNodes() - spatial_grid_.number_of_boundaries_);
-    // f_.resize(spatial_grid_.GetNumberOfNodes() - spatial_grid_.number_of_boundaries_);
-    K_.resize(spatial_grid_.GetNumberOfNodes());
-    C_.resize(spatial_grid_.GetNumberOfNodes());
-    f_.resize(spatial_grid_.GetNumberOfNodes());
-}
-
-geometry::Grid SpatialVariable::GetGrid() const
-{
-    return spatial_grid_;
-}
-
-void SpatialVariable::SetDirichletBoundaryCondition(const double value, const std::int32_t boundary_index)
-{
-    if (boundary_index > static_cast<std::int32_t>(discretized_variable_.size()))
-    {
-        std::cout << "Tried to access an index beyond the discretized variable max size of "
-                  << discretized_variable_.size() << "\n";
-        return;
-    }
-
-    discretized_variable_.at(boundary_index) = value;
-
-    if (!K_.empty())
-    {
-        std::vector<double> boundary_row{};
-        boundary_row.resize(spatial_grid_.GetNumberOfNodes());
-        boundary_row.at(boundary_index) = 1.0;
-        K_.at(boundary_index) = boundary_row;
-    }
-    else
-    {
-        std::cout << "Stiffness matrix was not properly sized!\n"
-                  << "Attemped to assign Dirichlet boundary condition to stiffness matrix and failed";
-        return;
-    }
-
-    if (!f_.empty())
-    {
-        f_.at(boundary_index) = value;
-    }
-    else
-    {
-        std::cout << "Forcing vector was not properly sized!\n"
-                  << "Attemped to assign Dirichlet boundary condition to forcing vector and failed";
-        return;
-    }
-}
-
-void SpatialVariable::SetStiffnessMatrix(nm::matrix::Matrix<double> K)
-{
-    K_ = K;
-}
-
-void SpatialVariable::SetDampingMatrix(nm::matrix::Matrix<double> C)
-{
-    C_ = C;
-}
-
-void SpatialVariable::SetForceVector(std::vector<double> f)
-{
-    f_ = f;
-}
-
-void SpatialVariable::SetMatrixSolver(const MatrixSolverEnum matrix_solver)
-{
-    matrix_solver_ = matrix_solver;
-}
-
-void SpatialVariable::Solve(const std::int32_t max_iterations, const double tolerance)
-{
-    assert(matrix_solver_ != MatrixSolverEnum::kInvalid);
-    assert(!K_.empty());
-    assert(!f_.empty());
-
-    // std::vector<double>::iterator first_unknown_iterator{discretized_variable_.begin() + 1};
-    // std::vector<double>::iterator last_unknown_iterator{discretized_variable_.end() - 1};
-    // std::vector<double> u_subset{first_unknown_iterator, last_unknown_iterator};
-
-    switch (matrix_solver_)
-    {
-        case MatrixSolverEnum::kJacobi:
-            nm::matrix::Jacobi(K_, f_, discretized_variable_, max_iterations, tolerance);
-            break;
-        case MatrixSolverEnum::kGaussSeidel:
-            nm::matrix::GaussSeidel(K_, f_, discretized_variable_, max_iterations, tolerance);
-            break;
-        case MatrixSolverEnum::kConjugateGradient:
-            nm::matrix::ConjugateGradient(K_, f_, discretized_variable_, tolerance, max_iterations);
-            break;
-        case MatrixSolverEnum::kLUSolve:
-            discretized_variable_ = nm::matrix::LUSolve(K_, f_);
-            break;
-        default:
-            std::cout << "No matrix_solver found!\n";
-            break;
-    }
-
-    // std::ignore = std::copy(std::cbegin(u_subset), std::cend(u_subset), first_unknown_iterator);
-}
-
-}  // namespace pde
+}  // namespace probs_and_stats
+}  // namespace nm

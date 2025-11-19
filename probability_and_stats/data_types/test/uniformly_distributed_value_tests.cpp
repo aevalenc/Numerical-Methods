@@ -7,7 +7,9 @@
  */
 
 #include "probability_and_stats/data_types/uniformly_distributed_value.h"
+#include <cstdint>
 #include <gtest/gtest.h>
+#include <random>
 
 namespace nm
 {
@@ -60,6 +62,29 @@ TEST(BaseClassTests, GivenValidUniformlyDistributedValue_ExpectValidConstructedC
     double tolerance = 1e-3;
     EXPECT_NEAR(copy.GetMinValue(), 0.0, tolerance);
     EXPECT_NEAR(copy.GetMaxValue(), 1.0, tolerance);
+}
+
+TEST(BaseClassTests, GivenValidUniformlyDistributedValue_ExpectValidSample)
+{
+    // Given
+    double a = 0.0;
+    double b = 1.0;
+
+    std::random_device random_device;         // Will be used to obtain a seed for the random number engine
+    std::mt19937 generator(random_device());  // Standard mersenne_twister_engine seeded with rd()
+
+    // Call
+    UniformlyDistributedRealValue<double> result(a, b);
+
+    // Expect
+    std::int32_t max_iterations{1000};
+    double sample{};
+    for (std::int32_t i{0}; i < max_iterations; ++i)
+    {
+        sample = result.GetSample<std::mt19937>(generator);
+        EXPECT_GE(sample, a);
+        EXPECT_LE(sample, b);
+    }
 }
 
 }  // namespace
