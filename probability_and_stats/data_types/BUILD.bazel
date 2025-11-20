@@ -7,6 +7,9 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 package(default_visibility = ["//visibility:public"])
 
 cc_library(
-    name = "uniformly_distributed_value",
-    hdrs = ["uniformly_distributed_value.h"],
+    name = "distributed_values",
+    hdrs = [
+        "normally_distributed_value.h",
+        "uniformly_distributed_value.h",
+    ],
 )

@@ -61,8 +61,6 @@ class UniformlyDistributedRealValue
     }
 
   public:
-    void SetMinValue(T min_value);
-    void SetMaxValue(T max_value);
     template <typename URNG>
     T GetSample(URNG& seed)
     {

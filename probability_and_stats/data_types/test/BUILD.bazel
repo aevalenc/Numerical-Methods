@@ -8,7 +8,16 @@ cc_test(
     name = "uniformly_distributed_value_tests",
     srcs = ["uniformly_distributed_value_tests.cpp"],
     deps = [
-        "//probability_and_stats/data_types:uniformly_distributed_value",
+        "//probability_and_stats/data_types:distributed_values",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "normally_distributed_value_tests",
+    srcs = ["normally_distributed_value_tests.cpp"],
+    deps = [
+        "//probability_and_stats/data_types:distributed_values",
         "@googletest//:gtest_main",
     ],
 )
