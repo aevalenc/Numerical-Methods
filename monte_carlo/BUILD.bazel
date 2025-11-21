@@ -8,3 +8,14 @@ py_binary(
         "@pypi//numpy",
     ],
 )
+
+py_binary(
+    name = "correlation_induction",
+    srcs = ["correlation_induction.py"],
+    deps = [
+        "@pypi//matplotlib",
+        "@pypi//numpy",
+        "@pypi//pandas",
+        "@pypi//scipy",
+    ],
+)
