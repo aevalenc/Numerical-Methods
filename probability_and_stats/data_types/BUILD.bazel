@@ -1,0 +1,15 @@
+"""
+BUILD file for the C++ data types library.
+"""
+
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "distributed_values",
+    hdrs = [
+        "normally_distributed_value.h",
+        "uniformly_distributed_value.h",
+    ],
+)
